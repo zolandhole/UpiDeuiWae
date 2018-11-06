@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#9C0000</color>
+    <color name="colorPrimaryDark">#8F0404</color>
+    <color name="colorPrimaryYoung">#b71c1c</color>
+    <color name="colorAccent">#FFFFFF</color>
+    <color name="backgroundcolor">#fcfcfc</color>
+    <color name="lightgreyline">#ededed</color>
+    <color name="ungu">#7c4dff</color>
+    <color name="kuning">#ffb300</color>
+    <color name="hijau">#58a45e</color>
+    <color name="pink">#ff4081</color>
+    <color name="headerBg">#F5F6F7</color>
+    <color name="stroke">#EFF0F1</color>
+    <color name="backgroundpage">#DDDEE0</color>
+    <color name="biru">#00887a</color>
+</resources>
