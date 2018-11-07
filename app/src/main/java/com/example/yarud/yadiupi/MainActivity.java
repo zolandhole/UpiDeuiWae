@@ -1,19 +1,30 @@
 package com.example.yarud.yadiupi;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.yarud.yadiupi.model.DBHandler;
+import com.example.yarud.yadiupi.model.User;
+import com.example.yarud.yadiupi.network.CheckConnection;
+
+import java.util.List;
+
+import static android.support.v4.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,7 +36,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CardView cardViewUlangiKoneksi;
     //CONNECTION SUCCESS
     private TextView textViewGelarNama;
+        private TextView textView2;
         private CardView cardViewPenugasan, cardViewKontrakMK, cardViewForum;
+        private DBHandler dbHandler;
+        private String username="",password="",kodedosen="",gelarnama="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +51,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initRunning();
 
     }
+    //BUTTON ON CLICK
     @Override public void onClick(View view) {
         switch (view.getId()){
             case R.id.MainCardViewUlangiKoneksi:
-                Toast.makeText(getApplicationContext(),"Lamun Koneksi Gagal",Toast.LENGTH_LONG).show();
+                initRunning();
                 break;
             case R.id.MainCardViewDosenPenugasan:
                 Toast.makeText(getApplicationContext(),"Urusan Dosen",Toast.LENGTH_LONG).show();
@@ -54,25 +69,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+    //EXIT APLIKASI
+    @Override public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.todoDialogLight);
+        builder.setIcon(R.drawable.icon_info)
+                .setTitle("Keluar dari Aplikasi?")
+                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .setNeutralButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                });
+        AlertDialog alert1 = builder.create();
+        alert1.show();
+        Button yes = alert1.getButton(DialogInterface.BUTTON_POSITIVE);
+        yes.setTextColor(Color.rgb(29,145,36));
+    }
 
     //INISIASI
     private void initView(){
+        textView2 = findViewById(R.id.textView2);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            textView2.setAutoSizeTextTypeUniformWithConfiguration(
+                    1, 17, 1, TypedValue.COMPLEX_UNIT_DIP);
+        }
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-        displayLoading = findViewById(R.id.MainDisplayLoading);
-        displayFailed = findViewById(R.id.MainDisplayFailed);
-        displaySuccess = findViewById(R.id.MainDisplaySuccess);
-
-        //TOOLBAR
-        mainToolbar = findViewById(R.id.MainToolbar);
+        displayLoading = (ConstraintLayout)findViewById(R.id.MainDisplayLoading);
+        displayFailed = (ConstraintLayout)findViewById(R.id.MainDisplayFailed);
+        displaySuccess = (ConstraintLayout)findViewById(R.id.MainDisplaySuccess);
 
         //CONNECTION FAILED
-        cardViewUlangiKoneksi = findViewById(R.id.MainCardViewUlangiKoneksi);
+        cardViewUlangiKoneksi = (CardView)findViewById(R.id.MainCardViewUlangiKoneksi);
 
         //CONNECTION SUCCESS
-        textViewGelarNama = findViewById(R.id.MainTvGelarNama);
-            cardViewPenugasan = findViewById(R.id.MainCardViewDosenPenugasan);
-            cardViewKontrakMK = findViewById(R.id.MainCardViewMahasiswaKontrakMK);
-            cardViewForum = findViewById(R.id.MainCardViewForum);
+        textViewGelarNama = (TextView)findViewById(R.id.MainTvGelarNama);
+            cardViewPenugasan = (CardView)findViewById(R.id.MainCardViewDosenPenugasan);
+            cardViewKontrakMK = (CardView)findViewById(R.id.MainCardViewMahasiswaKontrakMK);
+            cardViewForum = (CardView)findViewById(R.id.MainCardViewForum);
 
     }
     private void initListener(){
@@ -80,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cardViewUlangiKoneksi.setOnClickListener(MainActivity.this);
 
         //CONNECTION SUCCESS
+        dbHandler = new DBHandler(MainActivity.this);
         cardViewPenugasan.setOnClickListener(MainActivity.this);
         cardViewKontrakMK.setOnClickListener(MainActivity.this);
         cardViewForum.setOnClickListener(MainActivity.this);
@@ -87,7 +125,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //APLIKASI BERJALAN
     private void initRunning() {
-        Toast.makeText(getApplicationContext(),"Aplikasi Berjalan",Toast.LENGTH_LONG).show();
+        displayLoading();
+        //CEK KONEKSI INTERNET
+        if (!new CheckConnection().apakahTerkoneksiKeInternet(MainActivity.this)){
+            Toast.makeText(getApplicationContext(),"Tidak ada koneksi Internet",Toast.LENGTH_SHORT).show();
+            displayFailed();
+        }else{
+            //APAKAH USER ADA PADA DATABASE
+            ambilUserDiDatabase();
+            if (username.equals("")){
+                keHalamanLogin();
+            }else{
+                Toast.makeText(getApplicationContext(),"USER ADA DI DATABASE",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    private void ambilUserDiDatabase() {
+        try {
+            List<User> listUser = dbHandler.getAllUser();
+            for (User user : listUser){
+                username = user.getUsername();
+                password = user.getPassword();
+                kodedosen = user.getKodedosen();
+                gelarnama = user.getGelarnama();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dbHandler.close();
     }
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
@@ -109,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //TOOLBAR
     private void tampilanToolbar() {
+        mainToolbar = (Toolbar)findViewById(R.id.MainToolbar);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle("");
     }
@@ -132,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        keLogin();
+                        keHalamanLogin();
                     }
                 })
                 .setNeutralButton("Tidak", new DialogInterface.OnClickListener() {
@@ -144,7 +210,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button yes = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
         yes.setTextColor(Color.rgb(29,145,36));
     }
-    private void keLogin() {
-        Toast.makeText(getApplicationContext(),"Nanti Hapus dulu database, baru buka Menu Login",Toast.LENGTH_LONG).show();
+    private void keHalamanLogin() {
+        dbHandler.deleteAll();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
