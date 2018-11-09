@@ -28,7 +28,8 @@
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".PenugasanActivity" />
-        <activity android:name=".DetilMKActivity"></activity>
+        <activity android:name=".DetilMKActivity" />
+        <activity android:name=".RisalahMKActivity"></activity>
     </application>
 
 </manifest>

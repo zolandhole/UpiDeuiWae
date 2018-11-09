@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.yarud.yadiupi.DetilMKActivity;
 import com.example.yarud.yadiupi.LoginActivity;
 import com.example.yarud.yadiupi.PenugasanActivity;
+import com.example.yarud.yadiupi.RisalahMKActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +49,9 @@ public class GetTokenUPI {
                                 case "DetilMK":
                                     getContextDetilMK();
                                     break;
+                                case "RisalahMK":
+                                    getContextRisalahMK();
+                                    break;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -72,6 +76,8 @@ public class GetTokenUPI {
         requestQueue.add(stringRequest);
     }
 
+
+
     private void getContextLogin() {
         LoginActivity loginActivity = (LoginActivity) context;
         loginActivity.RunningPage(token);
@@ -85,5 +91,10 @@ public class GetTokenUPI {
     private void getContextDetilMK() {
         DetilMKActivity detilMKActivity = (DetilMKActivity) context;
         detilMKActivity.RunningPage(token);
+    }
+
+    private void getContextRisalahMK() {
+        RisalahMKActivity risalahMKActivity = (RisalahMKActivity) context;
+        risalahMKActivity.RunningPage(token);
     }
 }

@@ -38,7 +38,8 @@ public class UrlUpi {
     //result: IDMK,KODEKLS,NAMAKELAS,KODEMK,KODEDSN,NAMADSN,NAMAMK,SKS,NAMAPST,THN,SMT,NAMAHR,JAM1,JAM2,KODERUANG,NAMARUANG
     //
     //6. risalah mk (update)
-    //url: http://api.upi.edu/jwt/api/risalah_mk/id
+    //url:
+     public static final String URL_RisalahMK = "http://api.upi.edu/jwt/api/risalah_mk/";
     //param: id=idmk
     //param: Authorization = Bearer (token)
     //method: get
