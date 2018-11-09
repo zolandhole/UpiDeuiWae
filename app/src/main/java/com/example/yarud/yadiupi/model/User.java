@@ -8,7 +8,7 @@ public class User {
     private String kodedosen="";
     private String gelarnama="";
 
-    public User(){}
+    User(){}
 
     public User(int iddosen, String username, String password, String status, String kodedosen, String gelarnama)
     {
@@ -21,16 +21,16 @@ public class User {
     }
 
     public User(User user){
-        try {
-            this.iduser = user.getIduser();
-            this.username = user.getUsername();
-            this.password = user.getPassword();
-            this.status = user.getStatus();
-            this.kodedosen = user.getKodedosen();
-            this.gelarnama = user.getGelarnama();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try {
+////            this.iduser = user.getIduser();
+////            this.username = user.getUsername();
+////            this.password = user.getPassword();
+////            this.status = user.getStatus();
+////            this.kodedosen = user.getKodedosen();
+////            this.gelarnama = user.getGelarnama();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
 
     }
 

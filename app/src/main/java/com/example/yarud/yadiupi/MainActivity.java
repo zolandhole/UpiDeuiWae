@@ -123,38 +123,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cardViewForum.setOnClickListener(MainActivity.this);
     }
 
-    //APLIKASI BERJALAN
-    private void initRunning() {
-        displayLoading();
-        //CEK KONEKSI INTERNET
-        if (!new CheckConnection().apakahTerkoneksiKeInternet(MainActivity.this)){
-            Toast.makeText(getApplicationContext(),"Tidak ada koneksi Internet",Toast.LENGTH_SHORT).show();
-            displayFailed();
-        }else{
-            //APAKAH USER ADA PADA DATABASE
-            ambilUserDiDatabase();
-            if (username.equals("")){
-                keHalamanLogin();
-            }else{
-                Toast.makeText(getApplicationContext(),"USER ADA DI DATABASE",Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-    private void ambilUserDiDatabase() {
-        try {
-            List<User> listUser = dbHandler.getAllUser();
-            for (User user : listUser){
-                username = user.getUsername();
-                password = user.getPassword();
-                kodedosen = user.getKodedosen();
-                gelarnama = user.getGelarnama();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        dbHandler.close();
-    }
-
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
     public void displayLoading(){
         displayLoading.setVisibility(View.VISIBLE);
@@ -215,5 +183,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    //APLIKASI BERJALAN
+    private void initRunning() {
+        displayLoading();
+        //CEK KONEKSI INTERNET
+        if (!new CheckConnection().apakahTerkoneksiKeInternet(MainActivity.this)){
+            Toast.makeText(getApplicationContext(),"Tidak ada koneksi Internet",Toast.LENGTH_SHORT).show();
+            displayFailed();
+        }else{
+            //APAKAH USER ADA PADA DATABASE
+            ambilUserDiDatabase();
+            if (username.equals("")){
+                keHalamanLogin();
+            }else{
+                Toast.makeText(getApplicationContext(),"USER ADA DI DATABASE",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    private void ambilUserDiDatabase() {
+        try {
+            List<User> listUser = dbHandler.getAllUser();
+            for (User user : listUser){
+                username = user.getUsername();
+                password = user.getPassword();
+                kodedosen = user.getKodedosen();
+                gelarnama = user.getGelarnama();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dbHandler.close();
     }
 }

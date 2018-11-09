@@ -64,7 +64,7 @@ public class DBHandler extends SQLiteOpenHelper {
             Cursor cursor = db.query(TABLE_USER, new String[]{KEY_ID,
                             KEY_USERNAME, KEY_PASSWORD, KEY_STATUS, KEY_GELARNAMA, KEY_KODEDOSEN, }, KEY_ID + "=?",
                     new String[]{String.valueOf(id)}, null, null, null, null);
-            if (cursor != null) {
+            if (cursor != null && cursor.moveToFirst()) {
                 cursor.moveToFirst();
                 contact = new User(Integer.parseInt(
                         cursor.getString(0)),
