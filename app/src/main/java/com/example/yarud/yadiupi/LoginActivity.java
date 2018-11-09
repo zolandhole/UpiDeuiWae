@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.example.yarud.yadiupi.controller.ApiAuthenticationClientJWT;
 import com.example.yarud.yadiupi.controller.DBHandler;
-import com.example.yarud.yadiupi.model.UrlUpi;
+import com.example.yarud.yadiupi.network.UrlUpi;
 import com.example.yarud.yadiupi.model.User;
 import com.example.yarud.yadiupi.network.CheckConnection;
 import com.example.yarud.yadiupi.network.GetTokenUPI;

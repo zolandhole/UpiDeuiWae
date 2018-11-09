@@ -10,9 +10,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.yarud.yadiupi.DetilMKActivity;
 import com.example.yarud.yadiupi.LoginActivity;
 import com.example.yarud.yadiupi.PenugasanActivity;
-import com.example.yarud.yadiupi.model.UrlUpi;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +44,9 @@ public class GetTokenUPI {
                                     break;
                                 case "Penugasan":
                                     getContextPenugasan();
+                                    break;
+                                case "DetilMK":
+                                    getContextDetilMK();
                                     break;
                             }
                         } catch (JSONException e) {
@@ -77,5 +80,10 @@ public class GetTokenUPI {
     private void getContextPenugasan() {
         PenugasanActivity penugasanActivity = (PenugasanActivity) context;
         penugasanActivity.RunningPage(token);
+    }
+
+    private void getContextDetilMK() {
+        DetilMKActivity detilMKActivity = (DetilMKActivity) context;
+        detilMKActivity.RunningPage(token);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.yarud.yadiupi.model;
+package com.example.yarud.yadiupi.network;
 
 public class UrlUpi {
     //
@@ -30,7 +30,8 @@ public class UrlUpi {
     //result: IDMK,KODEKLS,NAMAKELAS,KODEMK,KODEDSN,NAMADSN,NAMAMK,SKS,NAMAPST,THNAJAR,SMTAJAR,JENJANG,NAMADSN2,NAMADSN3
     //
     //5. detil mk
-    //url: http://api.upi.edu/jwt/api/detil_mk/id
+    //url:
+     public static final String URL_DetilMK = "http://api.upi.edu/jwt/api/detil_mk/";
     //param: id=idmk
     //param: Authorization = Bearer (token)
     //method: get
