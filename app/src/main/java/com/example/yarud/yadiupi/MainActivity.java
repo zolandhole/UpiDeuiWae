@@ -18,28 +18,25 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.yarud.yadiupi.model.DBHandler;
+import com.example.yarud.yadiupi.controller.DBHandler;
 import com.example.yarud.yadiupi.model.User;
 import com.example.yarud.yadiupi.network.CheckConnection;
 
 import java.util.List;
+import java.util.Objects;
 
-import static android.support.v4.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //TOOLBAR
-    private Toolbar mainToolbar;
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
     private ConstraintLayout displayLoading,displayFailed,displaySuccess;
     //CONNECTION FAILED
     private CardView cardViewUlangiKoneksi;
     //CONNECTION SUCCESS
     private TextView textViewGelarNama;
-        private TextView textView2;
-        private CardView cardViewPenugasan, cardViewKontrakMK, cardViewForum;
+    private CardView cardViewPenugasan, cardViewKontrakMK, cardViewForum;
         private DBHandler dbHandler;
-        private String username="",password="",kodedosen="",gelarnama="";
+        private String username="", gelarnama="", kodedosen="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 initRunning();
                 break;
             case R.id.MainCardViewDosenPenugasan:
-                Toast.makeText(getApplicationContext(),"Urusan Dosen",Toast.LENGTH_LONG).show();
+                initPenugasan();
                 break;
             case R.id.MainCardViewMahasiswaKontrakMK:
                 Toast.makeText(getApplicationContext(),"Urusan Mahasiswa",Toast.LENGTH_LONG).show();
@@ -69,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
     //EXIT APLIKASI
     @Override public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.todoDialogLight);
@@ -92,24 +90,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //INISIASI
     private void initView(){
-        textView2 = findViewById(R.id.textView2);
+        TextView textView2 = findViewById(R.id.textView2);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             textView2.setAutoSizeTextTypeUniformWithConfiguration(
                     1, 17, 1, TypedValue.COMPLEX_UNIT_DIP);
         }
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-        displayLoading = (ConstraintLayout)findViewById(R.id.MainDisplayLoading);
-        displayFailed = (ConstraintLayout)findViewById(R.id.MainDisplayFailed);
-        displaySuccess = (ConstraintLayout)findViewById(R.id.MainDisplaySuccess);
+        displayLoading = findViewById(R.id.MainDisplayLoading);
+        displayFailed = findViewById(R.id.MainDisplayFailed);
+        displaySuccess = findViewById(R.id.MainDisplaySuccess);
 
         //CONNECTION FAILED
-        cardViewUlangiKoneksi = (CardView)findViewById(R.id.MainCardViewUlangiKoneksi);
+        cardViewUlangiKoneksi = findViewById(R.id.MainCardViewUlangiKoneksi);
 
         //CONNECTION SUCCESS
-        textViewGelarNama = (TextView)findViewById(R.id.MainTvGelarNama);
-            cardViewPenugasan = (CardView)findViewById(R.id.MainCardViewDosenPenugasan);
-            cardViewKontrakMK = (CardView)findViewById(R.id.MainCardViewMahasiswaKontrakMK);
-            cardViewForum = (CardView)findViewById(R.id.MainCardViewForum);
+        textViewGelarNama = findViewById(R.id.MainTvGelarNama);
+        cardViewPenugasan = findViewById(R.id.MainCardViewDosenPenugasan);
+        cardViewKontrakMK = findViewById(R.id.MainCardViewMahasiswaKontrakMK);
+        cardViewForum = findViewById(R.id.MainCardViewForum);
 
     }
     private void initListener(){
@@ -142,9 +140,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //TOOLBAR
     private void tampilanToolbar() {
-        mainToolbar = (Toolbar)findViewById(R.id.MainToolbar);
+        Toolbar mainToolbar = findViewById(R.id.MainToolbar);
         setSupportActionBar(mainToolbar);
-        getSupportActionBar().setTitle("");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
     }
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
@@ -198,7 +196,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (username.equals("")){
                 keHalamanLogin();
             }else{
-                Toast.makeText(getApplicationContext(),"USER ADA DI DATABASE",Toast.LENGTH_LONG).show();
+                textViewGelarNama.setText(gelarnama);
+                displaySuccess();
             }
         }
     }
@@ -207,13 +206,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             List<User> listUser = dbHandler.getAllUser();
             for (User user : listUser){
                 username = user.getUsername();
-                password = user.getPassword();
-                kodedosen = user.getKodedosen();
-                gelarnama = user.getGelarnama();
+                gelarnama = user.getKodedosen();
+                kodedosen = user.getGelarnama();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         dbHandler.close();
+    }
+
+    //INIT PENUGASAN
+    private void initPenugasan() {
+        Intent intentPenugasan = new Intent(MainActivity.this,PenugasanActivity.class);
+        intentPenugasan.putExtra("KODEDOSEN",kodedosen);
+        startActivity(intentPenugasan);
     }
 }

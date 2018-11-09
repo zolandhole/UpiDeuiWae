@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#E9EBEE">
+
+    <android.support.v7.widget.CardView
+        app:cardCornerRadius="2dp"
+        app:cardUseCompatPadding="true"
+        app:cardPreventCornerOverlap="true"
+        app:cardElevation="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/TextViewNAMAMK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Matakuliah"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/TextViewNAMAPST"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Program Studi"
+                    android:textColor="@color/kuning"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewNAMAMK" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewNAMAPST"
+                    app:layout_constraintVertical_bias="1.0" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
+                app:layout_constraintVertical_bias="0.0">
+
+                <TextView
+                    android:id="@+id/TextViewNama_dosen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Dosen"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/TextViewNama_kelas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Kelas"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewNAMADSN3" />
+
+                <TextView
+                    android:id="@+id/TextViewSks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="sks"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewNama_kelas" />
+
+                <TextView
+                    android:id="@+id/TextViewSmt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="semester"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewSks" />
+
+                <TextView
+                    android:id="@+id/TextViewThn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="tahun ajar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewSmt" />
+
+                <TextView
+                    android:id="@+id/TextViewJenjang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="jenjang"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewThn" />
+
+                <TextView
+                    android:id="@+id/TextViewNAMADSN2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="namadsn2"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/TextViewThn"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewNAMADSN" />
+
+                <TextView
+                    android:id="@+id/TextViewSMTAJAR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="semester"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/TextViewThn"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewSKS" />
+
+                <TextView
+                    android:id="@+id/TextViewNAMAKELAS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="kelas"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/TextViewThn"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewNAMADSN3" />
+
+                <TextView
+                    android:id="@+id/TextViewNAMADSN3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="namadsn3"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/TextViewThn"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewNAMADSN2" />
+
+                <TextView
+                    android:id="@+id/TextViewSKS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="sks"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/TextViewThn"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewNAMAKELAS" />
+
+                <TextView
+                    android:id="@+id/TextViewTHNAJAR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="tahun ajar"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/TextViewThn"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewSMTAJAR" />
+
+                <TextView
+                    android:id="@+id/TextViewJENJANG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="jenjang"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/TextViewThn"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewTHNAJAR" />
+
+                <TextView
+                    android:id="@+id/TextViewNAMADSN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="namadsn"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/TextViewThn"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+
+                <Button
+                    android:id="@+id/buttonPenugasanDetil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/button_bg"
+                    android:drawableEnd="@android:drawable/ic_media_play"
+                    android:text="Detil"
+                    android:textAllCaps="false"
+                    android:textColor="#009688"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/TextViewIDMK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/TextViewKODEMK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/TextViewKODEDSN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/TextViewKODEKLS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

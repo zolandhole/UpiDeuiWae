@@ -22,7 +22,8 @@ public class UrlUpi {
     //method: get
     //
     //4. penugasan (update)
-    //url: http://api.upi.edu/jwt/api/penugasan/id
+    //url:
+     public static final String URL_PENUGASAN = "http://api.upi.edu/jwt/api/penugasan/";
     //param: id=kodedsn
     //param: Authorization = Bearer (token)
     //method: get

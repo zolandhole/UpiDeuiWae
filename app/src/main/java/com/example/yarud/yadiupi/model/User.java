@@ -8,7 +8,7 @@ public class User {
     private String kodedosen="";
     private String gelarnama="";
 
-    User(){}
+    public User(){}
 
     public User(int iddosen, String username, String password, String status, String kodedosen, String gelarnama)
     {

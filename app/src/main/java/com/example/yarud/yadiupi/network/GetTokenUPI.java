@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.yarud.yadiupi.LoginActivity;
+import com.example.yarud.yadiupi.PenugasanActivity;
 import com.example.yarud.yadiupi.model.UrlUpi;
 
 import org.json.JSONException;
@@ -41,6 +42,9 @@ public class GetTokenUPI {
                                 case "Login":
                                     getContextLogin();
                                     break;
+                                case "Penugasan":
+                                    getContextPenugasan();
+                                    break;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -68,5 +72,10 @@ public class GetTokenUPI {
     private void getContextLogin() {
         LoginActivity loginActivity = (LoginActivity) context;
         loginActivity.RunningPage(token);
+    }
+
+    private void getContextPenugasan() {
+        PenugasanActivity penugasanActivity = (PenugasanActivity) context;
+        penugasanActivity.RunningPage(token);
     }
 }

@@ -1,10 +1,12 @@
-package com.example.yarud.yadiupi.model;
+package com.example.yarud.yadiupi.controller;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.yarud.yadiupi.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +64,7 @@ public class DBHandler extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.query(TABLE_USER, new String[]{KEY_ID,
-                            KEY_USERNAME, KEY_PASSWORD, KEY_STATUS, KEY_GELARNAMA, KEY_KODEDOSEN, }, KEY_ID + "=?",
+                            KEY_USERNAME, KEY_PASSWORD, KEY_STATUS, KEY_KODEDOSEN, KEY_GELARNAMA }, KEY_ID + "=?",
                     new String[]{String.valueOf(id)}, null, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 cursor.moveToFirst();
