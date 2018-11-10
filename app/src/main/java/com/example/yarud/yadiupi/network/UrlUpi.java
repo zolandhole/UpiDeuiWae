@@ -74,7 +74,8 @@ public class UrlUpi {
     //result: 1(jika ada), 0(jika belum)
     //
     //10. Set KM (new untuk dosen)
-    //url: http://api.upi.edu/jwt/api/set_km
+    //url:
+     public static final String URL_SetKM = "http://api.upi.edu/jwt/api/set_km";
     //param: id_pn=id_penugasan/idmk
     //	nim = nim mahasiswa
     //param: Authorization = Bearer (token)

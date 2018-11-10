@@ -242,6 +242,7 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
             mAdapter.notifyDataSetChanged();
         }
     }
+
     //PENGECEKAN KM
     public String getStatusKM(){
         return statusKM;
@@ -253,19 +254,10 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
         execute.execute();
     }
     @SuppressLint("StaticFieldLeak") private class CheckKM extends AsyncTask<Void, Void, String> {
-
         private ApiAuthenticationClientJWT apiAuthenticationClientJWT;
-
         CheckKM(ApiAuthenticationClientJWT apiAuthenticationClientJWT) {
             this.apiAuthenticationClientJWT = apiAuthenticationClientJWT;
         }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
         @Override
         protected String doInBackground(Void... params) {
             try {
@@ -273,13 +265,11 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             return null;
         }
-
         @Override
         protected void onPostExecute(String result) {
-            super.onPostExecute(result);
+                super.onPostExecute(result);
                 displaySuccess();
                 try {
                     if(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getString("km").equals("1")){
@@ -293,17 +283,8 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    //KE PRESENSI
-    public void kePresensi(Intent intent) {
-        if (statusKM.equals("1")){
-            startActivity(intent);
-        }else{
-            konfirmasiSetKM(intent);
-        }
-    }
-
-    //KE SET KM
-    private void konfirmasiSetKM(final Intent intentpresensi) {
+    //KE PEMILIHAN KM
+    public void konfirmasiSetKM(final Intent intentpresensi) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.todoDialogLight);
         builder.setIcon(R.drawable.icon_info)
                 .setTitle("KM belum di Set")
@@ -311,10 +292,7 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
                 .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //Intent intentPemilihanKM = new Intent(RisalahMKActivity.this,PemilihanKMActivity.class);
-                        //intentPemilihanKM.putExtra("IDMK", Objects.requireNonNull(intent.getExtras()).getString("IDMK"));
                         startActivity(intentpresensi);
-                        finish();
                     }
                 })
                 .setNeutralButton("Tidak", new DialogInterface.OnClickListener() {

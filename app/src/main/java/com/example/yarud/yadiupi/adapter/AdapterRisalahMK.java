@@ -24,21 +24,19 @@ import java.util.Objects;
 public class AdapterRisalahMK extends RecyclerView.Adapter<AdapterRisalahMK.HolderData>{
     private List<ModelRisalahMK> item;
     private Context context;
-    private String kodekls="", namakelas="";
+    private String kodekls, namakelas;
     public AdapterRisalahMK(Context context, List<ModelRisalahMK> item, String kodekls, String namakelas){
         this.item = item;
         this.context = context;
         this.kodekls = kodekls;
         this.namakelas = namakelas;
     }
-
     @NonNull
     @Override
     public HolderData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_risalah_mk,parent,false);
         return new HolderData(layout);
     }
-
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
@@ -70,7 +68,6 @@ public class AdapterRisalahMK extends RecyclerView.Adapter<AdapterRisalahMK.Hold
 
         intentPemilihanKM.putExtra("IDRS",holder.idrsView.getText().toString());
         intentPemilihanKM.putExtra("IDMK", Objects.requireNonNull(holder.idpnView.getText().toString()));
-        intentPemilihanKM.putExtra("KODEKLS",kodekls);
         intentPemilihanKM.putExtra("NAMAKELAS",namakelas);
         intentPresensi.putExtra("IDRS",holder.idrsView.getText().toString());
         intentPresensi.putExtra("KODEKLS",kodekls);
@@ -81,20 +78,17 @@ public class AdapterRisalahMK extends RecyclerView.Adapter<AdapterRisalahMK.Hold
                 RisalahMKActivity risalah = (RisalahMKActivity) context;
                 if(risalah.getStatusKM().equals("1")){
                     context.startActivity(intentPresensi);
-                    //risalah.kePresensi(intentPresensi);
                 }else{
-//                    risalah.kePresensi(intentPemilihanKM);
+                    risalah.konfirmasiSetKM(intentPemilihanKM);
                 }
             }
         });
 
     }
-
     @Override
     public int getItemCount() {
         return item.size();
     }
-
     class HolderData extends RecyclerView.ViewHolder{
         TextView idrsView;
         TextView idpnView;

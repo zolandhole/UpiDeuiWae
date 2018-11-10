@@ -44,7 +44,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="List Mahasiswa"
+                    android:text="Pemilihan KM"
                     android:textColor="@color/kuning"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"

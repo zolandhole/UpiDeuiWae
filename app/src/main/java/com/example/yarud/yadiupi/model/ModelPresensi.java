@@ -1,11 +1,11 @@
 package com.example.yarud.yadiupi.model;
 
 public class ModelPresensi {
-    public String nim;
-    public String nama;
-    public String status;
-    public String keterangan;
-    public String idrs;
+    private String nim;
+    private String nama;
+    private String status;
+    private String keterangan;
+    private String idrs;
 
     public ModelPresensi(){}
 
