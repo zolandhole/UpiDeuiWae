@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewGelarNama;
     private CardView cardViewPenugasan, cardViewKontrakMK, cardViewForum;
         private DBHandler dbHandler;
-        private String username="", gelarnama="", kodedosen="";
+        private String username, gelarnama, kodedosen, status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                        finishAffinity();
                     }
                 })
                 .setNeutralButton("Tidak", new DialogInterface.OnClickListener() {
@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void keHalamanLogin() {
         dbHandler.deleteAll();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
@@ -196,7 +197,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (username.equals("")){
                 keHalamanLogin();
             }else{
+                switch (status) {
+                    case "Mahasiswa":
+                        cardViewKontrakMK.setVisibility(View.VISIBLE);
+                        cardViewPenugasan.setVisibility(View.GONE);
+                        break;
+                    case "Dosen":
+                        cardViewKontrakMK.setVisibility(View.GONE);
+                        cardViewPenugasan.setVisibility(View.VISIBLE);
+                        break;
+                    default:
+                        keHalamanLogin();
+                        break;
+                }
                 textViewGelarNama.setText(gelarnama);
+                textViewGelarNama.setAllCaps(false);
                 displaySuccess();
             }
         }
@@ -208,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 username = user.getUsername();
                 gelarnama = user.getKodedosen();
                 kodedosen = user.getGelarnama();
+                status = user.getStatus();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -36,8 +36,12 @@
         <activity
             android:name=".RisalahMKActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".PresensiActivity" />
-        <activity android:name=".PemilihanKMActivity"></activity>
+        <activity
+            android:name=".PresensiActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".PemilihanKMActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

@@ -2,7 +2,6 @@ package com.example.yarud.yadiupi.network;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -46,25 +45,33 @@ public class GetTokenUPI {
                             token = jsonObject.getString("token");
                             switch (bagian){
                                 case "Login":
-                                    getContextLogin();
+                                    LoginActivity loginActivity = (LoginActivity) context;
+                                    loginActivity.RunningPage(token);
                                     break;
                                 case "Penugasan":
-                                    getContextPenugasan();
+                                    PenugasanActivity penugasanActivity = (PenugasanActivity) context;
+                                    penugasanActivity.RunningPage(token);
                                     break;
                                 case "DetilMK":
-                                    getContextDetilMK();
+                                    DetilMKActivity detilMKActivity = (DetilMKActivity) context;
+                                    detilMKActivity.RunningPage(token);
                                     break;
                                 case "RisalahMK":
-                                    getContextRisalahMK();
+                                    RisalahMKActivity risalahMKActivity = (RisalahMKActivity) context;
+                                    risalahMKActivity.RunningPage(token);
+                                    risalahMKActivity.LoadDataKM(token);
                                     break;
                                 case "PemilihanKM":
-                                    getContextPemilihanKM();
+                                    PemilihanKMActivity pemilihanKMActivity = (PemilihanKMActivity) context;
+                                    pemilihanKMActivity.RunningPage(token);
                                     break;
                                 case "Presensi":
-                                    getContextPresensi();
+                                    PresensiActivity presensiActivity = (PresensiActivity) context;
+                                    presensiActivity.RunningPage(token);
                                     break;
                                 case "FinishAbsen":
-                                    getContextFinishAbsen();
+                                    presensiActivity = (PresensiActivity) context;
+                                    presensiActivity.ProsesFinishAbsen(token);
                                     break;
                             }
                         } catch (JSONException e) {
@@ -75,7 +82,44 @@ public class GetTokenUPI {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Username/Password anda salah", Toast.LENGTH_LONG).show();
+                        switch (bagian) {
+                            case "Login": {
+                                LoginActivity activity = (LoginActivity) context;
+                                activity.displaySuccess();
+                                Toast.makeText(context, "Username Password anda salah / Tidak ada Koneksi Internet", Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                            case "Penugasan": {
+                                PenugasanActivity activity = (PenugasanActivity) context;
+                                activity.displayFailed();
+                                break;
+                            }
+                            case "DetilMK": {
+                                DetilMKActivity activity = (DetilMKActivity) context;
+                                activity.displayFailed();
+                                break;
+                            }
+                            case "RisalahMK": {
+                                RisalahMKActivity activity = (RisalahMKActivity) context;
+                                activity.displayFailed();
+                                break;
+                            }
+                            case "PemilihanKM": {
+                                PemilihanKMActivity activity = (PemilihanKMActivity) context;
+                                activity.displayFailed();
+                                break;
+                            }
+                            case "Presensi": {
+                                PresensiActivity activity = (PresensiActivity) context;
+                                activity.displayFailed();
+                                break;
+                            }
+                            case "FinishAbsen": {
+                                PresensiActivity activity = (PresensiActivity) context;
+                                activity.displayFailed();
+                                break;
+                            }
+                        }
                     }
                 }){
             @Override
@@ -90,39 +134,8 @@ public class GetTokenUPI {
         requestQueue.add(stringRequest);
     }
 
-    //CONTEXT GET
-    private void getContextLogin() {
-        LoginActivity loginActivity = (LoginActivity) context;
-        loginActivity.RunningPage(token);
-    }
-    private void getContextPenugasan() {
-        PenugasanActivity penugasanActivity = (PenugasanActivity) context;
-        penugasanActivity.RunningPage(token);
-    }
-    private void getContextDetilMK() {
-        DetilMKActivity detilMKActivity = (DetilMKActivity) context;
-        detilMKActivity.RunningPage(token);
-    }
-    private void getContextRisalahMK() {
-        RisalahMKActivity risalahMKActivity = (RisalahMKActivity) context;
-        risalahMKActivity.RunningPage(token);
-        risalahMKActivity.LoadDataKM(token);
-    }
-    private void getContextPemilihanKM() {
-        PemilihanKMActivity pemilihanKMActivity = (PemilihanKMActivity) context;
-        pemilihanKMActivity.RunningPage(token);
-    }
-    private void getContextPresensi() {
-        PresensiActivity presensiActivity = (PresensiActivity) context;
-        presensiActivity.RunningPage(token);
-    }
-    private void getContextFinishAbsen() {
-        PresensiActivity presensiActivity = (PresensiActivity) context;
-        presensiActivity.ProsesFinishAbsen(token);
-    }
-
     //SET ABSENSI DI PRESENSI
-    public void getTokenAbsensi(final String usernameDB, final String passwordDB, final String idrs, final String nim, final String status, final String ket) {
+    public void getTokenAbsensi(final String usernameDB, final String passwordDB, final String idrs, final String nim, final String status, final String ket, final String nama) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UrlUpi.URL_LOGIN,
                 new Response.Listener<String>() {
                     @Override
@@ -131,7 +144,7 @@ public class GetTokenUPI {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             token = jsonObject.getString("token");
-                            PostAbsen(token,idrs,nim,status,ket);
+                            PostAbsen(token,idrs,nim,status,ket,nama);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -140,12 +153,9 @@ public class GetTokenUPI {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if(status.equals("1")) {
-                            Toast.makeText(context, "Username/Password anda salah", Toast.LENGTH_LONG).show();
-                        }else{
-
-                            Toast.makeText(context, "Koneksi ke server terputus", Toast.LENGTH_LONG).show();
-                        }
+                        PresensiActivity presensiActivity = (PresensiActivity) context;
+                        presensiActivity.displayFailed();
+                        Toast.makeText(context, "Tidak Ada Koneksi Internet, Silahkan Coba lagi", Toast.LENGTH_SHORT).show();
                     }
                 }
         ){
@@ -160,7 +170,7 @@ public class GetTokenUPI {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
-    private void PostAbsen(final String token, String idrs, String nim, final String status, String ket) {
+    private void PostAbsen(final String token, String idrs, String nim, final String status, String ket, final String nama) {
         Map<String,String> params = new HashMap<>();
         params.put("id_rs", idrs);
         params.put("nim", nim);
@@ -170,9 +180,10 @@ public class GetTokenUPI {
                 new JSONObject(params), new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //progressDialog.dismiss();
+                        PresensiActivity presensiActivity = (PresensiActivity) context;
+                        presensiActivity.displaySuccess();
                         try {
-                            Log.w("JSONJWT",response.toString());
+                            Toast.makeText(context,nama + " berhasil di Update",Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -181,7 +192,9 @@ public class GetTokenUPI {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
+                        PresensiActivity presensiActivity = (PresensiActivity) context;
+                        presensiActivity.displayFailed();
+                        Toast.makeText(context, "Tidak Ada Koneksi Internet, Silahkan Coba lagi", Toast.LENGTH_SHORT).show();
                     }
                 }
         ){

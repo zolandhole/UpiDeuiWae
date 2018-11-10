@@ -45,7 +45,9 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
     private CardView cardViewUlangiKoneksi;
 
     //CONNECTION SUCCESS
-    private String idmk="", kodekls="", namakelas="", idrs="";
+    private String idmk="";
+    private String kodekls="";
+    private String namakelas="";
     private RecyclerView recyclerView;
     private DBHandler dbHandler;
     private List<ModelRisalahMK> item;
@@ -85,7 +87,6 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
         idmk = Objects.requireNonNull(getIntent().getExtras()).getString("IDMK");
         kodekls = getIntent().getExtras().getString("KODEKLS");
         namakelas = getIntent().getExtras().getString("NAMAKELAS");
-        idrs = getIntent().getExtras().getString("IDRS");
         recyclerView = findViewById(R.id.RisalahMKRecycleView);
     }
     private void initListener(){

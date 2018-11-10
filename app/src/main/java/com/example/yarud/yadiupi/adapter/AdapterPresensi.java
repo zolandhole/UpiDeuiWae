@@ -62,14 +62,14 @@ public class AdapterPresensi extends RecyclerView.Adapter<AdapterPresensi.Holder
             public void onClick(View v) {
                 if (holder.boxPresensi.isChecked()) {
                     PresensiActivity presensi = (PresensiActivity) context;
+                    presensi.displayLoading();
                     GetTokenUPI updateabsensi = new GetTokenUPI(context,"Presensi");
-                    updateabsensi.getTokenAbsensi(presensi.getUsernameDB(),presensi.getPasswordDB(),model.getIdrs(),model.getNim(),"1","");
+                    updateabsensi.getTokenAbsensi(presensi.getUsernameDB(),presensi.getPasswordDB(),model.getIdrs(),model.getNim(),"1","", model.getNama());
                     holder.txtKeterangan.setVisibility(View.GONE);
                     holder.namaView.setTextColor(Color.parseColor("#808080"));
-                    Toast.makeText(context,model.getNama() + " diset ke Hadir",Toast.LENGTH_SHORT).show();
                 }else{
-                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
                     PresensiActivity presensi = (PresensiActivity) context;
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
                     @SuppressLint("InflateParams") View mView = presensi.getLayoutInflater().inflate(R.layout.popup_input_presensi,null);
                     final Spinner mSpinner = mView.findViewById(R.id.SpinnerInputPresensiTidakHadir);
                     Button mButtonUpdate = mView.findViewById(R.id.ButtonInputPresensiUpdate);
@@ -90,13 +90,13 @@ public class AdapterPresensi extends RecyclerView.Adapter<AdapterPresensi.Holder
                                 Toast.makeText(context,"Anda belum memilih keterangan tidak hadir",Toast.LENGTH_LONG).show();
                             }else {
                                 PresensiActivity presensi = (PresensiActivity) context;
+                                presensi.displayLoading();
                                 GetTokenUPI updateabsensi = new GetTokenUPI(context,"Presensi");
-                                updateabsensi.getTokenAbsensi(presensi.getUsernameDB(),presensi.getPasswordDB(),model.getIdrs(),model.getNim(),"0",string);
+                                updateabsensi.getTokenAbsensi(presensi.getUsernameDB(),presensi.getPasswordDB(),model.getIdrs(),model.getNim(),"0",string, model.getNama());
                                 holder.txtKeterangan.setText(string);
                                 holder.txtKeterangan.setVisibility(View.VISIBLE);
                                 holder.namaView.setTextColor(Color.RED);
                                 alert.dismiss();
-                                Toast.makeText(context,model.getNama() + " diset ke Absen",Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

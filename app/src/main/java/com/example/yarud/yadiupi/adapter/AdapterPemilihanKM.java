@@ -1,6 +1,5 @@
 package com.example.yarud.yadiupi.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.yarud.yadiupi.PemilihanKMActivity;
 import com.example.yarud.yadiupi.R;
@@ -23,7 +21,6 @@ import java.util.List;
 public class AdapterPemilihanKM extends RecyclerView.Adapter<AdapterPemilihanKM.HolderData> {
     private List<ModelPresensi> item;
     private Context context;
-    private AlertDialog alertDialog;
 
     public AdapterPemilihanKM(Context context, List<ModelPresensi> item){
         this.context = context;

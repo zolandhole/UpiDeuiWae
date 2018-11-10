@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -25,6 +27,11 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
+    private ConstraintLayout displayLoading,displayFailed,displaySuccess;
+    //CONNECTION FAILED
+    private CardView cardViewUlangiKoneksi;
+    
     private EditText editTextUsername, editTextPassword;
     private Button buttonLogin;
     private Intent intenMain;
@@ -60,8 +67,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onPause();
     }
 
+    //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
+    public void displayLoading(){
+        displayLoading.setVisibility(View.VISIBLE);
+        displayFailed.setVisibility(View.GONE);
+        displaySuccess.setVisibility(View.GONE);
+    }
+    public void displaySuccess(){
+        displayLoading.setVisibility(View.GONE);
+        displayFailed.setVisibility(View.GONE);
+        displaySuccess.setVisibility(View.VISIBLE);
+    }
+    public void displayFailed() {
+        displayLoading.setVisibility(View.GONE);
+        displayFailed.setVisibility(View.VISIBLE);
+        displaySuccess.setVisibility(View.GONE);
+    }
+
     //INITVIEW
     private void initView() {
+        //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
+        displayLoading = findViewById(R.id.LoginDisplayLoading);
+        displayFailed = findViewById(R.id.LoginDisplayFailed);
+        displaySuccess = findViewById(R.id.LoginDisplaySuccess);
+
+        //CONNECTION FAILED
+        cardViewUlangiKoneksi = findViewById(R.id.LoginCardViewUlangiKoneksi);
+        
         editTextUsername = findViewById(R.id.LoginEditTextUsername);
         editTextPassword = findViewById(R.id.LoginEditTextPassword);
         buttonLogin = findViewById(R.id.LoginButton);
@@ -85,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (TextUtils.isEmpty(editTextPassword.getText())){
             editTextPassword.setError("Password harus dimasukan");
         } else {
+            displayLoading();
             GetTokenUPI token = new GetTokenUPI(LoginActivity.this, "Login");
             synchronized (LoginActivity.this){
                 token.getToken(
@@ -127,6 +160,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            displaySuccess();
             try {
                 JSONObject jsonObject = new JSONObject((apiAuthenticationClientJWT.getLastResponseAsJsonObject()).getJSONObject("dt_user").toString());
                     User user = new User(db.getUser(1));
