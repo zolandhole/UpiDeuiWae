@@ -103,7 +103,7 @@ public class UrlUpi {
     //
     //
     //13. Finish absen (new untuk dosen)
-    //url: http://api.upi.edu/jwt/api/set_finish_absen
+    public static final String URL_FinishAbsen = "http://api.upi.edu/jwt/api/set_finish_absen";
     //param: id_rs = id_risalah
     //param: Authorization = Bearer (token)
     //method: post

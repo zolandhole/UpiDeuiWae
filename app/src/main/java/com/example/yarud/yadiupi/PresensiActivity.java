@@ -22,6 +22,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.yarud.yadiupi.adapter.AdapterPresensi;
 import com.example.yarud.yadiupi.controller.ApiAuthenticationClientJWT;
 import com.example.yarud.yadiupi.controller.DBHandler;
@@ -36,7 +42,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class PresensiActivity extends AppCompatActivity implements View.OnClickListener {
@@ -54,6 +62,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     private List<ModelPresensi> item;
     private RecyclerView.Adapter mAdapter;
     private TextView textViewPresensiKelas;
+    private Button buttonFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +80,12 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
             case R.id.PresensiCardViewUlangiKoneksi:
                 initRunning();
                 break;
+            case R.id.buttonPresensiselesai:
+                finishAbsensi();
+                break;
         }
     }
-    
+
     //INISIASI
     private void initView(){
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
@@ -85,6 +97,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
         cardViewUlangiKoneksi = findViewById(R.id.PresensiCardViewUlangiKoneksi);
 
         //CONNECTION SUCCESS
+        buttonFinish = findViewById(R.id.buttonPresensiselesai);
         textViewPresensiKelas = findViewById(R.id.TextViewPresensiKelas);
         idrs = Objects.requireNonNull(getIntent().getExtras()).getString("IDRS");
         namakelas = getIntent().getExtras().getString("NAMAKELAS");
@@ -95,6 +108,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
         cardViewUlangiKoneksi.setOnClickListener(this);
 
         //CONNECTION SUCCESS
+        buttonFinish.setOnClickListener(this);
         textViewPresensiKelas.setText(namakelas);
         dbHandler = new DBHandler(this);
         item = new ArrayList<>();
@@ -108,16 +122,19 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
     public void displayLoading(){
+        buttonFinish.setVisibility(View.GONE);
         displayLoading.setVisibility(View.VISIBLE);
         displayFailed.setVisibility(View.GONE);
         displaySuccess.setVisibility(View.GONE);
     }
     public void displaySuccess(){
+        buttonFinish.setVisibility(View.VISIBLE);
         displayLoading.setVisibility(View.GONE);
         displayFailed.setVisibility(View.GONE);
         displaySuccess.setVisibility(View.VISIBLE);
     }
     public void displayFailed() {
+        buttonFinish.setVisibility(View.GONE);
         displayLoading.setVisibility(View.GONE);
         displayFailed.setVisibility(View.VISIBLE);
         displaySuccess.setVisibility(View.GONE);
@@ -248,5 +265,68 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     }
     public String getPasswordDB(){
         return passwordDB;
+    }
+
+    //FINISH ABSENSI
+    private void finishAbsensi() {
+        displayLoading();
+        //CEK KONEKSI INTERNET
+        if (!new CheckConnection().apakahTerkoneksiKeInternet(this)){
+            Toast.makeText(getApplicationContext(),"Tidak ada koneksi Internet",Toast.LENGTH_SHORT).show();
+            displayFailed();
+        }else{
+            try {
+                List<User> userdb = dbHandler.getAllUser();
+                for(User user : userdb){
+                    GetTokenUPI token = new GetTokenUPI(this, "FinishAbsen");
+                    usernameDB = user.getUsername();
+                    passwordDB = user.getPassword();
+                    token.getToken(usernameDB, passwordDB);
+                }
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+            dbHandler.close();
+        }
+    }
+    public void ProsesFinishAbsen(final String token) {
+        Map<String,String> params = new HashMap<>();
+        params.put("id_rs", idrs);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,UrlUpi.URL_FinishAbsen,
+                new JSONObject(params), new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        displaySuccess();
+                        try {
+                            Toast.makeText(PresensiActivity.this, "Presensi Berhasil disimpan", Toast.LENGTH_SHORT).show();
+                            keMainActivity();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders(){
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer "+token);
+                return headers;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+    }
+    private void keMainActivity() {
+        Intent intentMain = new Intent(this,MainActivity.class);
+        startActivity(intentMain);
+        finish();
     }
 }

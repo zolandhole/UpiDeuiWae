@@ -56,6 +56,10 @@ public class GetTokenUPI {
                                     break;
                                 case "Presensi":
                                     getContextPresensi();
+                                    break;
+                                case "FinishAbsen":
+                                    getContextFinishAbsen();
+                                    break;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -104,6 +108,11 @@ public class GetTokenUPI {
     private void getContextPresensi() {
         PresensiActivity presensiActivity = (PresensiActivity) context;
         presensiActivity.RunningPage(token);
+    }
+
+    private void getContextFinishAbsen() {
+        PresensiActivity presensiActivity = (PresensiActivity) context;
+        presensiActivity.ProsesFinishAbsen(token);
     }
 
     //SET ABSENSI DI PRESENSI
