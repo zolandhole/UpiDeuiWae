@@ -14,7 +14,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,12 +45,13 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
     private CardView cardViewUlangiKoneksi;
 
     //CONNECTION SUCCESS
-    private String idmk="";
+    private String idmk="", kodekls="", namakelas="", idrs="";
     private RecyclerView recyclerView;
     private DBHandler dbHandler;
     private List<ModelRisalahMK> item;
     private RecyclerView.Adapter mAdapter;
-    
+    private String statusKM;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +83,9 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
 
         //CONNECTION SUCCESS
         idmk = Objects.requireNonNull(getIntent().getExtras()).getString("IDMK");
+        kodekls = getIntent().getExtras().getString("KODEKLS");
+        namakelas = getIntent().getExtras().getString("NAMAKELAS");
+        idrs = getIntent().getExtras().getString("IDRS");
         recyclerView = findViewById(R.id.RisalahMKRecycleView);
     }
     private void initListener(){
@@ -94,7 +97,7 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
         item = new ArrayList<>();
         RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mManager);
-        mAdapter = new AdapterRisalahMK(this,item);
+        mAdapter = new AdapterRisalahMK(this,item, kodekls, namakelas);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -194,8 +197,7 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
         AsyncTask<Void,Void,String> execute = new RisalahMKActivity.AmbilDataRisalahMK(apiAuthenticationClientJWT);
         execute.execute();
     }
-    @SuppressLint("StaticFieldLeak")
-    private class AmbilDataRisalahMK extends AsyncTask<Void, Void, String> {
+    @SuppressLint("StaticFieldLeak") private class AmbilDataRisalahMK extends AsyncTask<Void, Void, String> {
 
         private ApiAuthenticationClientJWT apiAuthenticationClientJWT;
 
@@ -239,5 +241,90 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
             }
             mAdapter.notifyDataSetChanged();
         }
+    }
+    //PENGECEKAN KM
+    public String getStatusKM(){
+        return statusKM;
+    }
+    public void LoadDataKM(String token) {
+        new UrlUpi();
+        ApiAuthenticationClientJWT apiAuthenticationClientJWT = new ApiAuthenticationClientJWT(UrlUpi.URL_RisalahMK_Cek_KM+idmk,token);
+        AsyncTask<Void,Void,String> execute = new RisalahMKActivity.CheckKM(apiAuthenticationClientJWT);
+        execute.execute();
+    }
+    @SuppressLint("StaticFieldLeak") private class CheckKM extends AsyncTask<Void, Void, String> {
+
+        private ApiAuthenticationClientJWT apiAuthenticationClientJWT;
+
+        CheckKM(ApiAuthenticationClientJWT apiAuthenticationClientJWT) {
+            this.apiAuthenticationClientJWT = apiAuthenticationClientJWT;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                apiAuthenticationClientJWT.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+                displaySuccess();
+                try {
+                    if(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getString("km").equals("1")){
+                        statusKM="1";
+                    }else{
+                        statusKM="0";
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+        }
+    }
+
+    //KE PRESENSI
+    public void kePresensi(Intent intent) {
+        if (statusKM.equals("1")){
+            startActivity(intent);
+        }else{
+            konfirmasiSetKM(intent);
+        }
+    }
+
+    //KE SET KM
+    private void konfirmasiSetKM(final Intent intentpresensi) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.todoDialogLight);
+        builder.setIcon(R.drawable.icon_info)
+                .setTitle("KM belum di Set")
+                .setMessage("Apakah anda akan memilih KM saat ini?")
+                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Intent intentPemilihanKM = new Intent(RisalahMKActivity.this,PemilihanKMActivity.class);
+                        //intentPemilihanKM.putExtra("IDMK", Objects.requireNonNull(intent.getExtras()).getString("IDMK"));
+                        startActivity(intentpresensi);
+                        finish();
+                    }
+                })
+                .setNeutralButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+        AlertDialog alert1 = builder.create();
+        alert1.show();
+        Button yes = alert1.getButton(DialogInterface.BUTTON_POSITIVE);
+        yes.setTextColor(Color.rgb(29,145,36));
     }
 }

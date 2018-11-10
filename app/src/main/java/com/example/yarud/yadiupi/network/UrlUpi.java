@@ -46,7 +46,8 @@ public class UrlUpi {
     //result: id_rs,id_pn,pertemuan,topik,subtopik,sesuai,waktu,user_id,approve,tgl,finish,tgl_finish
     //
     //7. presensi
-    //url: http://api.upi.edu/jwt/api/presensi/idrs
+    //url:
+     public static final String URL_Presensi = "http://api.upi.edu/jwt/api/presensi/";
     //param: idrs=idrisalah
     //param: Authorization = Bearer (token)
     //method: get
@@ -54,7 +55,8 @@ public class UrlUpi {
     //
     //
     //8. input presensi (new untuk dosen)
-    //url: http://api.upi.edu/jwt/api/input_presensi
+    //url:
+     public static final String URL_InputPresensi = "http://api.upi.edu/jwt/api/input_presensi";
     //param: 	id_rs= id_risalah (string)
     //	nim = array/string
     //	status = array/string
@@ -64,7 +66,8 @@ public class UrlUpi {
     //result:
     //
     //9. Cek KM (new untuk dosen)
-    //url: http://api.upi.edu/jwt/api/check_km
+    //url:
+     public static final String URL_RisalahMK_Cek_KM = "http://api.upi.edu/jwt/api/check_km/";
     //param: id=id_penugasan/idmk
     //param: Authorization = Bearer (token)
     //method: get

@@ -398,7 +398,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="tahun_ajaran"
+                        android:text="tahun ajaran"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/TextViewDetailSMT" />
 
@@ -440,7 +440,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="jam_ke_1"
+                        android:text="jam ke 1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/TextViewDetailNAMAHR" />
 
@@ -461,7 +461,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="jam_ke_2"
+                        android:text="jam ke 2"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/TextViewDetailJAM1" />
 

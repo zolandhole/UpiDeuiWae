@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textViewPresensiNama"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="nama"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewPresensinim"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPresensiNama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="nim"
+            android:textSize="12sp" />
+
+        <CheckBox
+            android:id="@+id/checkBoxPresensi"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="8dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:theme="@style/MyCheckBox" />
+
+        <TextView
+            android:id="@+id/TextViewPresensiket"
+            app:layout_constraintStart_toEndOf="@+id/textViewPresensinim"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPresensiNama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="alpa"
+            android:textSize="12sp" />
+
+        <View
+            android:id="@+id/view4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPresensinim"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+            android:background="#E9EBEE" />
+
+        <TextView
+            android:id="@+id/TextViewPresensiid_pr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/TextViewPresensiid_pn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/TextViewPresensiid_rs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.example.yarud.yadiupi.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,18 +12,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.yarud.yadiupi.PemilihanKMActivity;
+import com.example.yarud.yadiupi.PresensiActivity;
 import com.example.yarud.yadiupi.R;
+import com.example.yarud.yadiupi.RisalahMKActivity;
 import com.example.yarud.yadiupi.model.ModelRisalahMK;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AdapterRisalahMK extends RecyclerView.Adapter<AdapterRisalahMK.HolderData>{
     private List<ModelRisalahMK> item;
     private Context context;
-
-    public AdapterRisalahMK(Context context, List<ModelRisalahMK> item){
+    private String kodekls="", namakelas="";
+    public AdapterRisalahMK(Context context, List<ModelRisalahMK> item, String kodekls, String namakelas){
         this.item = item;
         this.context = context;
+        this.kodekls = kodekls;
+        this.namakelas = namakelas;
     }
 
     @NonNull
@@ -35,8 +42,8 @@ public class AdapterRisalahMK extends RecyclerView.Adapter<AdapterRisalahMK.Hold
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
-//        final Intent intentPemilihanKM = new Intent(context,PemilihanKMActivity.class);
-//        final Intent intentPresensi = new Intent(context,PresensiActivity.class);
+        final Intent intentPemilihanKM = new Intent(context,PemilihanKMActivity.class);
+        final Intent intentPresensi = new Intent(context,PresensiActivity.class);
         ModelRisalahMK model = item.get(position);
         holder.idrsView.setText(model.getIdrs());
         holder.idpnView.setText(model.getIdpn());
@@ -61,27 +68,31 @@ public class AdapterRisalahMK extends RecyclerView.Adapter<AdapterRisalahMK.Hold
             holder.approveView.setText("Belum Approve");
         }
 
-//        intentPemilihanKM.putExtra("IDRS",holder.idrsView.getText().toString());
-//        intentPemilihanKM.putExtra("IDMK", Objects.requireNonNull(holder.idpnView.getText().toString()));
-//        intentPresensi.putExtra("IDRS",holder.idrsView.getText().toString());
-//        holder.btnDetail.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                RisalahMKActivity risalah = (RisalahMKActivity) context;
-//                if(risalah.getStatusKM().equals("1")){
-//                    risalah.kePresensi(intentPresensi);
-//                }else{
+        intentPemilihanKM.putExtra("IDRS",holder.idrsView.getText().toString());
+        intentPemilihanKM.putExtra("IDMK", Objects.requireNonNull(holder.idpnView.getText().toString()));
+        intentPemilihanKM.putExtra("KODEKLS",kodekls);
+        intentPemilihanKM.putExtra("NAMAKELAS",namakelas);
+        intentPresensi.putExtra("IDRS",holder.idrsView.getText().toString());
+        intentPresensi.putExtra("KODEKLS",kodekls);
+        intentPresensi.putExtra("NAMAKELAS",namakelas);
+        holder.btnDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RisalahMKActivity risalah = (RisalahMKActivity) context;
+                if(risalah.getStatusKM().equals("1")){
+                    context.startActivity(intentPresensi);
+                    //risalah.kePresensi(intentPresensi);
+                }else{
 //                    risalah.kePresensi(intentPemilihanKM);
-//                }
-//            }
-//        });
+                }
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
         return item.size();
-        //test
     }
 
     class HolderData extends RecyclerView.ViewHolder{
@@ -98,7 +109,6 @@ public class AdapterRisalahMK extends RecyclerView.Adapter<AdapterRisalahMK.Hold
 
         HolderData(View view){
             super(view);
-
             idrsView = view.findViewById(R.id.textViewRisalahMKid_rs);
             idpnView =  view.findViewById(R.id.textViewRisalahMKid_pn);
             pertemuanView = view.findViewById(R.id.TextViewRisalahMKpertemuan);

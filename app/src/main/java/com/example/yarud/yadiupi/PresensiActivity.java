@@ -7,10 +7,13 @@ import android.database.SQLException;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,38 +22,43 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yarud.yadiupi.adapter.AdapterPresensi;
 import com.example.yarud.yadiupi.controller.ApiAuthenticationClientJWT;
 import com.example.yarud.yadiupi.controller.DBHandler;
-import com.example.yarud.yadiupi.network.UrlUpi;
+import com.example.yarud.yadiupi.model.ModelPresensi;
 import com.example.yarud.yadiupi.model.User;
 import com.example.yarud.yadiupi.network.CheckConnection;
 import com.example.yarud.yadiupi.network.GetTokenUPI;
+import com.example.yarud.yadiupi.network.UrlUpi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DetilMKActivity extends AppCompatActivity implements View.OnClickListener {
+public class PresensiActivity extends AppCompatActivity implements View.OnClickListener {
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-    private ConstraintLayout displayLoading,displayFailed,displaySuccess;
-    
+    private ConstraintLayout displayLoading,displayFailed;
+    private NestedScrollView displaySuccess;
     //CONNECTION FAILED
     private CardView cardViewUlangiKoneksi;
-    
+
     //CONNECTION SUCCESS
-    private TextView textViewIDMK, textViewKODEKLS, textViewNAMAKELAS, textViewKODEMK, textViewKODEDSN, textViewNAMADSN, textViewNAMAMK, textViewSKS, textViewNAMAPST, textViewTHN, textViewSMT, textViewNAMAHR, textViewJAM1, textViewJAM2, textViewKODERUANG, textViewNAMARUANG;
+    private String namakelas="", idrs="", usernameDB="", passwordDB="";
+    private RecyclerView recyclerView;
     private DBHandler dbHandler;
-    private Button buttonRisalahMK;
-    private String idmk ,kodekls, namakelas;
-    
+    private List<ModelPresensi> item;
+    private RecyclerView.Adapter mAdapter;
+    private TextView textViewPresensiKelas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detil_mk);
+        setContentView(R.layout.activity_presensi);
         initView();
         initListener();
         tampilanToolbar();
@@ -60,61 +68,42 @@ public class DetilMKActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.DetilMKCardViewUlangiKoneksi:
+            case R.id.PresensiCardViewUlangiKoneksi:
                 initRunning();
-                break;
-            case R.id.buttonRisalahMK:
-                keRisalahMK();
                 break;
         }
     }
-
-    private void keRisalahMK() {
-        Intent intentRisalahMK = new Intent(this,RisalahMKActivity.class);
-        intentRisalahMK.putExtra("IDMK", idmk);
-        intentRisalahMK.putExtra("KODEKLS",kodekls);
-        intentRisalahMK.putExtra("NAMAKELAS",namakelas);
-        startActivity(intentRisalahMK);
-    }
-
+    
     //INISIASI
     private void initView(){
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-        displayLoading = findViewById(R.id.DetilMKDisplayLoading);
-        displayFailed = findViewById(R.id.DetilMKDisplayFailed);
-        displaySuccess = findViewById(R.id.DetilMKDisplaySuccess);
+        displayLoading = findViewById(R.id.PresensiDisplayLoading);
+        displayFailed = findViewById(R.id.PresensiDisplayFailed);
+        displaySuccess = findViewById(R.id.PresensiDisplaySuccess);
 
         //CONNECTION FAILED
-        cardViewUlangiKoneksi = findViewById(R.id.DetilMKCardViewUlangiKoneksi);
+        cardViewUlangiKoneksi = findViewById(R.id.PresensiCardViewUlangiKoneksi);
 
         //CONNECTION SUCCESS
-        textViewIDMK = findViewById(R.id.TextViewDetailIDMK);
-        textViewKODEKLS = findViewById(R.id.TextViewDetailKODEKLS);
-        textViewNAMAKELAS = findViewById(R.id.TextViewNAMAKLS);
-        textViewKODEMK = findViewById(R.id.TextViewDetilKODEMK);
-        textViewKODEDSN = findViewById(R.id.TextViewDetilKODEDSN);
-        textViewKODERUANG = findViewById(R.id.TextViewDetailKODERUANG);
-        textViewNAMADSN = findViewById(R.id.TextViewDetailNAMADSN);
-        textViewNAMAMK = findViewById(R.id.TextViewDetailNAMAMK);
-        textViewSKS = findViewById(R.id.TextViewDetailSKS);
-        textViewNAMAPST = findViewById(R.id.TextViewDetailNAMAPST);
-        textViewTHN = findViewById(R.id.TextViewDetailTHN);
-        textViewSMT = findViewById(R.id.TextViewDetailSMT);
-        textViewNAMAHR = findViewById(R.id.TextViewDetailNAMAHR);
-        textViewJAM1 = findViewById(R.id.TextViewDetailJAM1);
-        textViewJAM2 = findViewById(R.id.TextViewDetailJAM2);
-        textViewNAMARUANG = findViewById(R.id.TextViewDetailNAMARUANG);
-        buttonRisalahMK = findViewById(R.id.buttonRisalahMK);
-
-        idmk = Objects.requireNonNull(getIntent().getExtras()).getString("IDMK");
+        textViewPresensiKelas = findViewById(R.id.TextViewPresensiKelas);
+        idrs = Objects.requireNonNull(getIntent().getExtras()).getString("IDRS");
+        namakelas = getIntent().getExtras().getString("NAMAKELAS");
+        recyclerView = findViewById(R.id.PresensiRecycleView);
     }
     private void initListener(){
         //CONNECTION FAILED
         cardViewUlangiKoneksi.setOnClickListener(this);
 
         //CONNECTION SUCCESS
-        buttonRisalahMK.setOnClickListener(this);
+        textViewPresensiKelas.setText(namakelas);
         dbHandler = new DBHandler(this);
+        item = new ArrayList<>();
+        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(mManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+        mAdapter = new AdapterPresensi(this,item);
+        recyclerView.setAdapter(mAdapter);
     }
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
@@ -136,10 +125,10 @@ public class DetilMKActivity extends AppCompatActivity implements View.OnClickLi
 
     //TOOLBAR
     private void tampilanToolbar() {
-        Toolbar toolbar= findViewById(R.id.DetilMKToolbar);
+        Toolbar toolbar= findViewById(R.id.PresensiToolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("SpotUpi");
-        toolbar.setSubtitle("Detil Matakuliah");
+        toolbar.setSubtitle("Presensi");
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.icon_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,8 +175,8 @@ public class DetilMKActivity extends AppCompatActivity implements View.OnClickLi
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
-    //APLIKASI BERJALAN
+    
+    //INIT RUNNING
     private void initRunning() {
         displayLoading();
         //CEK KONEKSI INTERNET
@@ -198,9 +187,12 @@ public class DetilMKActivity extends AppCompatActivity implements View.OnClickLi
             try {
                 List<User> userdb = dbHandler.getAllUser();
                 for(User user : userdb){
-                    GetTokenUPI token = new GetTokenUPI(this, "DetilMK");
-                    token.getToken(user.getUsername(), user.getPassword());
+                    GetTokenUPI token = new GetTokenUPI(this, "Presensi");
+                    usernameDB = user.getUsername();
+                    passwordDB = user.getPassword();
+                    token.getToken(usernameDB, passwordDB);
                 }
+
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -209,19 +201,15 @@ public class DetilMKActivity extends AppCompatActivity implements View.OnClickLi
     }
     public void RunningPage(String token) {
         new UrlUpi();
-        ApiAuthenticationClientJWT apiAuthenticationClientJWT = new ApiAuthenticationClientJWT(UrlUpi.URL_DetilMK+idmk,token);
-        AsyncTask<Void,Void,String> execute = new DetilMKActivity.AmbilDataDetilMK(apiAuthenticationClientJWT);
+        ApiAuthenticationClientJWT apiAuthenticationClientJWT = new ApiAuthenticationClientJWT(UrlUpi.URL_Presensi+idrs,token);
+        AsyncTask<Void,Void,String> execute = new PresensiActivity.AmbilDataPresensi(apiAuthenticationClientJWT);
         execute.execute();
     }
-    @SuppressLint("StaticFieldLeak")
-    private class AmbilDataDetilMK extends AsyncTask<Void, Void, String> {
-
+    @SuppressLint("StaticFieldLeak") private class AmbilDataPresensi extends AsyncTask<Void, Void, String> {
         private ApiAuthenticationClientJWT apiAuthenticationClientJWT;
-
-        AmbilDataDetilMK(ApiAuthenticationClientJWT apiAuthenticationClientJWT) {
+        AmbilDataPresensi(ApiAuthenticationClientJWT apiAuthenticationClientJWT) {
             this.apiAuthenticationClientJWT = apiAuthenticationClientJWT;
         }
-
         @Override
         protected String doInBackground(Void... voids) {
             try {
@@ -231,37 +219,34 @@ public class DetilMKActivity extends AppCompatActivity implements View.OnClickLi
             }
             return null;
         }
-
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             displaySuccess();
             try {
-                JSONArray jsonArray = new JSONArray(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getJSONArray("dt_mk").toString());
+                JSONArray jsonArray = new JSONArray(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getJSONArray("dt_presensi").toString());
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject data = jsonArray.getJSONObject(i);
-                    textViewIDMK.setText(data.getString("IDMK"));
-                    textViewSMT.setText(data.getString("SMT"));
-                    textViewNAMAKELAS.setText(data.getString("NAMAKELAS"));
-                    textViewNAMADSN.setText(data.getString("NAMADSN"));
-                    textViewNAMAMK.setText(data.getString("NAMAMK"));
-                    textViewSKS.setText(data.getString("SKS"));
-                    textViewNAMAPST.setText(data.getString("NAMAPST"));
-                    textViewTHN.setText(data.getString("THN"));
-                    textViewNAMAHR.setText(data.getString("NAMAHR"));
-                    textViewJAM1.setText(data.getString("JAM1"));
-                    textViewJAM2.setText(data.getString("JAM2"));
-                    textViewNAMARUANG.setText(data.getString("NAMARUANG"));
-                    textViewKODEKLS.setText(data.getString("KODEKLS"));
-                    textViewKODEMK.setText(data.getString("KODEMK"));
-                    textViewKODEDSN.setText(data.getString("KODEDSN"));
-                    textViewKODERUANG.setText(data.getString("KODERUANG"));
-                    kodekls = data.getString("KODEKLS");
-                    namakelas = data.getString("NAMAKELAS");
+                    ModelPresensi model = new ModelPresensi();
+                    model.setNim(data.getString("nim"));
+                    model.setNama(data.getString("nama"));
+                    model.setStatus(data.getString("status"));
+                    model.setKeterangan(data.getString("ket"));
+                    model.setIdrs(data.getString("id_rs"));
+                    item.add(model);
                 }
             }catch (JSONException e){
                 e.printStackTrace();
             }
+            mAdapter.notifyDataSetChanged();
         }
+    }
+
+    //UPDATE KEHADIRAN
+    public String getUsernameDB(){
+        return usernameDB;
+    }
+    public String getPasswordDB(){
+        return passwordDB;
     }
 }

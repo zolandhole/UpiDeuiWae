@@ -1,18 +1,20 @@
 package com.example.yarud.yadiupi.network;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.yarud.yadiupi.DetilMKActivity;
 import com.example.yarud.yadiupi.LoginActivity;
 import com.example.yarud.yadiupi.PenugasanActivity;
+import com.example.yarud.yadiupi.PresensiActivity;
 import com.example.yarud.yadiupi.RisalahMKActivity;
 
 import org.json.JSONException;
@@ -22,9 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GetTokenUPI {
-    public String token;
-    String bagian;
-    Context context;
+    private String token;
+    private String bagian;
+    private Context context;
 
     public GetTokenUPI(Context context, String bagian){
         this.context = context;
@@ -52,6 +54,8 @@ public class GetTokenUPI {
                                 case "RisalahMK":
                                     getContextRisalahMK();
                                     break;
+                                case "Presensi":
+                                    getContextPresensi();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -65,7 +69,7 @@ public class GetTokenUPI {
                     }
                 }){
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 Map<String,String> params = new HashMap<>();
                 params.put("username", username);
                 params.put("password", password);
@@ -75,8 +79,6 @@ public class GetTokenUPI {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
-
-
 
     private void getContextLogin() {
         LoginActivity loginActivity = (LoginActivity) context;
@@ -96,5 +98,88 @@ public class GetTokenUPI {
     private void getContextRisalahMK() {
         RisalahMKActivity risalahMKActivity = (RisalahMKActivity) context;
         risalahMKActivity.RunningPage(token);
+        risalahMKActivity.LoadDataKM(token);
+    }
+
+    private void getContextPresensi() {
+        PresensiActivity presensiActivity = (PresensiActivity) context;
+        presensiActivity.RunningPage(token);
+    }
+
+    //SET ABSENSI DI PRESENSI
+    public void getTokenAbsensi(final String usernameDB, final String passwordDB, final String idrs, final String nim, final String status, final String ket) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, UrlUpi.URL_LOGIN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //progressDialog.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            token = jsonObject.getString("token");
+                            PostAbsen(token,idrs,nim,status,ket);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if(status.equals("1")) {
+                            Toast.makeText(context, "Username/Password anda salah", Toast.LENGTH_LONG).show();
+                        }else{
+
+                            Toast.makeText(context, "Koneksi ke server terputus", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("username", usernameDB);
+                params.put("password", passwordDB);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+    private void PostAbsen(final String token, String idrs, String nim, final String status, String ket) {
+        Map<String,String> params = new HashMap<>();
+        params.put("id_rs", idrs);
+        params.put("nim", nim);
+        params.put("status", status);
+        params.put("ket", ket);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,UrlUpi.URL_InputPresensi,
+                new JSONObject(params), new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //progressDialog.dismiss();
+                        try {
+                            Log.w("JSONJWT",response.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders(){
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer "+token);
+                return headers;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(request);
     }
 }

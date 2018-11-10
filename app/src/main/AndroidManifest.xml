@@ -27,9 +27,17 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".PenugasanActivity" />
-        <activity android:name=".DetilMKActivity" />
-        <activity android:name=".RisalahMKActivity"></activity>
+        <activity
+            android:name=".PenugasanActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".DetilMKActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".RisalahMKActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".PresensiActivity" />
+        <activity android:name=".PemilihanKMActivity"></activity>
     </application>
 
 </manifest>
