@@ -11,9 +11,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.yarud.yadiupi.ApproveKehadiranDosenActivity;
 import com.example.yarud.yadiupi.DetilMKActivity;
 import com.example.yarud.yadiupi.LoginActivity;
 import com.example.yarud.yadiupi.MahasiswaKontrakActivity;
+import com.example.yarud.yadiupi.MainActivity;
 import com.example.yarud.yadiupi.PemilihanKMActivity;
 import com.example.yarud.yadiupi.PenugasanActivity;
 import com.example.yarud.yadiupi.PresensiActivity;
@@ -78,6 +80,10 @@ public class GetTokenUPI {
                                     MahasiswaKontrakActivity mahasiswaKontrakActivity = (MahasiswaKontrakActivity) context;
                                     mahasiswaKontrakActivity.RunningPage(token);
                                     break;
+                                case "ApproveKehadiranDosen":
+                                    ApproveKehadiranDosenActivity approveKehadiranDosenActivity = (ApproveKehadiranDosenActivity) context;
+                                    approveKehadiranDosenActivity.RunningPage(token);
+                                    break;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -127,6 +133,12 @@ public class GetTokenUPI {
                             case "MahasiswaKontrak": {
                                 MahasiswaKontrakActivity activity = (MahasiswaKontrakActivity) context;
                                 activity.displayFailed();
+                                break;
+                            }
+                            case "ApproveKehadiranDosen": {
+                                ApproveKehadiranDosenActivity activity = (ApproveKehadiranDosenActivity) context;
+                                activity.displayFailed();
+                                break;
                             }
                         }
                     }
@@ -149,7 +161,6 @@ public class GetTokenUPI {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //progressDialog.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             token = jsonObject.getString("token");
@@ -226,7 +237,6 @@ public class GetTokenUPI {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //progressDialog.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             token = jsonObject.getString("token");
@@ -273,6 +283,75 @@ public class GetTokenUPI {
                         }
                     }
                 },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders(){
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer "+token);
+                return headers;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(request);
+    }
+
+    //APPROVE DOSEN
+    public void approveKM(final String username, final String password, final String idrs){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,UrlUpi.URL_LOGIN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            token = jsonObject.getString("token");
+                            postApproveKM(token,idrs);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("username", username);
+                params.put("password", password);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+    private void postApproveKM(final String token, final String idrs) {
+        Map<String,String> params = new HashMap<>();
+        params.put("idrs",idrs);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,UrlUpi.URL_ApproveKehadiranDosen,
+                new JSONObject(params), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    Intent intent =new Intent(context,MahasiswaKontrakActivity.class);
+                    ApproveKehadiranDosenActivity approve = (ApproveKehadiranDosenActivity) context;
+                    approve.startActivity(intent);
+                    approve.finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {

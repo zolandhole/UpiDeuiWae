@@ -10,6 +10,9 @@ public class ModelRisalahMK {
     String waktu;
     String userid;
     String approve;
+    String tgl;
+    String finish;
+    String tgl_finish;
 
     public ModelRisalahMK(){
 
@@ -42,6 +45,9 @@ public class ModelRisalahMK {
     public void setApprove(String approve){
         this.approve = approve;
     }
+    public void setTgl(String tgl){ this.tgl = tgl; }
+    public void setFinish(String finish){ this.finish = finish; }
+    public void setTgl_finish(String tgl_finish){ this.tgl_finish = tgl_finish; }
 
     public String getIdrs(){
         return idrs;
@@ -66,4 +72,7 @@ public class ModelRisalahMK {
         return userid;
     }
     public String getApprove(){ return approve; }
+    public String getTgl() { return tgl; }
+    public String getFinish() { return finish; }
+    public String getTgl_finish() { return tgl_finish; }
 }
