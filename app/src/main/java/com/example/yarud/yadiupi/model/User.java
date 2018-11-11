@@ -21,16 +21,16 @@ public class User {
     }
 
     public User(User user){
-//        try {
-////            this.iduser = user.getIduser();
-////            this.username = user.getUsername();
-////            this.password = user.getPassword();
-////            this.status = user.getStatus();
-////            this.kodedosen = user.getKodedosen();
-////            this.gelarnama = user.getGelarnama();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+        try {
+            this.iduser = user.getIduser();
+            this.username = user.getUsername();
+            this.password = user.getPassword();
+            this.status = user.getStatus();
+            this.kodedosen = user.getKodedosen();
+            this.gelarnama = user.getGelarnama();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

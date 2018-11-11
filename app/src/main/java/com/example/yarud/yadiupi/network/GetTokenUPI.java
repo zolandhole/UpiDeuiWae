@@ -13,6 +13,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.yarud.yadiupi.DetilMKActivity;
 import com.example.yarud.yadiupi.LoginActivity;
+import com.example.yarud.yadiupi.MahasiswaKontrakActivity;
 import com.example.yarud.yadiupi.PemilihanKMActivity;
 import com.example.yarud.yadiupi.PenugasanActivity;
 import com.example.yarud.yadiupi.PresensiActivity;
@@ -73,6 +74,10 @@ public class GetTokenUPI {
                                     presensiActivity = (PresensiActivity) context;
                                     presensiActivity.ProsesFinishAbsen(token);
                                     break;
+                                case "MahasiswaKontrak":
+                                    MahasiswaKontrakActivity mahasiswaKontrakActivity = (MahasiswaKontrakActivity) context;
+                                    mahasiswaKontrakActivity.RunningPage(token);
+                                    break;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -118,6 +123,10 @@ public class GetTokenUPI {
                                 PresensiActivity activity = (PresensiActivity) context;
                                 activity.displayFailed();
                                 break;
+                            }
+                            case "MahasiswaKontrak": {
+                                MahasiswaKontrakActivity activity = (MahasiswaKontrakActivity) context;
+                                activity.displayFailed();
                             }
                         }
                     }

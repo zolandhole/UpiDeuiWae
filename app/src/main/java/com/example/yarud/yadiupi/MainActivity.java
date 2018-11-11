@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 initPenugasan();
                 break;
             case R.id.MainCardViewMahasiswaKontrakMK:
-                Toast.makeText(getApplicationContext(),"Urusan Mahasiswa",Toast.LENGTH_LONG).show();
+                initMahasiswaKontrak();
                 break;
             case R.id.MainCardViewForum:
                 Toast.makeText(getApplicationContext(),"Urusan Forum Bersama",Toast.LENGTH_LONG).show();
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else{
             //APAKAH USER ADA PADA DATABASE
             ambilUserDiDatabase();
-            if (username.equals("")){
+            if (username == null){
                 keHalamanLogin();
             }else{
                 switch (status) {
@@ -236,5 +236,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intentPenugasan = new Intent(MainActivity.this,PenugasanActivity.class);
         intentPenugasan.putExtra("KODEDOSEN",kodedosen);
         startActivity(intentPenugasan);
+    }
+
+    //INIT MAHASISWA KONTRAK
+    private void initMahasiswaKontrak() {
+        Intent intentMhsKontrak = new Intent(MainActivity.this,MahasiswaKontrakActivity.class);
+        startActivity(intentMhsKontrak);
     }
 }
