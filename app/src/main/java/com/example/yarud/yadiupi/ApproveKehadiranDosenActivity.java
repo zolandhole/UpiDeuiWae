@@ -134,7 +134,7 @@ public class ApproveKehadiranDosenActivity extends AppCompatActivity implements 
     public void RunningPage(String token) {
         new UrlUpi();
         ApiAuthenticationClientJWT apiAuthenticationClientJWT = new ApiAuthenticationClientJWT(
-                UrlUpi.URL_RisalahMK + "18100024911718IK300D54520181",token
+                UrlUpi.URL_RisalahMK + idmk,token
         );
         AsyncTask<Void,Void,String> execute = new ApproveKehadiranDosenActivity.AmbilData(apiAuthenticationClientJWT);
         execute.execute();

@@ -40,9 +40,10 @@ public class AdapterMhsKontrak extends RecyclerView.Adapter<AdapterMhsKontrak.Ho
         holder.textViewMhsKontrakNAMAMK.setText(model.getNAMAMK());
         holder.textViewMhsKontrakSKS.setText(model.getSKS()+" SKS");
 
-        if (model.getKM().equals("0")){
+        if (model.getKM().equals("1")){
+            holder.mhsKontrakview.setVisibility(View.VISIBLE);
             holder.textViewMhsKontrakKM.setText("Anda sebagai KM");
-            if (model.getNEEDAPPROVE().equals("0")){
+            if (model.getNEEDAPPROVE().equals("1")){
                 holder.textViewMhsKontrakNEEDAPPROVE.setVisibility(View.VISIBLE);
                 holder.buttonMhsKontrakApprove.setVisibility(View.VISIBLE);
 
@@ -59,6 +60,7 @@ public class AdapterMhsKontrak extends RecyclerView.Adapter<AdapterMhsKontrak.Ho
                 holder.buttonMhsKontrakApprove.setVisibility(View.GONE);
             }
         } else {
+            holder.mhsKontrakview.setVisibility(View.GONE);
             holder.textViewMhsKontrakKM.setVisibility(View.GONE);
             holder.buttonMhsKontrakApprove.setVisibility(View.GONE);
             holder.textViewMhsKontrakNEEDAPPROVE.setVisibility(View.GONE);
@@ -71,6 +73,7 @@ public class AdapterMhsKontrak extends RecyclerView.Adapter<AdapterMhsKontrak.Ho
     class HolderData extends RecyclerView.ViewHolder{
         private TextView textViewMhsKontrakIDMK, textViewMhsKontrakKODEMK, textViewMhsKontrakNAMAMK, textViewMhsKontrakSKS, textViewMhsKontrakKM, textViewMhsKontrakNEEDAPPROVE;
         private Button buttonMhsKontrakApprove;
+        private View mhsKontrakview;
         HolderData(View view) {
             super(view);
             textViewMhsKontrakIDMK = view.findViewById(R.id.MhsKontrakTextViewIDMK);
@@ -80,6 +83,7 @@ public class AdapterMhsKontrak extends RecyclerView.Adapter<AdapterMhsKontrak.Ho
             textViewMhsKontrakKM = view.findViewById(R.id.MhsKontrakTextViewKM);
             textViewMhsKontrakNEEDAPPROVE = view.findViewById(R.id.MhsKontrakTextViewNEEDAPPROVE);
             buttonMhsKontrakApprove = view.findViewById(R.id.MhsKontrakButtonApprove);
+            mhsKontrakview = view.findViewById(R.id.MhsKontrakview);
         }
     }
 }

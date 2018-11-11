@@ -72,7 +72,11 @@ public class PemilihanKMActivity extends AppCompatActivity implements View.OnCli
     //BUTTON ON CLICK
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.PemilihanKMCardViewUlangiKoneksi:
+                initRunning();
+                break;
+        }
     }
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
@@ -243,7 +247,7 @@ public class PemilihanKMActivity extends AppCompatActivity implements View.OnCli
         requestQueue.add(stringRequest);
     }
 
-    //SET KM
+    //APPROVE DOSEN
     public String getUsernameDB(){
         return usernameDB;
     }
