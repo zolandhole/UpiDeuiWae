@@ -91,10 +91,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //INISIASI
     private void initView(){
         TextView textView2 = findViewById(R.id.textView2);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            textView2.setAutoSizeTextTypeUniformWithConfiguration(
-                    1, 17, 1, TypedValue.COMPLEX_UNIT_DIP);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            textView2.setAutoSizeTextTypeUniformWithConfiguration(
+//                    1, 17, 1, TypedValue.COMPLEX_UNIT_DIP);
+//        }
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
         displayLoading = findViewById(R.id.MainDisplayLoading);
         displayFailed = findViewById(R.id.MainDisplayFailed);
