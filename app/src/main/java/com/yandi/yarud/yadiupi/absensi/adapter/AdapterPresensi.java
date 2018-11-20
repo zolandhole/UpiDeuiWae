@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.adapter;
+package com.yandi.yarud.yadiupi.absensi.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,10 +16,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yandi.yarud.yadiupi.PresensiActivity;
+import com.yandi.yarud.yadiupi.absensi.PresensiActivity;
 import com.yandi.yarud.yadiupi.R;
-import com.yandi.yarud.yadiupi.model.ModelPresensi;
-import com.yandi.yarud.yadiupi.network.GetTokenUPI;
+import com.yandi.yarud.yadiupi.absensi.model.ModelPresensi;
+import com.yandi.yarud.yadiupi.absensi.network.GetTokenUPI;
 
 import java.util.ArrayList;
 import java.util.List;

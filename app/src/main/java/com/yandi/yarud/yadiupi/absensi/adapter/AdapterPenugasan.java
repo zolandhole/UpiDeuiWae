@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.adapter;
+package com.yandi.yarud.yadiupi.absensi.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.yandi.yarud.yadiupi.DetilMKActivity;
+import com.yandi.yarud.yadiupi.absensi.DetilMKActivity;
 import com.yandi.yarud.yadiupi.R;
-import com.yandi.yarud.yadiupi.model.ModelPenugasan;
+import com.yandi.yarud.yadiupi.absensi.model.ModelPenugasan;
 
 import java.util.ArrayList;
 import java.util.List;

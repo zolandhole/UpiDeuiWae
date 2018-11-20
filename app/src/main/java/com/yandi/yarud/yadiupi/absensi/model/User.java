@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.model;
+package com.yandi.yarud.yadiupi.absensi.model;
 
 public class User {
     private int iduser;

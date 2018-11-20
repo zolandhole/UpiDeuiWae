@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.network;
+package com.yandi.yarud.yadiupi.absensi.network;
 
 public class UrlUpi {
     //1. login

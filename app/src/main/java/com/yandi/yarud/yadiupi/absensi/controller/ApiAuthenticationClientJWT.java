@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.controller;
+package com.yandi.yarud.yadiupi.absensi.controller;
 
 import org.json.JSONArray;
 import org.json.JSONException;

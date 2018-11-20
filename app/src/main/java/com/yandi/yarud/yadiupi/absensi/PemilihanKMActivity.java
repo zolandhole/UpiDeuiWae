@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi;
+package com.yandi.yarud.yadiupi.absensi;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,13 +26,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.yandi.yarud.yadiupi.adapter.AdapterPemilihanKM;
-import com.yandi.yarud.yadiupi.controller.DBHandler;
-import com.yandi.yarud.yadiupi.model.ModelPresensi;
-import com.yandi.yarud.yadiupi.model.User;
-import com.yandi.yarud.yadiupi.network.CheckConnection;
-import com.yandi.yarud.yadiupi.network.GetTokenUPI;
-import com.yandi.yarud.yadiupi.network.UrlUpi;
+import com.yandi.yarud.yadiupi.LoginActivity;
+import com.yandi.yarud.yadiupi.R;
+import com.yandi.yarud.yadiupi.absensi.adapter.AdapterPemilihanKM;
+import com.yandi.yarud.yadiupi.absensi.controller.DBHandler;
+import com.yandi.yarud.yadiupi.absensi.model.ModelPresensi;
+import com.yandi.yarud.yadiupi.absensi.model.User;
+import com.yandi.yarud.yadiupi.absensi.network.CheckConnection;
+import com.yandi.yarud.yadiupi.absensi.network.GetTokenUPI;
+import com.yandi.yarud.yadiupi.absensi.network.UrlUpi;
 
 import org.json.JSONArray;
 import org.json.JSONException;

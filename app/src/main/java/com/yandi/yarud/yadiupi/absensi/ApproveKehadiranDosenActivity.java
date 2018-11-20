@@ -1,10 +1,9 @@
-package com.yandi.yarud.yadiupi;
+package com.yandi.yarud.yadiupi.absensi;
 
 import android.annotation.SuppressLint;
 import android.database.SQLException;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -14,14 +13,15 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
-import com.yandi.yarud.yadiupi.adapter.AdapterApproveKehadiranDosen;
-import com.yandi.yarud.yadiupi.controller.ApiAuthenticationClientJWT;
-import com.yandi.yarud.yadiupi.controller.DBHandler;
-import com.yandi.yarud.yadiupi.model.ModelRisalahMK;
-import com.yandi.yarud.yadiupi.model.User;
-import com.yandi.yarud.yadiupi.network.CheckConnection;
-import com.yandi.yarud.yadiupi.network.GetTokenUPI;
-import com.yandi.yarud.yadiupi.network.UrlUpi;
+import com.yandi.yarud.yadiupi.R;
+import com.yandi.yarud.yadiupi.absensi.adapter.AdapterApproveKehadiranDosen;
+import com.yandi.yarud.yadiupi.absensi.controller.ApiAuthenticationClientJWT;
+import com.yandi.yarud.yadiupi.absensi.controller.DBHandler;
+import com.yandi.yarud.yadiupi.absensi.model.ModelRisalahMK;
+import com.yandi.yarud.yadiupi.absensi.model.User;
+import com.yandi.yarud.yadiupi.absensi.network.CheckConnection;
+import com.yandi.yarud.yadiupi.absensi.network.GetTokenUPI;
+import com.yandi.yarud.yadiupi.absensi.network.UrlUpi;
 
 import org.json.JSONArray;
 import org.json.JSONException;

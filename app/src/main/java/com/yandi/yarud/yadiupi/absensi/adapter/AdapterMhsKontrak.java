@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.adapter;
+package com.yandi.yarud.yadiupi.absensi.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.yandi.yarud.yadiupi.ApproveKehadiranDosenActivity;
+import com.yandi.yarud.yadiupi.absensi.ApproveKehadiranDosenActivity;
 import com.yandi.yarud.yadiupi.R;
-import com.yandi.yarud.yadiupi.model.ModelMhsKontrak;
+import com.yandi.yarud.yadiupi.absensi.model.ModelMhsKontrak;
 
 import java.util.List;
 

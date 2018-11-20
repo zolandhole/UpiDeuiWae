@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.network;
+package com.yandi.yarud.yadiupi.absensi.network;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,15 +11,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.yandi.yarud.yadiupi.ApproveKehadiranDosenActivity;
-import com.yandi.yarud.yadiupi.DetilMKActivity;
+import com.yandi.yarud.yadiupi.absensi.ApproveKehadiranDosenActivity;
+import com.yandi.yarud.yadiupi.absensi.DetilMKActivity;
 import com.yandi.yarud.yadiupi.LoginActivity;
-import com.yandi.yarud.yadiupi.MahasiswaKontrakActivity;
-import com.yandi.yarud.yadiupi.MainActivity;
-import com.yandi.yarud.yadiupi.PemilihanKMActivity;
-import com.yandi.yarud.yadiupi.PenugasanActivity;
-import com.yandi.yarud.yadiupi.PresensiActivity;
-import com.yandi.yarud.yadiupi.RisalahMKActivity;
+import com.yandi.yarud.yadiupi.absensi.MahasiswaKontrakActivity;
+import com.yandi.yarud.yadiupi.absensi.PemilihanKMActivity;
+import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
+import com.yandi.yarud.yadiupi.absensi.PresensiActivity;
+import com.yandi.yarud.yadiupi.absensi.RisalahMKActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi;
+package com.yandi.yarud.yadiupi.absensi;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -21,14 +21,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.yandi.yarud.yadiupi.adapter.AdapterRisalahMK;
-import com.yandi.yarud.yadiupi.controller.ApiAuthenticationClientJWT;
-import com.yandi.yarud.yadiupi.controller.DBHandler;
-import com.yandi.yarud.yadiupi.model.ModelRisalahMK;
-import com.yandi.yarud.yadiupi.model.User;
-import com.yandi.yarud.yadiupi.network.CheckConnection;
-import com.yandi.yarud.yadiupi.network.GetTokenUPI;
-import com.yandi.yarud.yadiupi.network.UrlUpi;
+import com.yandi.yarud.yadiupi.LoginActivity;
+import com.yandi.yarud.yadiupi.R;
+import com.yandi.yarud.yadiupi.absensi.adapter.AdapterRisalahMK;
+import com.yandi.yarud.yadiupi.absensi.controller.ApiAuthenticationClientJWT;
+import com.yandi.yarud.yadiupi.absensi.controller.DBHandler;
+import com.yandi.yarud.yadiupi.absensi.model.ModelRisalahMK;
+import com.yandi.yarud.yadiupi.absensi.model.User;
+import com.yandi.yarud.yadiupi.absensi.network.CheckConnection;
+import com.yandi.yarud.yadiupi.absensi.network.GetTokenUPI;
+import com.yandi.yarud.yadiupi.absensi.network.UrlUpi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -257,6 +259,7 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
                     model.setWaktu(data.getString("waktu"));
                     model.setUserid(data.getString("user_id"));
                     model.setApprove(data.getString("approve"));
+                    model.setFinish(data.getString("finish"));
                     item.add(model);
                 }
                 displaySuccess();

@@ -1,18 +1,18 @@
-package com.yandi.yarud.yadiupi.model;
+package com.yandi.yarud.yadiupi.absensi.model;
 
 public class ModelRisalahMK {
-    String idrs;
-    String idpn;
-    String pertemuan;
-    String topik;
-    String subtopik;
-    String sesuai;
-    String waktu;
-    String userid;
-    String approve;
-    String tgl;
-    String finish;
-    String tgl_finish;
+    private String idrs;
+    private String idpn;
+    private String pertemuan;
+    private String topik;
+    private String subtopik;
+    private String sesuai;
+    private String waktu;
+    private String userid;
+    private String approve;
+    private String tgl;
+    private String finish;
+    private String tgl_finish;
 
     public ModelRisalahMK(){
 

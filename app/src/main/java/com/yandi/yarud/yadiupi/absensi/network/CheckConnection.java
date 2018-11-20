@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.network;
+package com.yandi.yarud.yadiupi.absensi.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

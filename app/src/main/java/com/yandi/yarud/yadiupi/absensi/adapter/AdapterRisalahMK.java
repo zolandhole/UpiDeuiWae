@@ -1,10 +1,12 @@
-package com.yandi.yarud.yadiupi.adapter;
+package com.yandi.yarud.yadiupi.absensi.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.yandi.yarud.yadiupi.PemilihanKMActivity;
-import com.yandi.yarud.yadiupi.PresensiActivity;
+import com.yandi.yarud.yadiupi.absensi.PemilihanKMActivity;
+import com.yandi.yarud.yadiupi.absensi.PresensiActivity;
 import com.yandi.yarud.yadiupi.R;
-import com.yandi.yarud.yadiupi.RisalahMKActivity;
-import com.yandi.yarud.yadiupi.model.ModelRisalahMK;
+import com.yandi.yarud.yadiupi.absensi.RisalahMKActivity;
+import com.yandi.yarud.yadiupi.absensi.model.ModelRisalahMK;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +45,7 @@ public class AdapterRisalahMK extends RecyclerView.Adapter<AdapterRisalahMK.Hold
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
         final Intent intentPemilihanKM = new Intent(context,PemilihanKMActivity.class);
         final Intent intentPresensi = new Intent(context,PresensiActivity.class);
-        ModelRisalahMK model = item.get(position);
+        final ModelRisalahMK model = item.get(position);
         holder.idrsView.setText(model.getIdrs());
         holder.idpnView.setText(model.getIdpn());
         holder.pertemuanView.setText(model.getPertemuan());
@@ -73,12 +75,40 @@ public class AdapterRisalahMK extends RecyclerView.Adapter<AdapterRisalahMK.Hold
         intentPresensi.putExtra("IDRS",holder.idrsView.getText().toString());
         intentPresensi.putExtra("KODEKLS",kodekls);
         intentPresensi.putExtra("NAMAKELAS",namakelas);
+
+        if (model.getFinish().equals("1")){
+            holder.btnDetail.setText("Edit");
+        } else {
+            holder.btnDetail.setText("Presensi");
+        }
         holder.btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RisalahMKActivity risalah = (RisalahMKActivity) context;
                 if(risalah.getStatusKM().equals("1")){
-                    context.startActivity(intentPresensi);
+                    if (model.getApprove().equals("1")){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.todoDialogLight);
+                        builder.setIcon(R.drawable.icon_info)
+                                .setTitle("Pertemuan sudah Approve KM")
+                                .setMessage("Apakah anda akan merubah data presensi?")
+                                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        context.startActivity(intentPresensi);
+                                    }
+                                })
+                                .setNeutralButton("Tidak", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                });
+                        AlertDialog alert1 = builder.create();
+                        alert1.show();
+                        Button yes = alert1.getButton(DialogInterface.BUTTON_POSITIVE);
+                        yes.setTextColor(Color.rgb(29,145,36));
+                    } else {
+                        context.startActivity(intentPresensi);
+                    }
                 }else{
                     risalah.konfirmasiSetKM(intentPemilihanKM);
                 }

@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.controller;
+package com.yandi.yarud.yadiupi.absensi.controller;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.yandi.yarud.yadiupi.model.User;
+import com.yandi.yarud.yadiupi.absensi.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

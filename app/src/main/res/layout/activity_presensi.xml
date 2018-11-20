@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundActivity"
-    tools:context=".PresensiActivity">
+    tools:context=".absensi.PresensiActivity">
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/PresensiDisplaySuccess"

@@ -16,9 +16,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yandi.yarud.yadiupi.controller.DBHandler;
-import com.yandi.yarud.yadiupi.model.User;
-import com.yandi.yarud.yadiupi.network.CheckConnection;
+import com.yandi.yarud.yadiupi.absensi.MahasiswaKontrakActivity;
+import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
+import com.yandi.yarud.yadiupi.absensi.controller.DBHandler;
+import com.yandi.yarud.yadiupi.absensi.model.User;
+import com.yandi.yarud.yadiupi.absensi.network.CheckConnection;
+import com.yandi.yarud.yadiupi.forum.DataForumActivity;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,8 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String username, gelarnama, kodedosen, status;
     private MenuItem hideItem;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
@@ -60,12 +62,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 initMahasiswaKontrak();
                 break;
             case R.id.MainCardViewForum:
-                Toast.makeText(getApplicationContext(),"Urusan Forum Bersama",Toast.LENGTH_LONG).show();
+                initForum();
                 break;
 
         }
     }
-//komenmn
     //EXIT APLIKASI
     @Override public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.todoDialogLight);
@@ -243,5 +244,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initMahasiswaKontrak() {
         Intent intentMhsKontrak = new Intent(MainActivity.this,MahasiswaKontrakActivity.class);
         startActivity(intentMhsKontrak);
+    }
+
+    //INIT FORUM
+    private void initForum() {
+        Intent intentForum = new Intent(MainActivity.this, DataForumActivity.class);
+        startActivity(intentForum);
     }
 }

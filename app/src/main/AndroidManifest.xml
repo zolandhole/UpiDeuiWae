@@ -28,26 +28,27 @@
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PenugasanActivity"
+            android:name=".absensi.PenugasanActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".DetilMKActivity"
+            android:name=".absensi.DetilMKActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".RisalahMKActivity"
+            android:name=".absensi.RisalahMKActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".PresensiActivity"
+            android:name=".absensi.PresensiActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".PemilihanKMActivity"
+            android:name=".absensi.PemilihanKMActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".MahasiswaKontrakActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:name=".absensi.MahasiswaKontrakActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".ApproveKehadiranDosenActivity"
-            android:theme="@style/AppTheme.popup"/>
+            android:name=".absensi.ApproveKehadiranDosenActivity"
+            android:theme="@style/AppTheme.popup" />
+        <activity android:name=".forum.DataForumActivity"></activity>
     </application>
 
 </manifest>

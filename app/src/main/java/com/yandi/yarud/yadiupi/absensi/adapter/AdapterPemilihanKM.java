@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.adapter;
+package com.yandi.yarud.yadiupi.absensi.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.yandi.yarud.yadiupi.PemilihanKMActivity;
+import com.yandi.yarud.yadiupi.absensi.PemilihanKMActivity;
 import com.yandi.yarud.yadiupi.R;
-import com.yandi.yarud.yadiupi.model.ModelPresensi;
-import com.yandi.yarud.yadiupi.network.GetTokenUPI;
+import com.yandi.yarud.yadiupi.absensi.model.ModelPresensi;
+import com.yandi.yarud.yadiupi.absensi.network.GetTokenUPI;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi;
+package com.yandi.yarud.yadiupi.absensi;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -19,12 +19,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yandi.yarud.yadiupi.controller.ApiAuthenticationClientJWT;
-import com.yandi.yarud.yadiupi.controller.DBHandler;
-import com.yandi.yarud.yadiupi.network.UrlUpi;
-import com.yandi.yarud.yadiupi.model.User;
-import com.yandi.yarud.yadiupi.network.CheckConnection;
-import com.yandi.yarud.yadiupi.network.GetTokenUPI;
+import com.yandi.yarud.yadiupi.LoginActivity;
+import com.yandi.yarud.yadiupi.R;
+import com.yandi.yarud.yadiupi.absensi.controller.ApiAuthenticationClientJWT;
+import com.yandi.yarud.yadiupi.absensi.controller.DBHandler;
+import com.yandi.yarud.yadiupi.absensi.network.UrlUpi;
+import com.yandi.yarud.yadiupi.absensi.model.User;
+import com.yandi.yarud.yadiupi.absensi.network.CheckConnection;
+import com.yandi.yarud.yadiupi.absensi.network.GetTokenUPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
