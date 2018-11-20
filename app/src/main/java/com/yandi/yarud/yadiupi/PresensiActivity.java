@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,7 +61,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     private RecyclerView recyclerView;
     private DBHandler dbHandler;
     private List<ModelPresensi> item;
-    private RecyclerView.Adapter mAdapter;
+    private AdapterPresensi mAdapter;
     private TextView textViewPresensiKelas;
     private Button buttonFinish;
 
@@ -156,7 +157,30 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     }
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
-        return super.onCreateOptionsMenu(menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(false);
+        SearchView searchView  = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Cari Mahasiswa ...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText = newText.toLowerCase();
+                ArrayList<ModelPresensi> newList = new ArrayList<>();
+                for (ModelPresensi presensi: item){
+                    String mahasiswa = presensi.getNama().toLowerCase();
+                    if (mahasiswa.contains(newText))
+                        newList.add(presensi);
+                }
+                mAdapter.setFilter(newList);
+                return true;
+            }
+        });
+        return true;
     }
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -194,7 +218,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     }
     
     //INIT RUNNING
-    private void initRunning() {
+    public void initRunning() {
         displayLoading();
         //CEK KONEKSI INTERNET
         if (!new CheckConnection().apakahTerkoneksiKeInternet(this)){

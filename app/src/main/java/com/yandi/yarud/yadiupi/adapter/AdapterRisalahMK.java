@@ -18,6 +18,7 @@ import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.RisalahMKActivity;
 import com.yandi.yarud.yadiupi.model.ModelRisalahMK;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -114,5 +115,11 @@ public class AdapterRisalahMK extends RecyclerView.Adapter<AdapterRisalahMK.Hold
             approveView = view.findViewById(R.id.textViewRisalahMKapprove);
             btnDetail = view.findViewById(R.id.buttonPresensi);
         }
+    }
+
+    public void setFilter(ArrayList<ModelRisalahMK> newList){
+        item = new ArrayList<>();
+        item.addAll(newList);
+        notifyDataSetChanged();
     }
 }

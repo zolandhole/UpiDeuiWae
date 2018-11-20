@@ -14,6 +14,7 @@ import com.yandi.yarud.yadiupi.DetilMKActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.model.ModelPenugasan;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterPenugasan extends RecyclerView.Adapter<AdapterPenugasan.HolderData>{
@@ -70,7 +71,6 @@ public class AdapterPenugasan extends RecyclerView.Adapter<AdapterPenugasan.Hold
     @Override
     public int getItemCount() {
         return item.size();
-        //test
     }
 
     class HolderData extends RecyclerView.ViewHolder{
@@ -102,5 +102,11 @@ public class AdapterPenugasan extends RecyclerView.Adapter<AdapterPenugasan.Hold
             namadsnView = view.findViewById(R.id.TextViewNAMADSN);
             btnDetail = view.findViewById(R.id.buttonPenugasanDetil);
         }
+    }
+
+    public void setFilter(ArrayList<ModelPenugasan> newList){
+        item = new ArrayList<>();
+        item.addAll(newList);
+        notifyDataSetChanged();
     }
 }

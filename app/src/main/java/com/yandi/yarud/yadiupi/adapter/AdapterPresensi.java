@@ -136,4 +136,10 @@ public class AdapterPresensi extends RecyclerView.Adapter<AdapterPresensi.Holder
             boxPresensi = view.findViewById(R.id.checkBoxPresensi);
         }
     }
+
+    public void setFilter(ArrayList<ModelPresensi> newList){
+        item = new ArrayList<>();
+        item.addAll(newList);
+        notifyDataSetChanged();
+    }
 }

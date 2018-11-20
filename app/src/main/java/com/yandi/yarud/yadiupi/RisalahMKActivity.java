@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,7 +52,7 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
     private RecyclerView recyclerView;
     private DBHandler dbHandler;
     private List<ModelRisalahMK> item;
-    private RecyclerView.Adapter mAdapter;
+    private AdapterRisalahMK mAdapter;
     private String statusKM;
 
     @Override
@@ -135,7 +136,29 @@ public class RisalahMKActivity extends AppCompatActivity implements View.OnClick
     }
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
-        return super.onCreateOptionsMenu(menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView  = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Cari Topik Risalah ...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText = newText.toLowerCase();
+                ArrayList<ModelRisalahMK> newList = new ArrayList<>();
+                for (ModelRisalahMK risalahMK : item){
+                    String topik = risalahMK.getTopik().toLowerCase();
+                    if (topik.contains(newText))
+                        newList.add(risalahMK);
+                }
+                mAdapter.setFilter(newList);
+                return true;
+            }
+        });
+        return true;
     }
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){

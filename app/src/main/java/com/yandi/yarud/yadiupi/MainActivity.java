@@ -3,14 +3,12 @@ package com.yandi.yarud.yadiupi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,8 +33,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //CONNECTION SUCCESS
     private TextView textViewGelarNama;
     private CardView cardViewPenugasan, cardViewKontrakMK, cardViewForum;
-        private DBHandler dbHandler;
-        private String username, gelarnama, kodedosen, status;
+    private DBHandler dbHandler;
+    private String username, gelarnama, kodedosen, status;
+    private MenuItem hideItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //INISIASI
     private void initView(){
-        TextView textView2 = findViewById(R.id.textView2);
+//        TextView textView2 = findViewById(R.id.textView2);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            textView2.setAutoSizeTextTypeUniformWithConfiguration(
 //                    1, 17, 1, TypedValue.COMPLEX_UNIT_DIP);
@@ -146,6 +145,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
+        hideItem = menu.findItem(R.id.action_search);
+        hideItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
     @Override public boolean onOptionsItemSelected(MenuItem item) {

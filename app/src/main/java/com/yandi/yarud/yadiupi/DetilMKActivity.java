@@ -46,7 +46,7 @@ public class DetilMKActivity extends AppCompatActivity implements View.OnClickLi
     private DBHandler dbHandler;
     private Button buttonRisalahMK;
     private String idmk ,kodekls, namakelas;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +150,8 @@ public class DetilMKActivity extends AppCompatActivity implements View.OnClickLi
     }
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
+        MenuItem hideItem = menu.findItem(R.id.action_search);
+        hideItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
     @Override public boolean onOptionsItemSelected(MenuItem item) {

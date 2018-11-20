@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,7 +50,7 @@ public class PenugasanActivity extends AppCompatActivity implements View.OnClick
     private RecyclerView recyclerView;
     private DBHandler dbHandler;
     private List<ModelPenugasan> item;
-    private RecyclerView.Adapter mAdapter;
+    private AdapterPenugasan mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +94,8 @@ public class PenugasanActivity extends AppCompatActivity implements View.OnClick
         dbHandler = new DBHandler(this);
         item = new ArrayList<>();
         RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(mManager);
         mAdapter = new AdapterPenugasan(this,item);
+        recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -131,7 +132,29 @@ public class PenugasanActivity extends AppCompatActivity implements View.OnClick
     }
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
-        return super.onCreateOptionsMenu(menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView  = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Cari Matakuliah ...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText = newText.toLowerCase();
+                ArrayList<ModelPenugasan> newList = new ArrayList<>();
+                for (ModelPenugasan penugasan : item){
+                    String mataKuliah = penugasan.getNamaMK().toLowerCase();
+                    if (mataKuliah.contains(newText))
+                        newList.add(penugasan);
+                }
+                mAdapter.setFilter(newList);
+                return true;
+            }
+        });
+        return true;
     }
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -194,6 +217,7 @@ public class PenugasanActivity extends AppCompatActivity implements View.OnClick
         AsyncTask<Void,Void,String> execute = new AmbilDataPenugasan(apiAuthenticationClientJWT);
         execute.execute();
     }
+
     @SuppressLint("StaticFieldLeak")
     private class AmbilDataPenugasan extends AsyncTask<Void, Void, String> {
 
