@@ -19,14 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.absensi.model.User;
-import com.yandi.yarud.yadiupi.forum.adapter.AdapterDataForum;
-import com.yandi.yarud.yadiupi.forum.model.ModelDataForum;
+import com.yandi.yarud.yadiupi.forum.adapter.AdapterForum;
+import com.yandi.yarud.yadiupi.forum.model.ModelForum;
 import com.yandi.yarud.yadiupi.utility.controller.ApiAuthenticationClientJWT;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
@@ -41,43 +40,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DataForumActivity extends AppCompatActivity implements View.OnClickListener {
+public class ForumActivity extends AppCompatActivity implements View.OnClickListener {
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-    private ConstraintLayout displayLoading,displayFailed,displaySuccess, displayNoData;
+    private ConstraintLayout displayLoading,displayFailed,displaySuccess;
     //CONNECTION FAILED
     private CardView cardViewUlangiKoneksi;
 
     //CONNECTION SUCCESS
-    private TextView textViewNoData;
-    private String idmk, mk;
+    private String kodedosen="";
     private RecyclerView recyclerView;
     private DBHandler dbHandler;
-    private List<ModelDataForum> item;
-    private AdapterDataForum mAdapter;
-    private CardView cardViewDFBuatDiskusi;
-    
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    private List<ModelForum> item;
+    private AdapterForum mAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data_forum);
+        setContentView(R.layout.activity_forum);
+
         initView();
         initListener();
         tampilanToolbar();
         initRunning();
     }
-    
-    //BUTTON ONCLICK
+    //BUTTON ON CLICK
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.DataForumCardViewUlangiKoneksi:
+            case R.id.ForumCardViewUlangiKoneksi:
                 initRunning();
-                break;
-            case R.id.TextViewDFKembali:
-                finish();
-                break;
-            case R.id.CardViewDFBuatDiskusi:
-                Toast.makeText(this, "Lanjut Nanti", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -85,33 +77,26 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
     //INISIASI
     private void initView(){
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-        displayLoading = findViewById(R.id.DataForumDisplayLoading);
-        displayFailed = findViewById(R.id.DataForumDisplayFailed);
-        displaySuccess = findViewById(R.id.DataForumDisplaySuccess);
-        displayNoData = findViewById(R.id.DataForumDisplayNoData);
+        displayLoading = findViewById(R.id.ForumDisplayLoading);
+        displayFailed = findViewById(R.id.ForumDisplayFailed);
+        displaySuccess = findViewById(R.id.ForumDisplaySuccess);
 
         //CONNECTION FAILED
-        cardViewUlangiKoneksi = findViewById(R.id.DataForumCardViewUlangiKoneksi);
+        cardViewUlangiKoneksi = findViewById(R.id.ForumCardViewUlangiKoneksi);
 
         //CONNECTION SUCCESS
-        cardViewDFBuatDiskusi = findViewById(R.id.CardViewDFBuatDiskusi);
-        textViewNoData = findViewById(R.id.TextViewDFKembali);
-        idmk = Objects.requireNonNull(getIntent().getExtras()).getString("IDMK");
-        mk = Objects.requireNonNull(getIntent().getExtras()).getString("MK");
-        recyclerView = findViewById(R.id.DataForumRecycleView);
-
+        kodedosen = Objects.requireNonNull(getIntent().getExtras()).getString("KODEDOSEN");
+        recyclerView = findViewById(R.id.ForumRecycleView);
     }
     private void initListener(){
         //CONNECTION FAILED
         cardViewUlangiKoneksi.setOnClickListener(this);
-        textViewNoData.setOnClickListener(this);
-        cardViewDFBuatDiskusi.setOnClickListener(this);
 
         //CONNECTION SUCCESS
         dbHandler = new DBHandler(this);
         item = new ArrayList<>();
         RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mAdapter = new AdapterDataForum(this,item);
+        mAdapter = new AdapterForum(this,item);
         recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
     }
@@ -121,33 +106,24 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         displayLoading.setVisibility(View.VISIBLE);
         displayFailed.setVisibility(View.GONE);
         displaySuccess.setVisibility(View.GONE);
-        displayNoData.setVisibility(View.GONE);
     }
     public void displaySuccess(){
         displayLoading.setVisibility(View.GONE);
         displayFailed.setVisibility(View.GONE);
         displaySuccess.setVisibility(View.VISIBLE);
-        displayNoData.setVisibility(View.GONE);
     }
     public void displayFailed() {
         displayLoading.setVisibility(View.GONE);
         displayFailed.setVisibility(View.VISIBLE);
         displaySuccess.setVisibility(View.GONE);
-        displayNoData.setVisibility(View.GONE);
-    }
-    public void displayNoData() {
-        displayLoading.setVisibility(View.GONE);
-        displayFailed.setVisibility(View.GONE);
-        displaySuccess.setVisibility(View.GONE);
-        displayNoData.setVisibility(View.VISIBLE);
     }
 
     //TOOLBAR
     private void tampilanToolbar() {
-        Toolbar toolbar= findViewById(R.id.DataForumToolbar);
+        Toolbar toolbar= findViewById(R.id.ForumToolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("SpotUpi");
-        toolbar.setSubtitle("Diskusi " + mk);
+        toolbar.setSubtitle("Forum");
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.icon_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +136,7 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         getMenuInflater().inflate(R.menu.main_menu,menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView  = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Cari Diskusi ...");
+        searchView.setQueryHint("Cari Matakuliah ...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -170,11 +146,11 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
             @Override
             public boolean onQueryTextChange(String newText) {
                 newText = newText.toLowerCase();
-                ArrayList<ModelDataForum> newList = new ArrayList<>();
-                for (ModelDataForum DataForum : item){
-                    String judul = DataForum.getJudul().toLowerCase();
-                    if (judul.contains(newText))
-                        newList.add(DataForum);
+                ArrayList<ModelForum> newList = new ArrayList<>();
+                for (ModelForum Forum : item){
+                    String mataKuliah = Forum.getNamaMK().toLowerCase();
+                    if (mataKuliah.contains(newText))
+                        newList.add(Forum);
                 }
                 mAdapter.setFilter(newList);
                 return true;
@@ -228,7 +204,7 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
             try {
                 List<User> userdb = dbHandler.getAllUser();
                 for(User user : userdb){
-                    GetTokenUPI token = new GetTokenUPI(this, "DataForum");
+                    GetTokenUPI token = new GetTokenUPI(this, "Forum");
                     token.getToken(user.getUsername(), user.getPassword());
                 }
             }catch (SQLException e){
@@ -239,16 +215,16 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
     }
     public void RunningPage(String token) {
         new UrlUpi();
-        ApiAuthenticationClientJWT apiAuthenticationClientJWT = new ApiAuthenticationClientJWT(UrlUpi.URL_DataForum+idmk,token);
-        AsyncTask<Void,Void,String> execute = new DataForumActivity.AmbilDataDataForum(apiAuthenticationClientJWT);
+        ApiAuthenticationClientJWT apiAuthenticationClientJWT = new ApiAuthenticationClientJWT(UrlUpi.URL_PENUGASAN+kodedosen,token);
+        AsyncTask<Void,Void,String> execute = new ForumActivity.AmbilDataForum(apiAuthenticationClientJWT);
         execute.execute();
     }
     @SuppressLint("StaticFieldLeak")
-    private class AmbilDataDataForum extends AsyncTask<Void, Void, String> {
+    private class AmbilDataForum extends AsyncTask<Void, Void, String> {
 
         private ApiAuthenticationClientJWT apiAuthenticationClientJWT;
 
-        AmbilDataDataForum(ApiAuthenticationClientJWT apiAuthenticationClientJWT) {
+        AmbilDataForum(ApiAuthenticationClientJWT apiAuthenticationClientJWT) {
             this.apiAuthenticationClientJWT = apiAuthenticationClientJWT;
         }
 
@@ -267,22 +243,17 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
             super.onPostExecute(s);
             displaySuccess();
             try {
-                JSONArray jsonArray = new JSONArray(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getJSONArray("dt_forum").toString());
+                JSONArray jsonArray = new JSONArray(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getJSONArray("dt_penugasan").toString());
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    ModelDataForum model = new ModelDataForum();
-                    model.setId_frm(jsonObject.getString("id_frm"));
-                    model.setId_pn(jsonObject.getString("id_pn"));
-                    model.setUser_id(jsonObject.getString("user_id"));
-                    model.setJudul(jsonObject.getString("judul"));
-                    model.setIsi(jsonObject.getString("isi"));
-                    model.setInduk(jsonObject.getString("induk"));
-                    model.setWaktu(jsonObject.getString("waktu"));
-                    model.setNama(jsonObject.getString("nama"));
+                    ModelForum model = new ModelForum();
+                    model.setIdMK(jsonObject.getString("IDMK"));
+                    model.setNamaMK(jsonObject.getString("NAMAMK"));
+                    model.setNamaPST(jsonObject.getString("NAMAPST"));
                     item.add(model);
                 }
             }catch (JSONException e){
-                displayNoData();
+                e.printStackTrace();
             }
             mAdapter.notifyDataSetChanged();
         }

@@ -48,7 +48,12 @@
         <activity
             android:name=".absensi.ApproveKehadiranDosenActivity"
             android:theme="@style/AppTheme.popup" />
-        <activity android:name=".forum.DataForumActivity"></activity>
+        <activity
+            android:name=".forum.ForumActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".forum.DataForumActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

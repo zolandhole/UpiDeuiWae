@@ -18,10 +18,10 @@ import android.widget.Toast;
 
 import com.yandi.yarud.yadiupi.absensi.MahasiswaKontrakActivity;
 import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
+import com.yandi.yarud.yadiupi.forum.ForumActivity;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.absensi.model.User;
 import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
-import com.yandi.yarud.yadiupi.forum.DataForumActivity;
 
 import java.util.List;
 import java.util.Objects;
@@ -247,7 +247,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //INIT FORUM
     private void initForum() {
-        Intent intentForum = new Intent(MainActivity.this, DataForumActivity.class);
+        Intent intentForum = new Intent(MainActivity.this, ForumActivity.class);
+        intentForum.putExtra("KODEDOSEN",kodedosen);
         startActivity(intentForum);
     }
 }

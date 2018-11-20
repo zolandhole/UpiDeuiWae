@@ -90,8 +90,8 @@ public class AdapterPenugasan extends RecyclerView.Adapter<AdapterPenugasan.Hold
         HolderData(View view){
             super(view);
             idView = view.findViewById(R.id.TextViewIDMK);
-            namamatakuliahView = view.findViewById(R.id.TextViewNAMAMK);
-            namaPST = view.findViewById(R.id.TextViewNAMAPST);
+            namamatakuliahView = view.findViewById(R.id.TextViewForumNAMAMK);
+            namaPST = view.findViewById(R.id.TextViewForumNAMAPST);
             sksView = view.findViewById(R.id.TextViewSKS);
             namakelasView = view.findViewById(R.id.TextViewNAMAKELAS);
             semesterView = view.findViewById(R.id.TextViewSMTAJAR);

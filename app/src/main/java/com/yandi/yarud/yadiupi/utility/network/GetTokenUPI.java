@@ -20,6 +20,7 @@ import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
 import com.yandi.yarud.yadiupi.absensi.PresensiActivity;
 import com.yandi.yarud.yadiupi.absensi.RisalahMKActivity;
 import com.yandi.yarud.yadiupi.forum.DataForumActivity;
+import com.yandi.yarud.yadiupi.forum.ForumActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,6 +85,10 @@ public class GetTokenUPI {
                                     ApproveKehadiranDosenActivity approveKehadiranDosenActivity = (ApproveKehadiranDosenActivity) context;
                                     approveKehadiranDosenActivity.RunningPage(token);
                                     break;
+                                case "Forum":
+                                    ForumActivity forumActivity = (ForumActivity) context;
+                                    forumActivity.RunningPage(token);
+                                    break;
                                 case "DataForum":
                                     DataForumActivity dataForumActivity = (DataForumActivity) context;
                                     dataForumActivity.RunningPage(token);
@@ -143,6 +148,10 @@ public class GetTokenUPI {
                                 ApproveKehadiranDosenActivity activity = (ApproveKehadiranDosenActivity) context;
                                 activity.displayFailed();
                                 break;
+                            }
+                            case "Forum":{
+                                ForumActivity activity = (ForumActivity) context;
+                                activity.displayFailed();
                             }
                             case "DataForum": {
                                 DataForumActivity activity = (DataForumActivity) context;

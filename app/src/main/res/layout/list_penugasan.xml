@@ -28,7 +28,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/TextViewNAMAMK"
+                    android:id="@+id/TextViewForumNAMAMK"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -42,7 +42,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/TextViewNAMAPST"
+                    android:id="@+id/TextViewForumNAMAPST"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -51,7 +51,7 @@
                     android:textColor="@color/kuning"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/TextViewNAMAMK" />
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewForumNAMAMK" />
 
                 <View
                     android:id="@+id/view"
@@ -66,7 +66,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/TextViewNAMAPST"
+                    app:layout_constraintTop_toBottomOf="@+id/TextViewForumNAMAPST"
                     app:layout_constraintVertical_bias="1.0" />
             </android.support.constraint.ConstraintLayout>
 
