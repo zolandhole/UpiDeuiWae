@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.absensi.controller;
+package com.yandi.yarud.yadiupi.utility.controller;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

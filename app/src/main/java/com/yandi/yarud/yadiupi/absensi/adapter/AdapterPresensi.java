@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.yandi.yarud.yadiupi.absensi.PresensiActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.absensi.model.ModelPresensi;
-import com.yandi.yarud.yadiupi.absensi.network.GetTokenUPI;
+import com.yandi.yarud.yadiupi.utility.network.GetTokenUPI;
 
 import java.util.ArrayList;
 import java.util.List;

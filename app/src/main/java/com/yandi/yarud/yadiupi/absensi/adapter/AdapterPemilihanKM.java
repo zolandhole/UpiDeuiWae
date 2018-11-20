@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.yandi.yarud.yadiupi.absensi.PemilihanKMActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.absensi.model.ModelPresensi;
-import com.yandi.yarud.yadiupi.absensi.network.GetTokenUPI;
+import com.yandi.yarud.yadiupi.utility.network.GetTokenUPI;
 
 import java.util.List;
 

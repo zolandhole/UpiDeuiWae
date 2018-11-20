@@ -18,9 +18,9 @@ import android.widget.Toast;
 
 import com.yandi.yarud.yadiupi.absensi.MahasiswaKontrakActivity;
 import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
-import com.yandi.yarud.yadiupi.absensi.controller.DBHandler;
+import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.absensi.model.User;
-import com.yandi.yarud.yadiupi.absensi.network.CheckConnection;
+import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
 import com.yandi.yarud.yadiupi.forum.DataForumActivity;
 
 import java.util.List;
@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CardView cardViewPenugasan, cardViewKontrakMK, cardViewForum;
     private DBHandler dbHandler;
     private String username, gelarnama, kodedosen, status;
-    private MenuItem hideItem;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
-        hideItem = menu.findItem(R.id.action_search);
+        MenuItem hideItem = menu.findItem(R.id.action_search);
         hideItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }

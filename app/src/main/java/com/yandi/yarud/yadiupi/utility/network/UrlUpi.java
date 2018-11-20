@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.absensi.network;
+package com.yandi.yarud.yadiupi.utility.network;
 
 public class UrlUpi {
     //1. login
@@ -81,7 +81,7 @@ public class UrlUpi {
     //method: post
 
     //14. Judul Diskusi (new untuk dosen dan mahasiswa)
-    //url: http://api.upi.edu/jwt/api/judul_diskusi
+    public static final String URL_DataForum = "http://api.upi.edu/jwt/api/judul_diskusi/";
     //param: idmk = idmk
     //param: Authorization = Bearer (token)
     //method: get

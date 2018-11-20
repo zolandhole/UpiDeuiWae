@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.absensi.network;
+package com.yandi.yarud.yadiupi.utility.network;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import com.yandi.yarud.yadiupi.absensi.PemilihanKMActivity;
 import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
 import com.yandi.yarud.yadiupi.absensi.PresensiActivity;
 import com.yandi.yarud.yadiupi.absensi.RisalahMKActivity;
+import com.yandi.yarud.yadiupi.forum.DataForumActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,6 +84,10 @@ public class GetTokenUPI {
                                     ApproveKehadiranDosenActivity approveKehadiranDosenActivity = (ApproveKehadiranDosenActivity) context;
                                     approveKehadiranDosenActivity.RunningPage(token);
                                     break;
+                                case "DataForum":
+                                    DataForumActivity dataForumActivity = (DataForumActivity) context;
+                                    dataForumActivity.RunningPage(token);
+                                    break;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -136,6 +141,11 @@ public class GetTokenUPI {
                             }
                             case "ApproveKehadiranDosen": {
                                 ApproveKehadiranDosenActivity activity = (ApproveKehadiranDosenActivity) context;
+                                activity.displayFailed();
+                                break;
+                            }
+                            case "DataForum": {
+                                DataForumActivity activity = (DataForumActivity) context;
                                 activity.displayFailed();
                                 break;
                             }

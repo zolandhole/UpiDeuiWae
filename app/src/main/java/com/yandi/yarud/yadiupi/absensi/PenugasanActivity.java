@@ -24,13 +24,13 @@ import android.widget.Toast;
 import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.absensi.adapter.AdapterPenugasan;
-import com.yandi.yarud.yadiupi.absensi.controller.ApiAuthenticationClientJWT;
-import com.yandi.yarud.yadiupi.absensi.controller.DBHandler;
+import com.yandi.yarud.yadiupi.utility.controller.ApiAuthenticationClientJWT;
+import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.absensi.model.ModelPenugasan;
-import com.yandi.yarud.yadiupi.absensi.network.UrlUpi;
+import com.yandi.yarud.yadiupi.utility.network.UrlUpi;
 import com.yandi.yarud.yadiupi.absensi.model.User;
-import com.yandi.yarud.yadiupi.absensi.network.CheckConnection;
-import com.yandi.yarud.yadiupi.absensi.network.GetTokenUPI;
+import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
+import com.yandi.yarud.yadiupi.utility.network.GetTokenUPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
