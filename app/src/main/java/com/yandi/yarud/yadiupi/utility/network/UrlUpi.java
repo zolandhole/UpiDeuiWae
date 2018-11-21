@@ -85,16 +85,7 @@ public class UrlUpi {
     //param: idmk = idmk
     //param: Authorization = Bearer (token)
     //method: get
-    //result:
-    //			"id_frm": 12967,
-    //            "id_pn": "18100032781581GD541K06520181",
-    //            "user_id": "195910221985031008",
-    //            "judul": "Apakah hakekat manusia itu?",
-    //            "isi": "Setiap mhs hrs merespon spy dicatat oleh sistem?",
-    //            "induk": 0,
-    //            "waktu": "2018-09-20 07:32:24",
-    //            "nama": "Drs. H. Herli Salim, M.Ed., Ph.D."
-    //
+
     //15. Diskusi (new untuk dosen dan mahasiswa)
     //url: http://api.upi.edu/jwt/api/diskusi
     //param: induk = induk (id_frm)
@@ -109,16 +100,16 @@ public class UrlUpi {
     //            "induk": 0,
     //            "waktu": "2018-09-20 07:32:24",
     //            "nama": "Drs. H. Herli Salim, M.Ed., Ph.D."
-    //
+
     //16. Input diskusi (new untuk dosen dan mahasiswa)
-    //url: http://api.upi.edu/jwt/api/input_diskusi
+    public static final String URL_InputDiskusi = "http://api.upi.edu/jwt/api/input_diskusi";
     //method: post
     //param:
     //	user_id (nip/nim, untuk development, untuk produksi parameter nim/nip dihilangkan, nim/nip diambil dari user yang login)
     //	idmk (id matakuliah)
     //	judul (judul diskusi/forum)
     //	isi (isi)
-    //
+
     //17. Reply diskusi (new untuk dosen dan mahasiswa)
     //url: http://api.upi.edu/jwt/api/reply_diskusi
     //method: post

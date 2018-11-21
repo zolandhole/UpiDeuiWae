@@ -50,7 +50,7 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
 
     //CONNECTION SUCCESS
     private TextView textViewNoData;
-    private String idmk, mk;
+    private String idmk, mk, username, password;
     private RecyclerView recyclerView;
     private DBHandler dbHandler;
     private List<ModelDataForum> item;
@@ -77,7 +77,7 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
                 finish();
                 break;
             case R.id.CardViewDFBuatDiskusi:
-                Toast.makeText(this, "Lanjut Nanti", Toast.LENGTH_SHORT).show();
+                initInputDiskusi();
                 break;
         }
     }
@@ -229,7 +229,9 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
                 List<User> userdb = dbHandler.getAllUser();
                 for(User user : userdb){
                     GetTokenUPI token = new GetTokenUPI(this, "DataForum");
-                    token.getToken(user.getUsername(), user.getPassword());
+                    username = user.getUsername();
+                    password = user.getPassword();
+                    token.getToken(username, password);
                 }
             }catch (SQLException e){
                 e.printStackTrace();
@@ -286,5 +288,16 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
             }
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    //INIT INPUT DISKUSI
+    private void initInputDiskusi() {
+        Intent intentInputDiskusi = new Intent(this,InputDiskusiActivity.class);
+        intentInputDiskusi.putExtra("USERID",username);
+        intentInputDiskusi.putExtra("IDMK", idmk);
+        intentInputDiskusi.putExtra("PASSWORD", password);
+        intentInputDiskusi.putExtra("MK",mk);
+        startActivity(intentInputDiskusi);
+        finish();
     }
 }

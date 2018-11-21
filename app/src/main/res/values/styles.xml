@@ -39,4 +39,13 @@
         <item name="colorControlNormal">@color/kuning</item>
         <item name="colorControlActivated">@color/hijau</item>
     </style>
+
+    <style name="TextLabel">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/biru</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/kuning</item>
+        <item name="colorControlNormal">@color/hijau</item>
+        <item name="colorControlActivated">@color/kuning</item>
+    </style>
 </resources>

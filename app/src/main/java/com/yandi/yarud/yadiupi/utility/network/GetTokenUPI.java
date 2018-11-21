@@ -21,6 +21,7 @@ import com.yandi.yarud.yadiupi.absensi.PresensiActivity;
 import com.yandi.yarud.yadiupi.absensi.RisalahMKActivity;
 import com.yandi.yarud.yadiupi.forum.DataForumActivity;
 import com.yandi.yarud.yadiupi.forum.ForumActivity;
+import com.yandi.yarud.yadiupi.forum.InputDiskusiActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,6 +94,9 @@ public class GetTokenUPI {
                                     DataForumActivity dataForumActivity = (DataForumActivity) context;
                                     dataForumActivity.RunningPage(token);
                                     break;
+                                case "InputDiskusi":
+                                    InputDiskusiActivity inputDiskusiActivity = (InputDiskusiActivity) context;
+                                    inputDiskusiActivity.RunningPage(token);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -157,6 +161,9 @@ public class GetTokenUPI {
                                 DataForumActivity activity = (DataForumActivity) context;
                                 activity.displayFailed();
                                 break;
+                            }
+                            case "InputDiskusi": {
+                                Toast.makeText(context, "Tidak ada koneksi internet", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
