@@ -56,7 +56,10 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".forum.InputDiskusiActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".forum.DiskusiActivity"
             android:configChanges="orientation|screenSize" />
     </application>
 

@@ -87,7 +87,7 @@ public class UrlUpi {
     //method: get
 
     //15. Diskusi (new untuk dosen dan mahasiswa)
-    //url: http://api.upi.edu/jwt/api/diskusi
+    public static final String URL_Diskusi = "http://api.upi.edu/jwt/api/diskusi/";
     //param: induk = induk (id_frm)
     //param: Authorization = Bearer (token)
     //method: get

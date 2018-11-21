@@ -20,6 +20,7 @@ import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
 import com.yandi.yarud.yadiupi.absensi.PresensiActivity;
 import com.yandi.yarud.yadiupi.absensi.RisalahMKActivity;
 import com.yandi.yarud.yadiupi.forum.DataForumActivity;
+import com.yandi.yarud.yadiupi.forum.DiskusiActivity;
 import com.yandi.yarud.yadiupi.forum.ForumActivity;
 import com.yandi.yarud.yadiupi.forum.InputDiskusiActivity;
 
@@ -97,6 +98,11 @@ public class GetTokenUPI {
                                 case "InputDiskusi":
                                     InputDiskusiActivity inputDiskusiActivity = (InputDiskusiActivity) context;
                                     inputDiskusiActivity.RunningPage(token);
+                                    break;
+                                case "Diskusi":
+                                    DiskusiActivity diskusiActivity = (DiskusiActivity) context;
+                                    diskusiActivity.RunningPage(token);
+                                    break;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -164,6 +170,12 @@ public class GetTokenUPI {
                             }
                             case "InputDiskusi": {
                                 Toast.makeText(context, "Tidak ada koneksi internet", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            case "Diskusi": {
+                                DiskusiActivity activity = (DiskusiActivity) context;
+                                activity.displayFailed();
+                                break;
                             }
                         }
                     }

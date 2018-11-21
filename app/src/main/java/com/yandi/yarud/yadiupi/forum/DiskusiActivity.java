@@ -15,18 +15,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.absensi.model.User;
-import com.yandi.yarud.yadiupi.forum.adapter.AdapterDataForum;
-import com.yandi.yarud.yadiupi.forum.model.ModelDataForum;
+import com.yandi.yarud.yadiupi.forum.adapter.AdapterDiskusi;
+import com.yandi.yarud.yadiupi.forum.model.ModelDiskusi;
 import com.yandi.yarud.yadiupi.utility.controller.ApiAuthenticationClientJWT;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
@@ -41,77 +41,68 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DataForumActivity extends AppCompatActivity implements View.OnClickListener {
+public class DiskusiActivity extends AppCompatActivity implements View.OnClickListener {
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-    private ConstraintLayout displayLoading,displayFailed,displaySuccess, displayNoData;
+    private ConstraintLayout displayLoading,displayFailed,displaySuccess;
     //CONNECTION FAILED
     private CardView cardViewUlangiKoneksi;
 
     //CONNECTION SUCCESS
-    private TextView textViewDFBuatDiskusi;
-    private String idmk, mk, username, password;
     private RecyclerView recyclerView;
     private DBHandler dbHandler;
-    private List<ModelDataForum> item;
-    private AdapterDataForum mAdapter;
-    private CardView cardViewDFBuatDiskusi;
-    
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    private List<ModelDiskusi> item;
+    private AdapterDiskusi mAdapter;
+    private String judul,nama,waktu,isi,idmk,id_frm;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data_forum);
+        setContentView(R.layout.activity_diskusi);
+
         initView();
         initListener();
         tampilanToolbar();
         initRunning();
     }
     
-    //BUTTON ONCLICK
+    //BUTTON ON CLICK
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.DataForumCardViewUlangiKoneksi:
+            case R.id.DiskusiActCardViewUlangiKoneksi:
                 initRunning();
-                break;
-            case R.id.TextViewDFBuatDiskusi:
-                initInputDiskusi();
-                break;
-            case R.id.CardViewDFBuatDiskusi:
-                initInputDiskusi();
                 break;
         }
     }
-
+    
     //INISIASI
     private void initView(){
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-        displayLoading = findViewById(R.id.DataForumDisplayLoading);
-        displayFailed = findViewById(R.id.DataForumDisplayFailed);
-        displaySuccess = findViewById(R.id.DataForumDisplaySuccess);
-        displayNoData = findViewById(R.id.DataForumDisplayNoData);
+        displayLoading = findViewById(R.id.DiskusiActDisplayLoading);
+        displayFailed = findViewById(R.id.DiskusiActDisplayFailed);
+        displaySuccess = findViewById(R.id.DiskusiActDisplaySuccess);
 
         //CONNECTION FAILED
-        cardViewUlangiKoneksi = findViewById(R.id.DataForumCardViewUlangiKoneksi);
+        cardViewUlangiKoneksi = findViewById(R.id.DiskusiActCardViewUlangiKoneksi);
 
         //CONNECTION SUCCESS
-        cardViewDFBuatDiskusi = findViewById(R.id.CardViewDFBuatDiskusi);
-        textViewDFBuatDiskusi = findViewById(R.id.TextViewDFBuatDiskusi);
+        judul = Objects.requireNonNull(getIntent().getExtras()).getString("JUDUL");
+        nama = Objects.requireNonNull(getIntent().getExtras()).getString("NAMA");
+        waktu = Objects.requireNonNull(getIntent().getExtras()).getString("WAKTU");
+        isi = Objects.requireNonNull(getIntent().getExtras()).getString("ISI");
         idmk = Objects.requireNonNull(getIntent().getExtras()).getString("IDMK");
-        mk = Objects.requireNonNull(getIntent().getExtras()).getString("MK");
-        recyclerView = findViewById(R.id.DataForumRecycleView);
-
+        id_frm = Objects.requireNonNull(getIntent().getExtras()).getString("IDFRM");
+        recyclerView = findViewById(R.id.DiskusiActRecycleView);
     }
     private void initListener(){
         //CONNECTION FAILED
         cardViewUlangiKoneksi.setOnClickListener(this);
-        textViewDFBuatDiskusi.setOnClickListener(this);
-        cardViewDFBuatDiskusi.setOnClickListener(this);
 
         //CONNECTION SUCCESS
         dbHandler = new DBHandler(this);
         item = new ArrayList<>();
         RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mAdapter = new AdapterDataForum(this,item);
+        mAdapter = new AdapterDiskusi(this,item);
         recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
     }
@@ -121,33 +112,24 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         displayLoading.setVisibility(View.VISIBLE);
         displayFailed.setVisibility(View.GONE);
         displaySuccess.setVisibility(View.GONE);
-        displayNoData.setVisibility(View.GONE);
     }
     public void displaySuccess(){
         displayLoading.setVisibility(View.GONE);
         displayFailed.setVisibility(View.GONE);
         displaySuccess.setVisibility(View.VISIBLE);
-        displayNoData.setVisibility(View.GONE);
     }
     public void displayFailed() {
         displayLoading.setVisibility(View.GONE);
         displayFailed.setVisibility(View.VISIBLE);
         displaySuccess.setVisibility(View.GONE);
-        displayNoData.setVisibility(View.GONE);
-    }
-    public void displayNoData() {
-        displayLoading.setVisibility(View.GONE);
-        displayFailed.setVisibility(View.GONE);
-        displaySuccess.setVisibility(View.GONE);
-        displayNoData.setVisibility(View.VISIBLE);
     }
 
     //TOOLBAR
     private void tampilanToolbar() {
-        Toolbar toolbar= findViewById(R.id.DataForumToolbar);
+        Toolbar toolbar= findViewById(R.id.DiskusiActToolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("SpotUpi");
-        toolbar.setSubtitle("Diskusi " + mk);
+        toolbar.setSubtitle("Diskusi");
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.icon_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +142,7 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         getMenuInflater().inflate(R.menu.main_menu,menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView  = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Cari Diskusi ...");
+        searchView.setQueryHint("Cari Matakuliah ...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -170,11 +152,11 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
             @Override
             public boolean onQueryTextChange(String newText) {
                 newText = newText.toLowerCase();
-                ArrayList<ModelDataForum> newList = new ArrayList<>();
-                for (ModelDataForum DataForum : item){
-                    String judul = DataForum.getJudul().toLowerCase();
-                    if (judul.contains(newText))
-                        newList.add(DataForum);
+                ArrayList<ModelDiskusi> newList = new ArrayList<>();
+                for (ModelDiskusi Diskusi : item){
+                    String mataKuliah = Diskusi.getNama().toLowerCase();
+                    if (mataKuliah.contains(newText))
+                        newList.add(Diskusi);
                 }
                 mAdapter.setFilter(newList);
                 return true;
@@ -228,10 +210,8 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
             try {
                 List<User> userdb = dbHandler.getAllUser();
                 for(User user : userdb){
-                    GetTokenUPI token = new GetTokenUPI(this, "DataForum");
-                    username = user.getUsername();
-                    password = user.getPassword();
-                    token.getToken(username, password);
+                    GetTokenUPI token = new GetTokenUPI(this, "Diskusi");
+                    token.getToken(user.getUsername(), user.getPassword());
                 }
             }catch (SQLException e){
                 e.printStackTrace();
@@ -241,16 +221,17 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
     }
     public void RunningPage(String token) {
         new UrlUpi();
-        ApiAuthenticationClientJWT apiAuthenticationClientJWT = new ApiAuthenticationClientJWT(UrlUpi.URL_DataForum+idmk,token);
-        AsyncTask<Void,Void,String> execute = new DataForumActivity.AmbilDataDataForum(apiAuthenticationClientJWT);
+        ApiAuthenticationClientJWT apiAuthenticationClientJWT = new ApiAuthenticationClientJWT(UrlUpi.URL_Diskusi+id_frm,token);
+        AsyncTask<Void,Void,String> execute = new DiskusiActivity.AmbilDataDiskusi(apiAuthenticationClientJWT);
         execute.execute();
     }
+
     @SuppressLint("StaticFieldLeak")
-    private class AmbilDataDataForum extends AsyncTask<Void, Void, String> {
+    private class AmbilDataDiskusi extends AsyncTask<Void, Void, String> {
 
         private ApiAuthenticationClientJWT apiAuthenticationClientJWT;
 
-        AmbilDataDataForum(ApiAuthenticationClientJWT apiAuthenticationClientJWT) {
+        AmbilDataDiskusi(ApiAuthenticationClientJWT apiAuthenticationClientJWT) {
             this.apiAuthenticationClientJWT = apiAuthenticationClientJWT;
         }
 
@@ -272,32 +253,22 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
                 JSONArray jsonArray = new JSONArray(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getJSONArray("dt_forum").toString());
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    ModelDataForum model = new ModelDataForum();
+                    ModelDiskusi model = new ModelDiskusi();
                     model.setId_frm(jsonObject.getString("id_frm"));
                     model.setId_pn(jsonObject.getString("id_pn"));
                     model.setUser_id(jsonObject.getString("user_id"));
                     model.setJudul(jsonObject.getString("judul"));
                     model.setIsi(jsonObject.getString("isi"));
-                    model.setInduk(jsonObject.getString("induk"));
+                    model.setIndu(jsonObject.getString("induk"));
                     model.setWaktu(jsonObject.getString("waktu"));
                     model.setNama(jsonObject.getString("nama"));
                     item.add(model);
                 }
             }catch (JSONException e){
-                displayNoData();
+                Log.e("YARUD","ELOR");
+                e.printStackTrace();
             }
             mAdapter.notifyDataSetChanged();
         }
-    }
-
-    //INIT INPUT DISKUSI
-    private void initInputDiskusi() {
-        Intent intentInputDiskusi = new Intent(this,InputDiskusiActivity.class);
-        intentInputDiskusi.putExtra("USERID",username);
-        intentInputDiskusi.putExtra("IDMK", idmk);
-        intentInputDiskusi.putExtra("PASSWORD", password);
-        intentInputDiskusi.putExtra("MK",mk);
-        startActivity(intentInputDiskusi);
-        finish();
     }
 }

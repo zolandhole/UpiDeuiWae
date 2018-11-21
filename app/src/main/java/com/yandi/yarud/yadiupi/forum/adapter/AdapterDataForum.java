@@ -1,6 +1,7 @@
 package com.yandi.yarud.yadiupi.forum.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,12 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yandi.yarud.yadiupi.R;
+import com.yandi.yarud.yadiupi.forum.DiskusiActivity;
 import com.yandi.yarud.yadiupi.forum.model.ModelDataForum;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterDataForum extends RecyclerView.Adapter<AdapterDataForum.HolderData>{
+
     private List<ModelDataForum> item;
     private Context context;
 
@@ -34,8 +37,8 @@ public class AdapterDataForum extends RecyclerView.Adapter<AdapterDataForum.Hold
 
     @Override
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
-//        final Intent intent = new Intent(context, DetilMKActivity.class);
-        ModelDataForum model = item.get(position);
+        final Intent intent = new Intent(context, DiskusiActivity.class);
+        final ModelDataForum model = item.get(position);
         holder.textViewDFid_frm.setText(model.getId_frm());
         holder.textViewDFid_pn.setText(model.getId_pn());
         holder.textViewDFuser_id.setText(model.getUser_id());
@@ -44,10 +47,17 @@ public class AdapterDataForum extends RecyclerView.Adapter<AdapterDataForum.Hold
         holder.textViewDFinduk.setText(model.getInduk());
         holder.textViewDFwaktu.setText(model.getWaktu());
         holder.textViewDFnama.setText(model.getNama());
-        holder.buttonDFKomentar.setOnClickListener(new View.OnClickListener() {
+        holder.buttonDFDiskusi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Comming Soon", Toast.LENGTH_SHORT).show();
+                Intent intentDiskusi = new Intent(context, DiskusiActivity.class);
+                intentDiskusi.putExtra("JUDUL",model.getJudul());
+                intentDiskusi.putExtra("NAMA",model.getNama());
+                intentDiskusi.putExtra("WAKTU",model.getWaktu());
+                intentDiskusi.putExtra("ISI",model.getIsi());
+                intentDiskusi.putExtra("IDMK",model.getId_pn());
+                intentDiskusi.putExtra("IDFRM",model.getId_frm());
+                context.startActivity(intentDiskusi);
             }
         });
 
@@ -60,7 +70,7 @@ public class AdapterDataForum extends RecyclerView.Adapter<AdapterDataForum.Hold
 
     class HolderData extends RecyclerView.ViewHolder{
         TextView textViewDFid_frm,textViewDFid_pn,textViewDFuser_id,textViewDFjudul,textViewDFisi,textViewDFinduk,textViewDFwaktu,textViewDFnama;
-        Button buttonDFKomentar;
+        Button buttonDFDiskusi;
         HolderData(View view){
             super(view);
             textViewDFid_frm = view.findViewById(R.id.TextViewDFid_frm);
@@ -71,7 +81,7 @@ public class AdapterDataForum extends RecyclerView.Adapter<AdapterDataForum.Hold
             textViewDFinduk = view.findViewById(R.id.TextViewDFinduk);
             textViewDFwaktu = view.findViewById(R.id.TextViewDFwaktu);
             textViewDFnama = view.findViewById(R.id.TextViewDFnama);
-            buttonDFKomentar = view.findViewById(R.id.ButtonDFKomentar);
+            buttonDFDiskusi = view.findViewById(R.id.ButtonDFDiskusi);
         }
     }
 

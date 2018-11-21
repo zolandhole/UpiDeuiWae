@@ -70,6 +70,7 @@ public class InputDiskusiActivity extends AppCompatActivity implements View.OnCl
 
     private void initListener() {
         buttonIDkirim.setOnClickListener(this);
+        dbHandler = new DBHandler(this);
     }
 
     //TOOLBAR
