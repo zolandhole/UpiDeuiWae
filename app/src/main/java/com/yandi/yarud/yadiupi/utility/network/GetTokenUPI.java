@@ -103,6 +103,10 @@ public class GetTokenUPI {
                                     DiskusiActivity diskusiActivity = (DiskusiActivity) context;
                                     diskusiActivity.RunningPage(token);
                                     break;
+                                case "PostKomentar":
+                                    diskusiActivity = (DiskusiActivity) context;
+                                    diskusiActivity.PostKomentar(token);
+                                    break;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

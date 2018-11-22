@@ -15,12 +15,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.absensi.model.User;
@@ -37,7 +46,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class DiskusiActivity extends AppCompatActivity implements View.OnClickListener {
@@ -52,7 +63,10 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
     private DBHandler dbHandler;
     private List<ModelDiskusi> item;
     private AdapterDiskusi mAdapter;
-    private String judul,nama,waktu,isi,idmk,id_frm;
+    private String idmk, id_frm, user_id;
+    private Button buttonDiskusiKomentar;
+    private EditText editTextDiskusiIsi;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +85,12 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.DiskusiActCardViewUlangiKoneksi:
                 initRunning();
                 break;
+            case R.id.ButtonDiskusiActKomentar:
+                kirimKomentar();
+                break;
         }
     }
-    
+
     //INISIASI
     private void initView(){
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
@@ -85,22 +102,34 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         cardViewUlangiKoneksi = findViewById(R.id.DiskusiActCardViewUlangiKoneksi);
 
         //CONNECTION SUCCESS
-        judul = Objects.requireNonNull(getIntent().getExtras()).getString("JUDUL");
-        nama = Objects.requireNonNull(getIntent().getExtras()).getString("NAMA");
-        waktu = Objects.requireNonNull(getIntent().getExtras()).getString("WAKTU");
-        isi = Objects.requireNonNull(getIntent().getExtras()).getString("ISI");
+        TextView textViewDiskusiActnama = findViewById(R.id.TextViewDiskusiActnama);
+        TextView textViewDiskusiActisi = findViewById(R.id.TextViewDiskusiActisi);
+        TextView textViewDiskusiActjudul = findViewById(R.id.TextViewDiskusiActjudul);
+        TextView textViewDiskusiActwaktu = findViewById(R.id.TextViewDiskusiActwaktu);
+        String judul = Objects.requireNonNull(getIntent().getExtras()).getString("JUDUL");
+        String nama = Objects.requireNonNull(getIntent().getExtras()).getString("NAMA");
+        String waktu = Objects.requireNonNull(getIntent().getExtras()).getString("WAKTU");
+        String isi = Objects.requireNonNull(getIntent().getExtras()).getString("ISI");
         idmk = Objects.requireNonNull(getIntent().getExtras()).getString("IDMK");
         id_frm = Objects.requireNonNull(getIntent().getExtras()).getString("IDFRM");
+        textViewDiskusiActnama.setText(nama);
+        textViewDiskusiActisi.setText(isi);
+        textViewDiskusiActjudul.setText(judul);
+        textViewDiskusiActwaktu.setText(waktu);
+        buttonDiskusiKomentar = findViewById(R.id.ButtonDiskusiActKomentar);
         recyclerView = findViewById(R.id.DiskusiActRecycleView);
+        editTextDiskusiIsi = findViewById(R.id.EditTextDiskusiIsi);
     }
     private void initListener(){
         //CONNECTION FAILED
         cardViewUlangiKoneksi.setOnClickListener(this);
 
         //CONNECTION SUCCESS
+        buttonDiskusiKomentar.setOnClickListener(this);
         dbHandler = new DBHandler(this);
         item = new ArrayList<>();
-        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
+        ((LinearLayoutManager) mManager).setStackFromEnd(true);
         mAdapter = new AdapterDiskusi(this,item);
         recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
@@ -210,6 +239,7 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
                 List<User> userdb = dbHandler.getAllUser();
                 for(User user : userdb){
                     GetTokenUPI token = new GetTokenUPI(this, "Diskusi");
+                    user_id = user.getUsername();
                     token.getToken(user.getUsername(), user.getPassword());
                 }
             }catch (SQLException e){
@@ -268,5 +298,61 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
             }
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    //POST KOMENTAR
+    private void kirimKomentar() {
+        if (TextUtils.isEmpty(editTextDiskusiIsi.getText())){
+            editTextDiskusiIsi.setError("Komentar harus dimasukan");
+        } else {
+            try {
+                List<User> userdb = dbHandler.getAllUser();
+                for(User user : userdb){
+                    GetTokenUPI token = new GetTokenUPI(this, "PostKomentar");
+                    token.getToken(user.getUsername(), user.getPassword());
+                }
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+            dbHandler.close();
+        }
+    }
+    public void PostKomentar(final String token) {
+        Map<String,String> params = new HashMap<>();
+        params.put("user_id", user_id);
+        params.put("idmk", idmk);
+        params.put("isi", editTextDiskusiIsi.getText().toString().trim());
+        params.put("induk", id_frm);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,UrlUpi.URL_ReplyDiskusi,
+                new JSONObject(params), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    finish();
+                    overridePendingTransition(0, 0);
+                    startActivity(getIntent());
+                    overridePendingTransition(0, 0);
+                } catch (Exception e) {
+                    Toast.makeText(DiskusiActivity.this, "Ada Kesalahan Silahkan ulangi", Toast.LENGTH_SHORT).show();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(DiskusiActivity.this, "Tidak terhubung ke server silahkan coba lagi", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders(){
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer "+token);
+                return headers;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(DiskusiActivity.this);
+        requestQueue.add(request);
     }
 }

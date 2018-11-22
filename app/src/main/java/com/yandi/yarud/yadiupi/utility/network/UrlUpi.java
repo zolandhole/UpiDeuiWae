@@ -103,6 +103,7 @@ public class UrlUpi {
 
     //16. Input diskusi (new untuk dosen dan mahasiswa)
     public static final String URL_InputDiskusi = "http://api.upi.edu/jwt/api/input_diskusi";
+
     //method: post
     //param:
     //	user_id (nip/nim, untuk development, untuk produksi parameter nim/nip dihilangkan, nim/nip diambil dari user yang login)
@@ -111,12 +112,11 @@ public class UrlUpi {
     //	isi (isi)
 
     //17. Reply diskusi (new untuk dosen dan mahasiswa)
-    //url: http://api.upi.edu/jwt/api/reply_diskusi
+    public static final String URL_ReplyDiskusi = "http://api.upi.edu/jwt/api/reply_diskusi";
     //method: post
     //param:
     //	user_id (nip/nim, untuk development, untuk produksi parameter nim/nip dihilangkan, nim/nip diambil dari user yang login)
     //	idmk (id matakuliah)
     //	isi (isi)
     //	induk (id_frm)
-    //
 }
