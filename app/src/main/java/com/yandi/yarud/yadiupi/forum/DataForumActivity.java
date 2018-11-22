@@ -38,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -110,7 +111,8 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         //CONNECTION SUCCESS
         dbHandler = new DBHandler(this);
         item = new ArrayList<>();
-        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
+        ((LinearLayoutManager) mManager).setStackFromEnd(true);
         mAdapter = new AdapterDataForum(this,item);
         recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
