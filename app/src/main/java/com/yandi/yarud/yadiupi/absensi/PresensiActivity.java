@@ -60,7 +60,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     private CardView cardViewUlangiKoneksi;
 
     //CONNECTION SUCCESS
-    private String namakelas="", idrs="", usernameDB="", passwordDB="";
+    private String namakelas, idrs, usernameDB, passwordDB;
     private RecyclerView recyclerView;
     private DBHandler dbHandler;
     private List<ModelPresensi> item;

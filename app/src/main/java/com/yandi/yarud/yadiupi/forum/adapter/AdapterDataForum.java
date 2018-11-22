@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.forum.DiskusiActivity;
 import com.yandi.yarud.yadiupi.forum.model.ModelDataForum;
@@ -28,6 +26,8 @@ public class AdapterDataForum extends RecyclerView.Adapter<AdapterDataForum.Hold
         this.context = context;
     }
 
+
+
     @NonNull
     @Override
     public HolderData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,7 +37,6 @@ public class AdapterDataForum extends RecyclerView.Adapter<AdapterDataForum.Hold
 
     @Override
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
-        final Intent intent = new Intent(context, DiskusiActivity.class);
         final ModelDataForum model = item.get(position);
         holder.textViewDFid_frm.setText(model.getId_frm());
         holder.textViewDFid_pn.setText(model.getId_pn());
@@ -47,6 +46,7 @@ public class AdapterDataForum extends RecyclerView.Adapter<AdapterDataForum.Hold
         holder.textViewDFinduk.setText(model.getInduk());
         holder.textViewDFwaktu.setText(model.getWaktu());
         holder.textViewDFnama.setText(model.getNama());
+
         holder.buttonDFDiskusi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
