@@ -66,6 +66,7 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
     private String idmk, id_frm, user_id;
     private Button buttonDiskusiKomentar;
     private EditText editTextDiskusiIsi;
+    private TextView textViewDiskusiActLihatisi, textViewDiskusiActisi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
     }
     
     //BUTTON ON CLICK
+    @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -87,6 +89,15 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.ButtonDiskusiActKomentar:
                 kirimKomentar();
+                break;
+            case R.id.textViewDiskusiActLihatisi:
+                if (textViewDiskusiActLihatisi.getText().toString().trim().equals("Lihat Isi")){
+                    textViewDiskusiActisi.setVisibility(View.VISIBLE);
+                    textViewDiskusiActLihatisi.setText("Sembunyikan Isi");
+                } else {
+                    textViewDiskusiActisi.setVisibility(View.GONE);
+                    textViewDiskusiActLihatisi.setText("Lihat Isi");
+                }
                 break;
         }
     }
@@ -103,7 +114,7 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
 
         //CONNECTION SUCCESS
         TextView textViewDiskusiActnama = findViewById(R.id.TextViewDiskusiActnama);
-        TextView textViewDiskusiActisi = findViewById(R.id.TextViewDiskusiActisi);
+        textViewDiskusiActisi = findViewById(R.id.TextViewDiskusiActisi);
         TextView textViewDiskusiActjudul = findViewById(R.id.TextViewDiskusiActjudul);
         TextView textViewDiskusiActwaktu = findViewById(R.id.TextViewDiskusiActwaktu);
         String judul = Objects.requireNonNull(getIntent().getExtras()).getString("JUDUL");
@@ -119,6 +130,7 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         buttonDiskusiKomentar = findViewById(R.id.ButtonDiskusiActKomentar);
         recyclerView = findViewById(R.id.DiskusiActRecycleView);
         editTextDiskusiIsi = findViewById(R.id.EditTextDiskusiIsi);
+        textViewDiskusiActLihatisi = findViewById(R.id.textViewDiskusiActLihatisi);
     }
     private void initListener(){
         //CONNECTION FAILED
@@ -133,6 +145,7 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         mAdapter = new AdapterDiskusi(this,item);
         recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
+        textViewDiskusiActLihatisi.setOnClickListener(this);
     }
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
