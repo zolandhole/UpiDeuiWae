@@ -91,6 +91,10 @@ public class GetTokenUPI {
                                     ForumActivity forumActivity = (ForumActivity) context;
                                     forumActivity.RunningPage(token);
                                     break;
+                                case "ForumMahasiswa":
+                                    forumActivity = (ForumActivity) context;
+                                    forumActivity.RunningPageMahasiswa(token);
+                                    break;
                                 case "DataForum":
                                     DataForumActivity dataForumActivity = (DataForumActivity) context;
                                     dataForumActivity.RunningPage(token);
@@ -166,6 +170,12 @@ public class GetTokenUPI {
                             case "Forum":{
                                 ForumActivity activity = (ForumActivity) context;
                                 activity.displayFailed();
+                                break;
+                            }
+                            case "ForumMahasiswa":{
+                                ForumActivity activity = (ForumActivity) context;
+                                activity.displayFailed();
+                                break;
                             }
                             case "DataForum": {
                                 DataForumActivity activity = (DataForumActivity) context;

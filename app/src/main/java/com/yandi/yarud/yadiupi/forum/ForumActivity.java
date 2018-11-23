@@ -25,7 +25,9 @@ import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.absensi.model.User;
 import com.yandi.yarud.yadiupi.forum.adapter.AdapterForum;
+import com.yandi.yarud.yadiupi.forum.adapter.AdapterForumMhs;
 import com.yandi.yarud.yadiupi.forum.model.ModelForum;
+import com.yandi.yarud.yadiupi.forum.model.ModelForumMhs;
 import com.yandi.yarud.yadiupi.utility.controller.ApiAuthenticationClientJWT;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
@@ -48,11 +50,13 @@ public class ForumActivity extends AppCompatActivity implements View.OnClickList
     private CardView cardViewUlangiKoneksi;
 
     //CONNECTION SUCCESS
-    private String kodedosen="";
-    private RecyclerView recyclerView;
+    private String kodedosen, status, username;
+    private RecyclerView recyclerView, recyclerViewMhs;
     private DBHandler dbHandler;
     private List<ModelForum> item;
+    private List<ModelForumMhs> itemMhs;
     private AdapterForum mAdapter;
+    private AdapterForumMhs mAdapterMhs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class ForumActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //INISIASI
+    @SuppressLint("CutPasteId")
     private void initView(){
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
         displayLoading = findViewById(R.id.ForumDisplayLoading);
@@ -86,7 +91,9 @@ public class ForumActivity extends AppCompatActivity implements View.OnClickList
 
         //CONNECTION SUCCESS
         kodedosen = Objects.requireNonNull(getIntent().getExtras()).getString("KODEDOSEN");
+        status = getIntent().getExtras().getString("STATUS");
         recyclerView = findViewById(R.id.ForumRecycleView);
+        recyclerViewMhs = findViewById(R.id.ForumRecycleView);
     }
     private void initListener(){
         //CONNECTION FAILED
@@ -95,10 +102,15 @@ public class ForumActivity extends AppCompatActivity implements View.OnClickList
         //CONNECTION SUCCESS
         dbHandler = new DBHandler(this);
         item = new ArrayList<>();
+        itemMhs = new ArrayList<>();
         RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager mManagerMhs = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         mAdapter = new AdapterForum(this,item);
+        mAdapterMhs = new AdapterForumMhs(this,itemMhs);
         recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
+        recyclerViewMhs.setLayoutManager(mManagerMhs);
+        recyclerViewMhs.setAdapter(mAdapterMhs);
     }
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
@@ -201,14 +213,27 @@ public class ForumActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText(getApplicationContext(),"Tidak ada koneksi Internet",Toast.LENGTH_SHORT).show();
             displayFailed();
         }else{
-            try {
-                List<User> userdb = dbHandler.getAllUser();
-                for(User user : userdb){
-                    GetTokenUPI token = new GetTokenUPI(this, "Forum");
-                    token.getToken(user.getUsername(), user.getPassword());
+            if (status.equals("Dosen")){
+                try {
+                    List<User> userdb = dbHandler.getAllUser();
+                    for(User user : userdb){
+                        GetTokenUPI token = new GetTokenUPI(this, "Forum");
+                        token.getToken(user.getUsername(), user.getPassword());
+                    }
+                }catch (SQLException e){
+                    e.printStackTrace();
                 }
-            }catch (SQLException e){
-                e.printStackTrace();
+            } else if (status.equals("Mahasiswa")){
+                try {
+                    List<User> userdb = dbHandler.getAllUser();
+                    for(User user : userdb){
+                        GetTokenUPI token = new GetTokenUPI(this, "ForumMahasiswa");
+                        username = user.getUsername();
+                        token.getToken(user.getUsername(), user.getPassword());
+                    }
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
             }
             dbHandler.close();
         }
@@ -256,6 +281,53 @@ public class ForumActivity extends AppCompatActivity implements View.OnClickList
                 e.printStackTrace();
             }
             mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void RunningPageMahasiswa(String token) {
+        new UrlUpi();
+        ApiAuthenticationClientJWT apiAuthenticationClientJWT = new ApiAuthenticationClientJWT(UrlUpi.URL_MahasiswaKontrak+username,token);
+        AsyncTask<Void,Void,String> execute = new ForumActivity.AmbilDataForumMahasiswa(apiAuthenticationClientJWT);
+        execute.execute();
+    }
+    @SuppressLint("StaticFieldLeak")
+    public class AmbilDataForumMahasiswa extends AsyncTask<Void, Void, String> {
+        private ApiAuthenticationClientJWT apiAuthenticationClientJWT;
+        AmbilDataForumMahasiswa(ApiAuthenticationClientJWT apiAuthenticationClientJWT) {
+            this.apiAuthenticationClientJWT = apiAuthenticationClientJWT;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                apiAuthenticationClientJWT.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            displaySuccess();
+            try {
+                JSONArray jsonArray = new JSONArray(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getJSONArray("dt_mk").toString());
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject data = jsonArray.getJSONObject(i);
+                    ModelForumMhs model = new ModelForumMhs();
+                    model.setIDMK(data.getString("IDMK"));
+                    model.setKM(data.getString("KM"));
+                    model.setKODEMK(data.getString("KODEMK"));
+                    model.setNAMAMK(data.getString("NAMAMK"));
+                    model.setNEEDAPPROVE(data.getString("NEEDAPPROVE"));
+                    model.setSKS(data.getString("SKS"));
+                    itemMhs.add(model);
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            mAdapterMhs.notifyDataSetChanged();
         }
     }
 }

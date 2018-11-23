@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initForum() {
         Intent intentForum = new Intent(MainActivity.this, ForumActivity.class);
         intentForum.putExtra("KODEDOSEN",kodedosen);
+        intentForum.putExtra("STATUS", status);
         startActivity(intentForum);
     }
 }
