@@ -22,6 +22,7 @@ import com.yandi.yarud.yadiupi.absensi.RisalahMKActivity;
 import com.yandi.yarud.yadiupi.forum.DataForumActivity;
 import com.yandi.yarud.yadiupi.forum.DiskusiActivity;
 import com.yandi.yarud.yadiupi.forum.ForumActivity;
+import com.yandi.yarud.yadiupi.forum.ForumMhsActivity;
 import com.yandi.yarud.yadiupi.forum.InputDiskusiActivity;
 
 import org.json.JSONException;
@@ -91,9 +92,9 @@ public class GetTokenUPI {
                                     ForumActivity forumActivity = (ForumActivity) context;
                                     forumActivity.RunningPage(token);
                                     break;
-                                case "ForumMahasiswa":
-                                    forumActivity = (ForumActivity) context;
-                                    forumActivity.RunningPageMahasiswa(token);
+                                case "ForumMhs":
+                                    ForumMhsActivity forumMhsActivity = (ForumMhsActivity) context;
+                                    forumMhsActivity.RunningPage(token);
                                     break;
                                 case "DataForum":
                                     DataForumActivity dataForumActivity = (DataForumActivity) context;

@@ -28,7 +28,7 @@ public class AdapterForumMhs extends RecyclerView.Adapter<AdapterForumMhs.Holder
     @NonNull
     @Override
     public AdapterForumMhs.HolderData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_forum,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_forum_mhs,parent,false);
         return new AdapterForumMhs.HolderData(view);
     }
     @SuppressLint("SetTextI18n")
@@ -37,7 +37,7 @@ public class AdapterForumMhs extends RecyclerView.Adapter<AdapterForumMhs.Holder
         final Intent intent = new Intent(context, DataForumActivity.class);
         ModelForumMhs model = item.get(position);
         holder.idView.setText(model.getIDMK());
-        holder.namaPST.setText(model.getKODEMK());
+        holder.kodeMK.setText(model.getKODEMK());
         holder.namamatakuliahView.setText(model.getNAMAMK());
 
         intent.putExtra("IDMK",holder.idView.getText().toString());
@@ -56,14 +56,14 @@ public class AdapterForumMhs extends RecyclerView.Adapter<AdapterForumMhs.Holder
     class HolderData extends RecyclerView.ViewHolder{
         TextView idView;
         TextView namamatakuliahView;
-        TextView namaPST;
+        TextView kodeMK;
         CardView btnDetail;
         HolderData(View view) {
             super(view);
-            idView = view.findViewById(R.id.TextViewForumIDMK);
-            namamatakuliahView = view.findViewById(R.id.TextViewForumNAMAMK);
-            namaPST = view.findViewById(R.id.TextViewForumNAMAPST);
-            btnDetail = view.findViewById(R.id.CardViewForum);
+            idView = view.findViewById(R.id.TextViewForumMhsIDMK);
+            namamatakuliahView = view.findViewById(R.id.TextViewForumMhsNAMAMK);
+            kodeMK = view.findViewById(R.id.TextViewForumMhsKodeMK);
+            btnDetail = view.findViewById(R.id.CardViewForumMhs);
         }
     }
 

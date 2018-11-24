@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.yandi.yarud.yadiupi.absensi.MahasiswaKontrakActivity;
 import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
 import com.yandi.yarud.yadiupi.forum.ForumActivity;
+import com.yandi.yarud.yadiupi.forum.ForumMhsActivity;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.absensi.model.User;
 import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
@@ -247,9 +248,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //INIT FORUM
     private void initForum() {
-        Intent intentForum = new Intent(MainActivity.this, ForumActivity.class);
-        intentForum.putExtra("KODEDOSEN",kodedosen);
-        intentForum.putExtra("STATUS", status);
-        startActivity(intentForum);
+        if (status.equals("Dosen")){
+            Intent intentForum = new Intent(MainActivity.this, ForumActivity.class);
+            intentForum.putExtra("KODEDOSEN",kodedosen);
+            intentForum.putExtra("STATUS", status);
+            startActivity(intentForum);
+        } else if (status.equals("Mahasiswa")){
+            Intent intentForumMhs = new Intent(MainActivity.this, ForumMhsActivity.class);
+            intentForumMhs.putExtra("KODEDOSEN",kodedosen);
+            intentForumMhs.putExtra("STATUS", status);
+            startActivity(intentForumMhs);
+        }
     }
 }

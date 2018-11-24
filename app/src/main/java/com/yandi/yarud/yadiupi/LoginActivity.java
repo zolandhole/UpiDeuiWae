@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -29,8 +28,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
     private ConstraintLayout displayLoading,displayFailed,displaySuccess;
-    //CONNECTION FAILED
-    private CardView cardViewUlangiKoneksi;
     
     private EditText editTextUsername, editTextPassword;
     private Button buttonLogin;
@@ -90,9 +87,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         displayLoading = findViewById(R.id.LoginDisplayLoading);
         displayFailed = findViewById(R.id.LoginDisplayFailed);
         displaySuccess = findViewById(R.id.LoginDisplaySuccess);
-
-        //CONNECTION FAILED
-        cardViewUlangiKoneksi = findViewById(R.id.LoginCardViewUlangiKoneksi);
         
         editTextUsername = findViewById(R.id.LoginEditTextUsername);
         editTextPassword = findViewById(R.id.LoginEditTextPassword);
