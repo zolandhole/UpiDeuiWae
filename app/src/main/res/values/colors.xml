@@ -3,7 +3,7 @@
     <color name="colorPrimary">#9C0000</color>
     <color name="colorPrimaryDark">#8f0404</color>
     <color name="colorPrimaryYoung">#b71c1c</color>
-    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorAccent">#fcfcfc</color>
     <color name="backgroundcolor">#fcfcfc</color>
     <color name="lightgreyline">#ededed</color>
     <color name="ungu">#7c4dff</color>
@@ -15,4 +15,5 @@
     <color name="backgroundpage">#DDDEE0</color>
     <color name="biru">#00887a</color>
     <color name="backgroundActivity">#E9EBEE</color>
+    <color name="darkGrey">#5C5B59</color>
 </resources>

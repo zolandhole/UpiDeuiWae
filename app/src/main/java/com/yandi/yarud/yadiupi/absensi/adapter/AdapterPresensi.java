@@ -67,6 +67,10 @@ public class AdapterPresensi extends RecyclerView.Adapter<AdapterPresensi.Holder
                     updateabsensi.getTokenAbsensi(presensi.getUsernameDB(),presensi.getPasswordDB(),model.getIdrs(),model.getNim(),"1","", model.getNama());
                     holder.txtKeterangan.setVisibility(View.GONE);
                     holder.namaView.setTextColor(Color.parseColor("#808080"));
+                    presensi.finish();
+                    presensi.overridePendingTransition(0, 0);
+                    presensi.startActivity(((PresensiActivity) context).getIntent());
+                    presensi.overridePendingTransition(0, 0);
                 }else{
                     PresensiActivity presensi = (PresensiActivity) context;
                     android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
@@ -97,6 +101,10 @@ public class AdapterPresensi extends RecyclerView.Adapter<AdapterPresensi.Holder
                                 holder.txtKeterangan.setVisibility(View.VISIBLE);
                                 holder.namaView.setTextColor(Color.RED);
                                 alert.dismiss();
+                                presensi.finish();
+                                presensi.overridePendingTransition(0, 0);
+                                presensi.startActivity(((PresensiActivity) context).getIntent());
+                                presensi.overridePendingTransition(0, 0);
                             }
                         }
                     });

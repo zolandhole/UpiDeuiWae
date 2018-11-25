@@ -15,9 +15,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -54,6 +56,7 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
     private List<ModelDataForum> item;
     private AdapterDataForum mAdapter;
     private CardView cardViewDFBuatDiskusi, cardViewDFBuatDiskusiNoData;
+
     
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

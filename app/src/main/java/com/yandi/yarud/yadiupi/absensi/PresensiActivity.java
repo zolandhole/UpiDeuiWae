@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +68,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     private AdapterPresensi mAdapter;
     private TextView textViewPresensiKelas;
     private Button buttonFinish;
+    private ProgressBar progressBarPresensi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +108,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
         idrs = Objects.requireNonNull(getIntent().getExtras()).getString("IDRS");
         namakelas = getIntent().getExtras().getString("NAMAKELAS");
         recyclerView = findViewById(R.id.PresensiRecycleView);
+        progressBarPresensi = findViewById(R.id.progressBarPresensi);
     }
     private void initListener(){
         //CONNECTION FAILED
@@ -127,9 +130,9 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
     public void displayLoading(){
         buttonFinish.setVisibility(View.GONE);
-        displayLoading.setVisibility(View.VISIBLE);
+        progressBarPresensi.setVisibility(View.VISIBLE);
         displayFailed.setVisibility(View.GONE);
-        displaySuccess.setVisibility(View.GONE);
+        displaySuccess.setVisibility(View.VISIBLE);
     }
     public void displaySuccess(){
         buttonFinish.setVisibility(View.VISIBLE);
@@ -161,7 +164,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchItem.setVisible(false);
+//        searchItem.setVisible(false);
         SearchView searchView  = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Cari Mahasiswa ...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

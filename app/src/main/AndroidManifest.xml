@@ -61,7 +61,9 @@
         <activity
             android:name=".forum.DiskusiActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".forum.ForumMhsActivity"></activity>
+        <activity
+            android:name=".forum.ForumMhsActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>
