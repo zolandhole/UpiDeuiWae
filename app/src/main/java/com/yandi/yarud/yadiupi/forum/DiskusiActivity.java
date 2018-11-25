@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +56,7 @@ import java.util.Objects;
 public class DiskusiActivity extends AppCompatActivity implements View.OnClickListener {
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-    private ConstraintLayout displayLoading,displayFailed,displaySuccess;
+    private ConstraintLayout displayFailed,displaySuccess,constraintLayoutDiskusiAnimasi;
     //CONNECTION FAILED
     private CardView cardViewUlangiKoneksi;
 
@@ -66,7 +68,8 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
     private String idmk, id_frm, user_id;
     private Button buttonDiskusiKomentar;
     private EditText editTextDiskusiIsi;
-    private TextView textViewDiskusiActLihatisi, textViewDiskusiActisi;
+    private TextView textViewDiskusiActLihatisi, textViewDiskusiActisi, textViewDiskusiAnimasi;
+    private ProgressBar progressBarDiskusiLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +108,6 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
     //INISIASI
     private void initView(){
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-        displayLoading = findViewById(R.id.DiskusiActDisplayLoading);
         displayFailed = findViewById(R.id.DiskusiActDisplayFailed);
         displaySuccess = findViewById(R.id.DiskusiActDisplaySuccess);
 
@@ -131,6 +133,9 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         recyclerView = findViewById(R.id.DiskusiActRecycleView);
         editTextDiskusiIsi = findViewById(R.id.EditTextDiskusiIsi);
         textViewDiskusiActLihatisi = findViewById(R.id.textViewDiskusiActLihatisi);
+        constraintLayoutDiskusiAnimasi = findViewById(R.id.constraintLayoutDiskusiAnimasi);
+        textViewDiskusiAnimasi = findViewById(R.id.textViewDiskusiAnimasi);
+        progressBarDiskusiLoading = findViewById(R.id.progressBarDiskusiLoading);
     }
     private void initListener(){
         //CONNECTION FAILED
@@ -140,8 +145,8 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         buttonDiskusiKomentar.setOnClickListener(this);
         dbHandler = new DBHandler(this);
         item = new ArrayList<>();
-        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
-        ((LinearLayoutManager) mManager).setStackFromEnd(true);
+        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+//        ((LinearLayoutManager) mManager).setStackFromEnd(true);
         mAdapter = new AdapterDiskusi(this,item);
         recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
@@ -150,17 +155,17 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
     public void displayLoading(){
-        displayLoading.setVisibility(View.VISIBLE);
+        progressBarDiskusiLoading.setVisibility(View.VISIBLE);
         displayFailed.setVisibility(View.GONE);
-        displaySuccess.setVisibility(View.GONE);
+        displaySuccess.setVisibility(View.VISIBLE);
     }
     public void displaySuccess(){
-        displayLoading.setVisibility(View.GONE);
+        progressBarDiskusiLoading.setVisibility(View.GONE);
         displayFailed.setVisibility(View.GONE);
         displaySuccess.setVisibility(View.VISIBLE);
     }
     public void displayFailed() {
-        displayLoading.setVisibility(View.GONE);
+        progressBarDiskusiLoading.setVisibility(View.GONE);
         displayFailed.setVisibility(View.VISIBLE);
         displaySuccess.setVisibility(View.GONE);
     }
@@ -240,6 +245,9 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(intent);
     }
 
+    public String getUser_id(){
+        return user_id;
+    }
     //APLIKASI BERJALAN
     private void initRunning() {
         displayLoading();
@@ -309,6 +317,7 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
             }catch (JSONException e){
                 e.printStackTrace();
             }
+            recyclerView.smoothScrollToPosition(item.size());
             mAdapter.notifyDataSetChanged();
         }
     }
@@ -318,16 +327,24 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         if (TextUtils.isEmpty(editTextDiskusiIsi.getText())){
             editTextDiskusiIsi.setError("Komentar harus dimasukan");
         } else {
-            try {
-                List<User> userdb = dbHandler.getAllUser();
-                for(User user : userdb){
-                    GetTokenUPI token = new GetTokenUPI(this, "PostKomentar");
-                    token.getToken(user.getUsername(), user.getPassword());
+            constraintLayoutDiskusiAnimasi.setVisibility(View.VISIBLE);
+            textViewDiskusiAnimasi.setText(editTextDiskusiIsi.getText().toString().trim());
+            buttonDiskusiKomentar.setVisibility(View.GONE);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    try {
+                        List<User> userdb = dbHandler.getAllUser();
+                        for(User user : userdb){
+                            GetTokenUPI token = new GetTokenUPI(DiskusiActivity.this, "PostKomentar");
+                            token.getToken(user.getUsername(), user.getPassword());
+                        }
+                    }catch (SQLException e){
+                        e.printStackTrace();
+                    }
+                    dbHandler.close();
                 }
-            }catch (SQLException e){
-                e.printStackTrace();
-            }
-            dbHandler.close();
+            }, 1000);
         }
     }
     public void PostKomentar(final String token) {
@@ -341,6 +358,8 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    constraintLayoutDiskusiAnimasi.setVisibility(View.GONE);
+                    buttonDiskusiKomentar.setVisibility(View.VISIBLE);
                     finish();
                     overridePendingTransition(0, 0);
                     startActivity(getIntent());

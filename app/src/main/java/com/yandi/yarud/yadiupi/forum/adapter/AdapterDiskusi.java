@@ -1,7 +1,10 @@
 package com.yandi.yarud.yadiupi.forum.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yandi.yarud.yadiupi.R;
+import com.yandi.yarud.yadiupi.forum.DiskusiActivity;
 import com.yandi.yarud.yadiupi.forum.model.ModelDiskusi;
 
 import java.util.ArrayList;
@@ -30,6 +34,7 @@ public class AdapterDiskusi extends RecyclerView.Adapter<AdapterDiskusi.HolderDa
         return new AdapterDiskusi.HolderData(layout);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull AdapterDiskusi.HolderData holder, int position) {
         final ModelDiskusi model = item.get(position);
@@ -40,7 +45,14 @@ public class AdapterDiskusi extends RecyclerView.Adapter<AdapterDiskusi.HolderDa
         holder.textViewDiskusiinduk.setText(model.getIndu());
         holder.textViewDiskusiwaktu.setText(model.getWaktu());
         holder.textViewDiskusinama.setText(model.getNama());
-
+        DiskusiActivity diskusiActivity = (DiskusiActivity) context;
+        String userId = diskusiActivity.getUser_id();
+        if (userId.equals(model.getUser_id())){
+            holder.textViewDiskusinama.setText("Anda");
+            holder.textViewDiskusinama.setTextColor(Color.rgb(227, 234, 228));
+            holder.cardViewDiskusi.setCardBackgroundColor(Color.rgb(88, 164, 94));
+            holder.textViewDiskusiisi.setTextColor(Color.rgb(255, 255, 255));
+        }
     }
 
     @Override
@@ -49,7 +61,8 @@ public class AdapterDiskusi extends RecyclerView.Adapter<AdapterDiskusi.HolderDa
     }
 
     class HolderData extends RecyclerView.ViewHolder{
-        TextView textViewDiskusiid_frm,textViewDiskusiid_pn,textViewDiskusiuser_id,textViewDiskusijudul,textViewDiskusiisi,textViewDiskusiinduk,textViewDiskusiwaktu,textViewDiskusinama;
+        TextView textViewDiskusiid_frm,textViewDiskusiid_pn,textViewDiskusiuser_id,textViewDiskusiisi,textViewDiskusiinduk,textViewDiskusiwaktu,textViewDiskusinama;
+        CardView cardViewDiskusi;
         HolderData(View view){
             super(view);
             textViewDiskusiid_frm = view.findViewById(R.id.TextViewDiskusiid_frm);
@@ -59,6 +72,7 @@ public class AdapterDiskusi extends RecyclerView.Adapter<AdapterDiskusi.HolderDa
             textViewDiskusiinduk = view.findViewById(R.id.TextViewDiskusiinduk);
             textViewDiskusiwaktu = view.findViewById(R.id.TextViewDiskusiwaktu);
             textViewDiskusinama = view.findViewById(R.id.TextViewDiskusinama);
+            cardViewDiskusi = view.findViewById(R.id.cardViewDiskusi);
         }
     }
 
