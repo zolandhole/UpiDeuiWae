@@ -47,7 +47,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +72,7 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
     private String idmk, id_frm, user_id;
     private Button buttonDiskusiKomentar;
     private EditText editTextDiskusiIsi;
-    private TextView textViewDiskusiActLihatisi, textViewDiskusiActisi, textViewDiskusiAnimasi;
+    private TextView textViewDiskusiActLihatisi, textViewDiskusiActisi, textViewDiskusiAnimasi, textViewDiskusiActnama,textViewDiskusiActjudul,textViewDiskusiActwaktu ;
     private ProgressBar progressBarDiskusiLoading;
 
     @Override
@@ -115,20 +119,16 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         cardViewUlangiKoneksi = findViewById(R.id.DiskusiActCardViewUlangiKoneksi);
 
         //CONNECTION SUCCESS
-        TextView textViewDiskusiActnama = findViewById(R.id.TextViewDiskusiActnama);
+        textViewDiskusiActnama = findViewById(R.id.TextViewDiskusiActnama);
         textViewDiskusiActisi = findViewById(R.id.TextViewDiskusiActisi);
-        TextView textViewDiskusiActjudul = findViewById(R.id.TextViewDiskusiActjudul);
-        TextView textViewDiskusiActwaktu = findViewById(R.id.TextViewDiskusiActwaktu);
-        String judul = Objects.requireNonNull(getIntent().getExtras()).getString("JUDUL");
-        String nama = Objects.requireNonNull(getIntent().getExtras()).getString("NAMA");
-        String waktu = Objects.requireNonNull(getIntent().getExtras()).getString("WAKTU");
-        String isi = Objects.requireNonNull(getIntent().getExtras()).getString("ISI");
+        textViewDiskusiActjudul = findViewById(R.id.TextViewDiskusiActjudul);
+        textViewDiskusiActwaktu = findViewById(R.id.TextViewDiskusiActwaktu);
+
         idmk = Objects.requireNonNull(getIntent().getExtras()).getString("IDMK");
         id_frm = Objects.requireNonNull(getIntent().getExtras()).getString("IDFRM");
-        textViewDiskusiActnama.setText(nama);
-        textViewDiskusiActisi.setText(isi);
-        textViewDiskusiActjudul.setText(judul);
-        textViewDiskusiActwaktu.setText(waktu);
+
+
+
         buttonDiskusiKomentar = findViewById(R.id.ButtonDiskusiActKomentar);
         recyclerView = findViewById(R.id.DiskusiActRecycleView);
         editTextDiskusiIsi = findViewById(R.id.EditTextDiskusiIsi);
@@ -136,6 +136,52 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         constraintLayoutDiskusiAnimasi = findViewById(R.id.constraintLayoutDiskusiAnimasi);
         textViewDiskusiAnimasi = findViewById(R.id.textViewDiskusiAnimasi);
         progressBarDiskusiLoading = findViewById(R.id.progressBarDiskusiLoading);
+        setDataDiskusi();
+    }
+    @SuppressLint("SetTextI18n")
+    private void setDataDiskusi() {
+        String judul = Objects.requireNonNull(getIntent().getExtras()).getString("JUDUL");
+        String nama = Objects.requireNonNull(getIntent().getExtras()).getString("NAMA");
+        String waktu = Objects.requireNonNull(getIntent().getExtras()).getString("WAKTU");
+        String isi = Objects.requireNonNull(getIntent().getExtras()).getString("ISI");
+
+        java.util.Date c = Calendar.getInstance().getTime();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String saatIni = dateFormat.format(c);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat2 = new SimpleDateFormat("MMM d yy");
+
+        Calendar kamari = Calendar.getInstance();
+        kamari.add(Calendar.DATE, -1);
+        kamari.getTime();
+        Date kemarin = kamari.getTime();
+        String sebelumHariIni = dateFormat.format(kemarin);
+
+        textViewDiskusiActnama.setText(nama);
+        textViewDiskusiActisi.setText(isi);
+        textViewDiskusiActjudul.setText(judul);
+
+
+        try {
+            Date waktuKomentar = dateFormat.parse(waktu);
+            dateFormat.applyPattern("yyyy-MM-dd");
+
+            assert waktu != null;
+            String jam = waktu.substring(waktu.lastIndexOf(" ")+1);
+            String jamMenit = jam.substring(0,jam.length()-3);
+
+            dateFormat2.applyPattern("d MMMyy");
+
+            if (dateFormat.format(waktuKomentar).compareTo(saatIni) == 0){
+                textViewDiskusiActwaktu.setText(jamMenit);
+            } else if (dateFormat.format(waktuKomentar).compareTo(sebelumHariIni) == 0) {
+                textViewDiskusiActwaktu.setText("Kemarin "+ jamMenit);
+            } else {
+                textViewDiskusiActwaktu.setText(dateFormat2.format(waktuKomentar)+ " " + jamMenit);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
     private void initListener(){
         //CONNECTION FAILED
@@ -146,7 +192,6 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         dbHandler = new DBHandler(this);
         item = new ArrayList<>();
         RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        ((LinearLayoutManager) mManager).setStackFromEnd(true);
         mAdapter = new AdapterDiskusi(this,item);
         recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
@@ -188,7 +233,7 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         getMenuInflater().inflate(R.menu.main_menu,menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView  = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Cari Matakuliah ...");
+        searchView.setQueryHint("Cari Komentar ...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -200,9 +245,13 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
                 newText = newText.toLowerCase();
                 ArrayList<ModelDiskusi> newList = new ArrayList<>();
                 for (ModelDiskusi Diskusi : item){
-                    String mataKuliah = Diskusi.getNama().toLowerCase();
-                    if (mataKuliah.contains(newText))
+                    String komen = Diskusi.getIsi().toLowerCase();
+                    if (komen.contains(newText))
                         newList.add(Diskusi);
+                    String pelaku = Diskusi.getNama().toLowerCase();
+                    if (pelaku.contains(newText)){
+                        newList.add(Diskusi);
+                    }
                 }
                 mAdapter.setFilter(newList);
                 return true;

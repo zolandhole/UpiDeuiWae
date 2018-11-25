@@ -15,7 +15,11 @@ import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.forum.DiskusiActivity;
 import com.yandi.yarud.yadiupi.forum.model.ModelDiskusi;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class AdapterDiskusi extends RecyclerView.Adapter<AdapterDiskusi.HolderData>{
@@ -49,9 +53,41 @@ public class AdapterDiskusi extends RecyclerView.Adapter<AdapterDiskusi.HolderDa
         String userId = diskusiActivity.getUser_id();
         if (userId.equals(model.getUser_id())){
             holder.textViewDiskusinama.setText("Anda");
-            holder.textViewDiskusinama.setTextColor(Color.rgb(227, 234, 228));
-            holder.cardViewDiskusi.setCardBackgroundColor(Color.rgb(88, 164, 94));
-            holder.textViewDiskusiisi.setTextColor(Color.rgb(255, 255, 255));
+            holder.textViewDiskusinama.setTextColor(Color.rgb(10, 168, 57));
+            holder.cardViewDiskusi.setCardBackgroundColor(Color.rgb(255, 239, 204));
+            holder.textViewDiskusiisi.setTextColor(Color.BLACK);
+            holder.textViewDiskusiwaktu.setTextColor(Color.rgb(155, 155, 155));
+        }
+
+        java.util.Date c = Calendar.getInstance().getTime();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String saatIni = dateFormat.format(c);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat2 = new SimpleDateFormat("MMM d yy");
+
+        Calendar kamari = Calendar.getInstance();
+        kamari.add(Calendar.DATE, -1);
+        kamari.getTime();
+        Date kemarin = kamari.getTime();
+        String sebelumHariIni = dateFormat.format(kemarin);
+
+        try {
+            Date waktuKomentar = dateFormat.parse(model.getWaktu());
+            dateFormat.applyPattern("yyyy-MM-dd");
+
+            String jam = model.getWaktu().substring(model.getWaktu().lastIndexOf(" ")+1);
+            String jamMenit = jam.substring(0,jam.length()-3);
+
+            dateFormat2.applyPattern("d MMMyy");
+
+            if (dateFormat.format(waktuKomentar).compareTo(saatIni) == 0){
+                holder.textViewDiskusiwaktu.setText(jamMenit);
+            } else if (dateFormat.format(waktuKomentar).compareTo(sebelumHariIni) == 0) {
+                holder.textViewDiskusiwaktu.setText("Kemarin "+ jamMenit);
+            } else {
+                holder.textViewDiskusiwaktu.setText(dateFormat2.format(waktuKomentar)+ " " + jamMenit);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
