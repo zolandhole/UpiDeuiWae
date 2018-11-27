@@ -14,7 +14,7 @@ import com.android.volley.toolbox.Volley;
 import com.yandi.yarud.yadiupi.absensi.ApproveKehadiranDosenActivity;
 import com.yandi.yarud.yadiupi.absensi.DetilMKActivity;
 import com.yandi.yarud.yadiupi.LoginActivity;
-import com.yandi.yarud.yadiupi.absensi.MahasiswaKontrakActivity;
+import com.yandi.yarud.yadiupi.mahasiswa.MahasiswaKontrakActivity;
 import com.yandi.yarud.yadiupi.absensi.PemilihanKMActivity;
 import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
 import com.yandi.yarud.yadiupi.absensi.PresensiActivity;

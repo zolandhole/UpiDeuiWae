@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.absensi.adapter;
+package com.yandi.yarud.yadiupi.mahasiswa.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,8 +13,9 @@ import android.widget.TextView;
 
 import com.yandi.yarud.yadiupi.absensi.ApproveKehadiranDosenActivity;
 import com.yandi.yarud.yadiupi.R;
-import com.yandi.yarud.yadiupi.absensi.model.ModelMhsKontrak;
+import com.yandi.yarud.yadiupi.mahasiswa.model.ModelMhsKontrak;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterMhsKontrak extends RecyclerView.Adapter<AdapterMhsKontrak.HolderData> {
@@ -85,5 +86,11 @@ public class AdapterMhsKontrak extends RecyclerView.Adapter<AdapterMhsKontrak.Ho
             buttonMhsKontrakApprove = view.findViewById(R.id.MhsKontrakButtonApprove);
             mhsKontrakview = view.findViewById(R.id.MhsKontrakview);
         }
+    }
+
+    public void setFilter(ArrayList<ModelMhsKontrak> newList){
+        item = new ArrayList<>();
+        item.addAll(newList);
+        notifyDataSetChanged();
     }
 }

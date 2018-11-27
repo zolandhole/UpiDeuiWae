@@ -1,59 +1,60 @@
-package com.yandi.yarud.yadiupi.absensi;
+package com.yandi.yarud.yadiupi.mahasiswa;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.SQLException;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+//import android.widget.TextView;
+
+import android.graphics.Bitmap;
 import android.widget.Toast;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+
+import com.google.zxing.WriterException;
 import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
-import com.yandi.yarud.yadiupi.absensi.adapter.AdapterMhsKontrak;
-import com.yandi.yarud.yadiupi.utility.controller.ApiAuthenticationClientJWT;
+import com.yandi.yarud.yadiupi.mahasiswa.utility.AESEncrypt2;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
-import com.yandi.yarud.yadiupi.absensi.model.ModelMhsKontrak;
-import com.yandi.yarud.yadiupi.absensi.model.User;
 import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
-import com.yandi.yarud.yadiupi.utility.network.GetTokenUPI;
-import com.yandi.yarud.yadiupi.utility.network.UrlUpi;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
-import java.util.ArrayList;
-import java.util.List;
-public class MahasiswaKontrakActivity extends AppCompatActivity implements View.OnClickListener {
+public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickListener {
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
     private ConstraintLayout displayLoading,displayFailed,displaySuccess;
     //CONNECTION FAILED
     private CardView cardViewUlangiKoneksi;
     //CONNECTION SUCCESS
-    private RecyclerView recyclerView;
     private DBHandler dbHandler;
-    private List<ModelMhsKontrak> item;
-    private RecyclerView.Adapter mAdapter;
+    private final static int QrWidth = 500;
+    private final static int QrHeight = 500;
+    private ImageView imageViewMhsAbsenQRImage;
     private String username;
+//    private TextView textViewMhsAbsenStatus;
+    private SimpleDateFormat dtf;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mahasiswa_kontrak);
+        setContentView(R.layout.activity_mhs_absen);
         initView();
         initListener();
         tampilanToolbar();
@@ -62,7 +63,7 @@ public class MahasiswaKontrakActivity extends AppCompatActivity implements View.
     //BUTTON ON CLICK
     @Override public void onClick(View view) {
         switch (view.getId()){
-            case R.id.MhsKontrakCardViewUlangiKoneksi:
+            case R.id.MhsAbsenCardViewUlangiKoneksi:
                 initRunning();
                 break;
         }
@@ -88,35 +89,34 @@ public class MahasiswaKontrakActivity extends AppCompatActivity implements View.
     //INISIASI
     private void initView(){
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
-        displayLoading = findViewById(R.id.MhsKontrakDisplayLoading);
-        displayFailed = findViewById(R.id.MhsKontrakDisplayFailed);
-        displaySuccess = findViewById(R.id.MhsKontrakDisplaySuccess);
+        displayLoading = findViewById(R.id.MhsAbsenDisplayLoading);
+        displayFailed = findViewById(R.id.MhsAbsenDisplayFailed);
+        displaySuccess = findViewById(R.id.MhsAbsenDisplaySuccess);
 
         //CONNECTION FAILED
-        cardViewUlangiKoneksi = findViewById(R.id.MhsKontrakCardViewUlangiKoneksi);
+        cardViewUlangiKoneksi = findViewById(R.id.MhsAbsenCardViewUlangiKoneksi);
 
         //CONNECTION SUCCESS
-        recyclerView = findViewById(R.id.MhsKontrakRecycleView);
+        imageViewMhsAbsenQRImage = findViewById(R.id.imageViewMhsAbsenQRImage);
+//        textViewMhsAbsenStatus = findViewById(R.id.textViewMhsAbsenStatus);
     }
+    @SuppressLint("SimpleDateFormat")
     private void initListener(){
         //CONNECTION FAILED
         cardViewUlangiKoneksi.setOnClickListener(this);
 
         //CONNECTION SUCCESS
+        username = Objects.requireNonNull(getIntent().getExtras()).getString("USERNAME");
         dbHandler = new DBHandler(this);
-        item = new ArrayList<>();
-        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(mManager);
-        mAdapter = new AdapterMhsKontrak(this,item);
-        recyclerView.setAdapter(mAdapter);
+        dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     }
 
     //TOOLBAR
     private void tampilanToolbar() {
-        Toolbar toolbar= findViewById(R.id.MhsKontrakToolbar);
+        Toolbar toolbar= findViewById(R.id.MhsAbsenToolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("SpotUpi");
-        toolbar.setSubtitle("Kontrak Mahasiswa");
+        toolbar.setSubtitle("Absen Mahasiswa");
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.icon_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +127,8 @@ public class MahasiswaKontrakActivity extends AppCompatActivity implements View.
     }
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
     @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -167,68 +169,46 @@ public class MahasiswaKontrakActivity extends AppCompatActivity implements View.
     //APLIKASI BERJALAN
     private void initRunning() {
         displayLoading();
-        //CEK KONEKSI INTERNET
-        if (!new CheckConnection().apakahTerkoneksiKeInternet(this)){
+        if (!new CheckConnection().apakahTerkoneksiKeInternet(MhsAbsenActivity.this)){
             Toast.makeText(getApplicationContext(),"Tidak ada koneksi Internet",Toast.LENGTH_SHORT).show();
             displayFailed();
-        }else{
+        } else {
+            Calendar datetimeKalender = Calendar.getInstance();
+            Date date= datetimeKalender.getTime();
+            String dateformat = dtf.format(date);
             try {
-                List<User> userdb = dbHandler.getAllUser();
-                for(User user : userdb){
-                    GetTokenUPI token = new GetTokenUPI(this, "MahasiswaKontrak");
-                    username = user.getUsername();
-                    token.getToken(username, user.getPassword());
-                }
-            }catch (SQLException e){
-                e.printStackTrace();
-            }
-            dbHandler.close();
-        }
-    }
-    public void RunningPage(final String token) {
-        new UrlUpi();
-        ApiAuthenticationClientJWT apiAuthenticationClientJWT = new ApiAuthenticationClientJWT(UrlUpi.URL_MahasiswaKontrak+username,token);
-        AsyncTask<Void,Void,String> execute = new MahasiswaKontrakActivity.AmbilData(apiAuthenticationClientJWT);
-        execute.execute();
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class AmbilData extends AsyncTask<Void, Void, String> {
-        private ApiAuthenticationClientJWT apiAuthenticationClientJWT;
-        AmbilData(ApiAuthenticationClientJWT apiAuthenticationClientJWT) {
-            this.apiAuthenticationClientJWT = apiAuthenticationClientJWT;
-        }
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                apiAuthenticationClientJWT.execute();
+                AESEncrypt2 enkrip = new AESEncrypt2();
+                enkrip.tes(username);
+                String hasilEnc = enkrip.getEnkripsivalue();
+                imageViewMhsAbsenQRImage.setImageBitmap(TextToImageEncode(hasilEnc+"~"+ dateformat));
+                displaySuccess();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return null;
         }
 
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            displaySuccess();
-            try {
-                JSONArray jsonArray = new JSONArray(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getJSONArray("dt_mk").toString());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject data = jsonArray.getJSONObject(i);
-                    ModelMhsKontrak model = new ModelMhsKontrak();
-                    model.setIDMK(data.getString("IDMK"));
-                    model.setKM(data.getString("KM"));
-                    model.setKODEMK(data.getString("KODEMK"));
-                    model.setNAMAMK(data.getString("NAMAMK"));
-                    model.setNEEDAPPROVE(data.getString("NEEDAPPROVE"));
-                    model.setSKS(data.getString("SKS"));
-                    item.add(model);
-                }
-            }catch (JSONException e){
-                e.printStackTrace();
-            }
-            mAdapter.notifyDataSetChanged();
+    }
+    private Bitmap TextToImageEncode(String Value) throws WriterException {
+        BitMatrix bitMatrix;
+        try {
+            bitMatrix = new MultiFormatWriter().encode(
+                    Value,BarcodeFormat.QR_CODE,QrWidth,QrHeight,null
+            );
+        } catch (IllegalArgumentException Illegalargumentexception) {
+            return null;
         }
+        int bitMatrixWidth = bitMatrix.getWidth();
+        int bitMatrixHeight = bitMatrix.getHeight();
+        int[] pixels = new int[bitMatrixWidth * bitMatrixHeight];
+        for (int y=0; y<bitMatrixHeight; y++){
+            int offset = y * bitMatrixWidth;
+            for (int x=0; x<bitMatrixWidth; x++){
+                pixels[offset + x] = bitMatrix.get(x,y) ?
+                        getResources().getColor(R.color.biru):getResources().getColor(R.color.colorAccent);
+            }
+        }
+        Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
+        bitmap.setPixels(pixels,0,500,0,0, bitMatrixWidth, bitMatrixHeight);
+        return bitmap;
     }
 }

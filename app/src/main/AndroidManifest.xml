@@ -43,7 +43,7 @@
             android:name=".absensi.PemilihanKMActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".absensi.MahasiswaKontrakActivity"
+            android:name=".mahasiswa.MahasiswaKontrakActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".absensi.ApproveKehadiranDosenActivity"
@@ -64,6 +64,7 @@
         <activity
             android:name=".forum.ForumMhsActivity"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".mahasiswa.MhsAbsenActivity"></activity>
     </application>
 
 </manifest>

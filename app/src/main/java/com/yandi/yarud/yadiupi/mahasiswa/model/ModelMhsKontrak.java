@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.absensi.model;
+package com.yandi.yarud.yadiupi.mahasiswa.model;
 
 public class ModelMhsKontrak {
     private String IDMK, KODEMK, NAMAMK, SKS, KM, NEEDAPPROVE;

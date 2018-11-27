@@ -7,7 +7,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,10 +16,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yandi.yarud.yadiupi.absensi.MahasiswaKontrakActivity;
+import com.yandi.yarud.yadiupi.mahasiswa.MahasiswaKontrakActivity;
 import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
 import com.yandi.yarud.yadiupi.forum.ForumActivity;
 import com.yandi.yarud.yadiupi.forum.ForumMhsActivity;
+import com.yandi.yarud.yadiupi.mahasiswa.MhsAbsenActivity;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.absensi.model.User;
 import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
@@ -37,9 +37,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CardView cardViewUlangiKoneksi;
     //CONNECTION SUCCESS
     private TextView textViewGelarNama;
-    private CardView cardViewPenugasan, cardViewKontrakMK, cardViewForum;
+    private CardView cardViewPenugasan, cardViewKontrakMK, cardViewForum, cardViewMhsAbsen;
     private DBHandler dbHandler;
     private String username, gelarnama, kodedosen, status;
+    private ConstraintLayout mhsAbsenConstraint;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +66,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.MainCardViewForum:
                 initForum();
                 break;
+            case R.id.MainCardViewMhsAbsen:
+                initMhsAbsen();
+                break;
 
         }
     }
+
     //EXIT APLIKASI
     @Override public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.todoDialogLight);
@@ -109,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cardViewPenugasan = findViewById(R.id.MainCardViewDosenPenugasan);
         cardViewKontrakMK = findViewById(R.id.MainCardViewMahasiswaKontrakMK);
         cardViewForum = findViewById(R.id.MainCardViewForum);
+        cardViewMhsAbsen = findViewById(R.id.MainCardViewMhsAbsen);
+        mhsAbsenConstraint = findViewById(R.id.MhsAbsenConstraint);
 
     }
     private void initListener(){
@@ -120,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cardViewPenugasan.setOnClickListener(MainActivity.this);
         cardViewKontrakMK.setOnClickListener(MainActivity.this);
         cardViewForum.setOnClickListener(MainActivity.this);
+        cardViewMhsAbsen.setOnClickListener(MainActivity.this);
     }
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
@@ -204,10 +212,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case "Mahasiswa":
                         cardViewKontrakMK.setVisibility(View.VISIBLE);
                         cardViewPenugasan.setVisibility(View.GONE);
+                        mhsAbsenConstraint.setVisibility(View.VISIBLE);
                         break;
                     case "Dosen":
                         cardViewKontrakMK.setVisibility(View.GONE);
                         cardViewPenugasan.setVisibility(View.VISIBLE);
+                        mhsAbsenConstraint.setVisibility(View.GONE);
                         break;
                     default:
                         keHalamanLogin();
@@ -260,5 +270,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intentForumMhs.putExtra("STATUS", status);
             startActivity(intentForumMhs);
         }
+    }
+
+    //INIT ABSEN
+    private void initMhsAbsen() {
+        Intent intenMhsAbsen = new Intent(MainActivity.this, MhsAbsenActivity.class);
+        intenMhsAbsen.putExtra("USERNAME", username);
+        startActivity(intenMhsAbsen);
+        displayLoading();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        displaySuccess();
     }
 }
