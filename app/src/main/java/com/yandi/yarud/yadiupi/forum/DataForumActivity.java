@@ -15,11 +15,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -97,6 +95,7 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         //CONNECTION SUCCESS
         cardViewDFBuatDiskusi = findViewById(R.id.CardViewDFBuatDiskusi);
         cardViewDFBuatDiskusiNoData = findViewById(R.id.CardViewDFBuatDiskusiNoData);
+
         idmk = Objects.requireNonNull(getIntent().getExtras()).getString("IDMK");
         mk = Objects.requireNonNull(getIntent().getExtras()).getString("MK");
         recyclerView = findViewById(R.id.DataForumRecycleView);
@@ -116,6 +115,8 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         mAdapter = new AdapterDataForum(this,item);
         recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
@@ -161,6 +162,8 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItem createNew = menu.findItem(R.id.dFCreate);
+        createNew.setVisible(true);
         SearchView searchView  = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Cari Diskusi ...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -188,6 +191,9 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         switch (item.getItemId()){
             case R.id.mainLogout:
                 alert_logout();
+                break;
+            case R.id.dFCreate:
+                initInputDiskusi();
                 break;
         }
         return super.onOptionsItemSelected(item);

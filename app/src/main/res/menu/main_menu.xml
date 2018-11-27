@@ -8,6 +8,12 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
     <item
+        android:id="@+id/dFCreate"
+        android:visible="false"
+        android:title=""
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/icon_createforum"/>
+    <item
         android:id="@+id/mainIcon"
         android:icon="@drawable/icon_menu"
         android:title=""
