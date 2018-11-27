@@ -150,7 +150,7 @@
                         android:layout_marginStart="8dp"
                         android:text="Isi"
                         android:textStyle="bold"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewDiskusiActLihatisi" />
