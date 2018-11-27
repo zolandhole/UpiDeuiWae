@@ -139,12 +139,14 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
         displayLoading.setVisibility(View.GONE);
         displayFailed.setVisibility(View.GONE);
         displaySuccess.setVisibility(View.VISIBLE);
+        progressBarPresensi.setVisibility(View.GONE);
     }
     public void displayFailed() {
         buttonFinish.setVisibility(View.GONE);
         displayLoading.setVisibility(View.GONE);
         displayFailed.setVisibility(View.VISIBLE);
         displaySuccess.setVisibility(View.GONE);
+        progressBarPresensi.setVisibility(View.GONE);
     }
 
     //TOOLBAR
