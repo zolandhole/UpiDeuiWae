@@ -166,6 +166,8 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItem scanQR = menu.findItem(R.id.scanBarcode);
+        scanQR.setVisible(true);
 //        searchItem.setVisible(false);
         SearchView searchView  = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Cari Mahasiswa ...");
@@ -195,9 +197,13 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
             case R.id.mainLogout:
                 alert_logout();
                 break;
+            case R.id.scanBarcode:
+                initScanQR();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void alert_logout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.todoDialogLight);
         builder.setIcon(R.drawable.icon_info)
@@ -360,5 +366,13 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
         Intent intentMain = new Intent(this,MainActivity.class);
         startActivity(intentMain);
         finish();
+    }
+
+    //INIT SCAN QR
+    private void initScanQR() {
+        Intent intentScanQR = new Intent(PresensiActivity.this,ScanQRActivity.class);
+        intentScanQR.putExtra("IDRS", idrs);
+        intentScanQR.putExtra("NAMAKELAS", namakelas);
+        startActivity(intentScanQR);
     }
 }

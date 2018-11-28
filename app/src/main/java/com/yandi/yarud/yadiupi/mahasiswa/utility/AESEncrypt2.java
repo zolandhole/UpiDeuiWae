@@ -11,7 +11,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AESEncrypt2 {
     private String enkripsivalue;
-//    private String dekripsivalue;
+    private String dekripsivalue;
+
     private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
         SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
         @SuppressLint("GetInstance") Cipher cipher = Cipher.getInstance("AES");
@@ -19,12 +20,12 @@ public class AESEncrypt2 {
         return cipher.doFinal(clear);
     }
 
-//    private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
-//        SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
-//        @SuppressLint("GetInstance") Cipher cipher = Cipher.getInstance("AES");
-//        cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-//        return cipher.doFinal(encrypted);
-//    }
+    private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
+        SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+        @SuppressLint("GetInstance") Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+        return cipher.doFinal(encrypted);
+    }
 
     private static String byte2Hex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
@@ -61,8 +62,8 @@ public class AESEncrypt2 {
         byte[] encryptedData = encrypt(key,nim.getBytes());
         enkripsivalue=byte2Hex(encryptedData);
 
-//        byte[] decryptedData = decrypt(key,encryptedData);
-//        dekripsivalue=byte2Hex(decryptedData);
+        byte[] decryptedData = decrypt(key,encryptedData);
+        dekripsivalue=byte2Hex(decryptedData);
 
     }
 
@@ -70,7 +71,7 @@ public class AESEncrypt2 {
         return enkripsivalue;
     }
 
-//    public String getDekripsivalue(){
-//        return dekripsivalue;
-//    }
+    public String getDekripsivalue(){
+        return dekripsivalue;
+    }
 }

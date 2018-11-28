@@ -24,6 +24,12 @@
                 android:icon="@drawable/icon_logout_black"
                 android:title="Keluar"
                 app:showAsAction="ifRoom|withText"/>
+            <item
+                android:visible="false"
+                android:id="@+id/scanBarcode"
+                android:icon="@drawable/ic_camera"
+                android:title="Scan QRCode"
+                app:showAsAction="ifRoom|withText"/>
         </menu>
     </item>
 </menu>

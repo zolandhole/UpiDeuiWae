@@ -162,8 +162,8 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        MenuItem createNew = menu.findItem(R.id.dFCreate);
-        createNew.setVisible(true);
+//        MenuItem createNew = menu.findItem(R.id.dFCreate);
+//        createNew.setVisible(true);
         SearchView searchView  = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Cari Diskusi ...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 //import android.widget.TextView;
 
 import android.graphics.Bitmap;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -25,9 +26,11 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 
 import com.google.zxing.WriterException;
+import com.scottyab.aescrypt.AESCrypt;
 import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.mahasiswa.utility.AESEncrypt2;
+import com.yandi.yarud.yadiupi.utility.controller.AESHelper;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
 
@@ -48,7 +51,7 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
     private final static int QrHeight = 500;
     private ImageView imageViewMhsAbsenQRImage;
     private String username;
-//    private TextView textViewMhsAbsenStatus;
+    private TextView textViewMhsAbsenStatus;
     private SimpleDateFormat dtf;
     
     @Override
@@ -98,7 +101,7 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
 
         //CONNECTION SUCCESS
         imageViewMhsAbsenQRImage = findViewById(R.id.imageViewMhsAbsenQRImage);
-//        textViewMhsAbsenStatus = findViewById(R.id.textViewMhsAbsenStatus);
+        textViewMhsAbsenStatus = findViewById(R.id.textViewMhsAbsenStatus);
     }
     @SuppressLint("SimpleDateFormat")
     private void initListener(){
@@ -167,6 +170,7 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //APLIKASI BERJALAN
+    @SuppressLint("SetTextI18n")
     private void initRunning() {
         displayLoading();
         if (!new CheckConnection().apakahTerkoneksiKeInternet(MhsAbsenActivity.this)){
@@ -176,11 +180,14 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
             Calendar datetimeKalender = Calendar.getInstance();
             Date date= datetimeKalender.getTime();
             String dateformat = dtf.format(date);
+            String password = "yadirudiyansah";
             try {
-                AESEncrypt2 enkrip = new AESEncrypt2();
-                enkrip.tes(username);
-                String hasilEnc = enkrip.getEnkripsivalue();
-                imageViewMhsAbsenQRImage.setImageBitmap(TextToImageEncode(hasilEnc+"~"+ dateformat));
+
+                String usernameEncrypted = AESCrypt.encrypt(password, username);
+                String dateformatEncrypted = AESCrypt.encrypt(password, dateformat);
+
+                imageViewMhsAbsenQRImage.setImageBitmap(TextToImageEncode(usernameEncrypted+"~"+ dateformatEncrypted));
+                textViewMhsAbsenStatus.setText(usernameEncrypted+"~"+dateformatEncrypted);
                 displaySuccess();
             } catch (Exception e) {
                 e.printStackTrace();
