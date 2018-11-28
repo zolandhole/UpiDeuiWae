@@ -1,7 +1,6 @@
 package com.yandi.yarud.yadiupi.absensi;
 
 import android.Manifest;
-import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,22 +25,17 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.scottyab.aescrypt.AESCrypt;
 import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
-import com.yandi.yarud.yadiupi.mahasiswa.utility.AESEncrypt2;
-import com.yandi.yarud.yadiupi.utility.controller.AESHelper;
 import com.yandi.yarud.yadiupi.utility.controller.AESUtils;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Objects;
 
 public class ScanQRActivity extends AppCompatActivity implements View.OnClickListener {
@@ -254,8 +248,6 @@ public class ScanQRActivity extends AppCompatActivity implements View.OnClickLis
                             Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                             Objects.requireNonNull(vibrator).vibrate(1000);
                             hasilScanEncripted = qrcode.valueAt(0).displayValue;
-//                            String password = "yadirudiyansah";
-//                            String decriptScan = hasilScanEncripted;
                             String encrypted = hasilScanEncripted;
                             String decrypted = "";
                                 try {
@@ -265,8 +257,6 @@ public class ScanQRActivity extends AppCompatActivity implements View.OnClickLis
                                     e.printStackTrace();
                                 }
                                 Log.d("TEST", "decrypted:" + decrypted);
-//                                String setelahDiDekrip = AESCrypt.decrypt(password,decriptScan);
-//                                Toast.makeText(ScanQRActivity.this, setelahDiDekrip, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

@@ -27,11 +27,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 
 import com.google.zxing.WriterException;
-import com.scottyab.aescrypt.AESCrypt;
 import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
-import com.yandi.yarud.yadiupi.mahasiswa.utility.AESEncrypt2;
-import com.yandi.yarud.yadiupi.utility.controller.AESHelper;
 import com.yandi.yarud.yadiupi.utility.controller.AESUtils;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
@@ -182,14 +179,10 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
             Calendar datetimeKalender = Calendar.getInstance();
             Date date= datetimeKalender.getTime();
             String dateformat = dtf.format(date);
-//            String password = "yadirudiyansah";
-            String encrypted = "";
             String sourceStr = username+" "+dateformat;
             try {
-                encrypted = AESUtils.encrypt(sourceStr);
+                String encrypted = AESUtils.encrypt(sourceStr);
                 Log.d("TEST", "encrypted:" + encrypted);
-//                String usernameEncrypted = AESCrypt.encrypt(password, username);
-//                String dateformatEncrypted = AESCrypt.encrypt(password, dateformat);
 
                 imageViewMhsAbsenQRImage.setImageBitmap(TextToImageEncode(encrypted));
                 textViewMhsAbsenStatus.setText(encrypted);
