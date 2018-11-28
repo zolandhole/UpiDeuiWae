@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.mahasiswa.utility.AESEncrypt2;
 import com.yandi.yarud.yadiupi.utility.controller.AESHelper;
+import com.yandi.yarud.yadiupi.utility.controller.AESUtils;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
 
@@ -180,14 +182,17 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
             Calendar datetimeKalender = Calendar.getInstance();
             Date date= datetimeKalender.getTime();
             String dateformat = dtf.format(date);
-            String password = "yadirudiyansah";
+//            String password = "yadirudiyansah";
+            String encrypted = "";
+            String sourceStr = username+" "+dateformat;
             try {
+                encrypted = AESUtils.encrypt(sourceStr);
+                Log.d("TEST", "encrypted:" + encrypted);
+//                String usernameEncrypted = AESCrypt.encrypt(password, username);
+//                String dateformatEncrypted = AESCrypt.encrypt(password, dateformat);
 
-                String usernameEncrypted = AESCrypt.encrypt(password, username);
-                String dateformatEncrypted = AESCrypt.encrypt(password, dateformat);
-
-                imageViewMhsAbsenQRImage.setImageBitmap(TextToImageEncode(usernameEncrypted+"~"+ dateformatEncrypted));
-                textViewMhsAbsenStatus.setText(usernameEncrypted+"~"+dateformatEncrypted);
+                imageViewMhsAbsenQRImage.setImageBitmap(TextToImageEncode(encrypted));
+                textViewMhsAbsenStatus.setText(encrypted);
                 displaySuccess();
             } catch (Exception e) {
                 e.printStackTrace();

@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.mahasiswa.utility.AESEncrypt2;
 import com.yandi.yarud.yadiupi.utility.controller.AESHelper;
+import com.yandi.yarud.yadiupi.utility.controller.AESUtils;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 
 import java.io.IOException;
@@ -252,15 +254,19 @@ public class ScanQRActivity extends AppCompatActivity implements View.OnClickLis
                             Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                             Objects.requireNonNull(vibrator).vibrate(1000);
                             hasilScanEncripted = qrcode.valueAt(0).displayValue;
-                            String password = "yadirudiyansah";
-                            String decriptScan = hasilScanEncripted;
-
-                            try {
-                                String setelahDiDekrip = AESCrypt.decrypt(password,decriptScan);
-                                Toast.makeText(ScanQRActivity.this, setelahDiDekrip, Toast.LENGTH_SHORT).show();
-                            } catch (GeneralSecurityException e) {
-                                Toast.makeText(ScanQRActivity.this, "Password Salah", Toast.LENGTH_SHORT).show();
-                            }
+//                            String password = "yadirudiyansah";
+//                            String decriptScan = hasilScanEncripted;
+                            String encrypted = hasilScanEncripted;
+                            String decrypted = "";
+                                try {
+                                    decrypted = AESUtils.decrypt(encrypted);
+                                    hasilView.setText(decrypted);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                Log.d("TEST", "decrypted:" + decrypted);
+//                                String setelahDiDekrip = AESCrypt.decrypt(password,decriptScan);
+//                                Toast.makeText(ScanQRActivity.this, setelahDiDekrip, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
