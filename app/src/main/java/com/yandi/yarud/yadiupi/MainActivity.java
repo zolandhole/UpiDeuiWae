@@ -198,14 +198,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //APLIKASI BERJALAN
     private void initRunning() {
         displayLoading();
+        ambilUserDiDatabase();
+        if (username == null){
+            keHalamanLogin();
+        }
         //CEK KONEKSI INTERNET
-        if (!new CheckConnection().apakahTerkoneksiKeInternet(MainActivity.this)){
+        else if (!new CheckConnection().apakahTerkoneksiKeInternet(MainActivity.this)){
             Toast.makeText(getApplicationContext(),"Tidak ada koneksi Internet",Toast.LENGTH_SHORT).show();
             displayFailed();
         }else{
             //APAKAH USER ADA PADA DATABASE
             ambilUserDiDatabase();
-            if (username == null){
+            if (username.equals("")){
                 keHalamanLogin();
             }else{
                 switch (status) {
