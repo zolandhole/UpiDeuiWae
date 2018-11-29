@@ -201,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ambilUserDiDatabase();
         if (username == null){
             keHalamanLogin();
+        } else if (textViewGelarNama.equals("Gelar Nama")){
+            keHalamanLogin();
         }
         //CEK KONEKSI INTERNET
         else if (!new CheckConnection().apakahTerkoneksiKeInternet(MainActivity.this)){

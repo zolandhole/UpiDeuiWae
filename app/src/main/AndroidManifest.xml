@@ -71,7 +71,7 @@
         <activity
             android:name=".mahasiswa.MhsAbsenActivity"
             android:configChanges="orientation|screenSize"/>
-        <activity android:name=".absensi.ScanQRActivity" />
+        <activity android:name=".absensi.QRChoice.ScanQRActivity" />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

@@ -33,6 +33,7 @@ import com.android.volley.toolbox.Volley;
 import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.MainActivity;
 import com.yandi.yarud.yadiupi.R;
+import com.yandi.yarud.yadiupi.absensi.QRChoice.ScanQRActivity;
 import com.yandi.yarud.yadiupi.absensi.adapter.AdapterPresensi;
 import com.yandi.yarud.yadiupi.utility.controller.ApiAuthenticationClientJWT;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
@@ -69,6 +70,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     private TextView textViewPresensiKelas;
     private Button buttonFinish;
     private ProgressBar progressBarPresensi;
+    private List < String > ls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,6 +280,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             displaySuccess();
+            ls = new ArrayList<>();
             try {
                 JSONArray jsonArray = new JSONArray(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getJSONArray("dt_presensi").toString());
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -289,6 +292,8 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
                     model.setKeterangan(data.getString("ket"));
                     model.setIdrs(data.getString("id_rs"));
                     item.add(model);
+                    ls.add(data.getString("nama"));
+                    ls.add(data.getString("nim"));
                 }
             }catch (JSONException e){
                 e.printStackTrace();
@@ -373,6 +378,7 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
         Intent intentScanQR = new Intent(PresensiActivity.this,ScanQRActivity.class);
         intentScanQR.putExtra("IDRS", idrs);
         intentScanQR.putExtra("NAMAKELAS", namakelas);
+        intentScanQR.putExtra("LS", String.valueOf(ls));
         startActivity(intentScanQR);
     }
 }

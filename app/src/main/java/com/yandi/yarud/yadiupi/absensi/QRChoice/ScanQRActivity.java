@@ -1,4 +1,4 @@
-package com.yandi.yarud.yadiupi.absensi;
+package com.yandi.yarud.yadiupi.absensi.QRChoice;
 
 import android.Manifest;
 import android.content.Context;
@@ -25,6 +25,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -46,7 +47,7 @@ public class ScanQRActivity extends AppCompatActivity implements View.OnClickLis
     //CONNECTION FAILED
     private CardView cardViewUlangiKoneksi;
 
-    private String idrs, namakelas, hasilScanEncripted;
+    private String idrs, namakelas, hasilScanEncripted, ls;
     private DBHandler dbHandler;
     CameraSource cameraSource;
     SurfaceView cameraPreview;
@@ -108,6 +109,7 @@ public class ScanQRActivity extends AppCompatActivity implements View.OnClickLis
         hasilView = findViewById(R.id.hasilView);
         idrs = Objects.requireNonNull(getIntent().getExtras()).getString("IDRS");
         namakelas = getIntent().getExtras().getString("NAMAKELAS");
+        ls = getIntent().getExtras().getString("LS");
     }
 
     private void initListener() {
@@ -203,6 +205,7 @@ public class ScanQRActivity extends AppCompatActivity implements View.OnClickLis
 
     //INIT RUNNING
     private void initRunning() {
+        Toast.makeText(this, ls, Toast.LENGTH_SHORT).show();
         scanQRCode();
     }
     private void scanQRCode(){
@@ -252,11 +255,21 @@ public class ScanQRActivity extends AppCompatActivity implements View.OnClickLis
                             String decrypted = "";
                                 try {
                                     decrypted = AESUtils.decrypt(encrypted);
-                                    hasilView.setText(decrypted);
+                                    String arr[] = decrypted.split(" ",2);
+                                    String nimQR = arr[0];
+                                    String sisaQR = arr[1];
+                                    hasilView.setText(nimQR);
+                                    String newString = ls.replace("[","");
+                                    String newString2 = newString.replace("]","");
+                                    String newString3 = newString2.replace(",", "");
+                                    String newString4 = newString3+" INTAN NURFAEDAH 1600862";
+                                    Boolean matchWord = newString4.contains(nimQR);
+                                    Toast.makeText(ScanQRActivity.this, String.valueOf(matchWord), Toast.LENGTH_SHORT).show();
+                                    Log.w("KATANYA ", nimQR);
+                                    Log.w("KINJAT", newString4);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                Log.d("TEST", "decrypted:" + decrypted);
                         }
                     });
                 }
