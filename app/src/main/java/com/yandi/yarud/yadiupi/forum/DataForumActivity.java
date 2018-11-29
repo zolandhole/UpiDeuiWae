@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DataForumActivity extends AppCompatActivity implements View.OnClickListener {
+public class DataForumActivity extends AppCompatActivity implements View.OnClickListener{
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
     private ConstraintLayout displayLoading,displayFailed,displaySuccess, displayNoData;
@@ -53,7 +54,8 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
     private DBHandler dbHandler;
     private List<ModelDataForum> item;
     private AdapterDataForum mAdapter;
-    private CardView cardViewDFBuatDiskusi, cardViewDFBuatDiskusiNoData;
+    private CardView cardViewDFBuatDiskusiNoData;
+    private FloatingActionButton fab;
 
     
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +74,10 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
             case R.id.DataForumCardViewUlangiKoneksi:
                 initRunning();
                 break;
-            case R.id.CardViewDFBuatDiskusi:
+            case R.id.CardViewDFBuatDiskusiNoData:
                 initInputDiskusi();
                 break;
-            case R.id.CardViewDFBuatDiskusiNoData:
+            case R.id.fab:
                 initInputDiskusi();
                 break;
         }
@@ -93,19 +95,19 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         cardViewUlangiKoneksi = findViewById(R.id.DataForumCardViewUlangiKoneksi);
 
         //CONNECTION SUCCESS
-        cardViewDFBuatDiskusi = findViewById(R.id.CardViewDFBuatDiskusi);
         cardViewDFBuatDiskusiNoData = findViewById(R.id.CardViewDFBuatDiskusiNoData);
 
         idmk = Objects.requireNonNull(getIntent().getExtras()).getString("IDMK");
         mk = Objects.requireNonNull(getIntent().getExtras()).getString("MK");
         recyclerView = findViewById(R.id.DataForumRecycleView);
+        fab = findViewById(R.id.fab);
 
     }
+    @SuppressLint("ClickableViewAccessibility")
     private void initListener(){
         //CONNECTION FAILED
         cardViewUlangiKoneksi.setOnClickListener(this);
         cardViewDFBuatDiskusiNoData.setOnClickListener(this);
-        cardViewDFBuatDiskusi.setOnClickListener(this);
 
         //CONNECTION SUCCESS
         dbHandler = new DBHandler(this);
@@ -117,6 +119,7 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         recyclerView.setAdapter(mAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
+        fab.setOnClickListener(this);
     }
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
@@ -162,8 +165,8 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-//        MenuItem createNew = menu.findItem(R.id.dFCreate);
-//        createNew.setVisible(true);
+        MenuItem createNew = menu.findItem(R.id.dFCreate);
+        createNew.setVisible(true);
         SearchView searchView  = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Cari Diskusi ...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -179,6 +182,12 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
                 for (ModelDataForum DataForum : item){
                     String judul = DataForum.getJudul().toLowerCase();
                     if (judul.contains(newText))
+                        newList.add(DataForum);
+                    String isi = DataForum.getIsi().toLowerCase();
+                    if (isi.contains(newText))
+                        newList.add(DataForum);
+                    String nama = DataForum.getNama().toLowerCase();
+                    if (nama.contains(newText))
                         newList.add(DataForum);
                 }
                 mAdapter.setFilter(newList);
@@ -253,6 +262,7 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
         AsyncTask<Void,Void,String> execute = new DataForumActivity.AmbilDataDataForum(apiAuthenticationClientJWT);
         execute.execute();
     }
+
     @SuppressLint("StaticFieldLeak")
     private class AmbilDataDataForum extends AsyncTask<Void, Void, String> {
 
