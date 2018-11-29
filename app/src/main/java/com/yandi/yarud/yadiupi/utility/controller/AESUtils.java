@@ -6,7 +6,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AESUtils {
     private static final byte[] keyValue =
-            new byte[]{'c', 'o', 'd', 'i', 'n', 'g', 'a', 'f', 'f', 'a', 'i', 'r', 's', 'c', 'o', 'm'};
+            new byte[]{'A', 'n', '4', 'T', '(', ')', 'c', '#', '3', 'R', 'y', '@', 'd', '!', '.', 'r'};
 
 
     public static String encrypt(String cleartext)

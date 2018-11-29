@@ -282,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initMhsAbsen() {
         Intent intenMhsAbsen = new Intent(MainActivity.this, MhsAbsenActivity.class);
         intenMhsAbsen.putExtra("USERNAME", username);
+        intenMhsAbsen.putExtra("GELARNAMA", gelarnama);
         startActivity(intenMhsAbsen);
         displayLoading();
     }

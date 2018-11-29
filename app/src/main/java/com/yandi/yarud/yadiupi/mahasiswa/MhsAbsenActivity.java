@@ -49,7 +49,7 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
     private final static int QrWidth = 500;
     private final static int QrHeight = 500;
     private ImageView imageViewMhsAbsenQRImage;
-    private String username;
+    private String username, gelarnama;
     private TextView textViewMhsAbsenStatus;
     private SimpleDateFormat dtf;
     
@@ -109,6 +109,7 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
 
         //CONNECTION SUCCESS
         username = Objects.requireNonNull(getIntent().getExtras()).getString("USERNAME");
+        gelarnama = getIntent().getExtras().getString("GELARNAMA");
         dbHandler = new DBHandler(this);
         dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     }
@@ -179,10 +180,11 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
             Calendar datetimeKalender = Calendar.getInstance();
             Date date= datetimeKalender.getTime();
             String dateformat = dtf.format(date);
-            String sourceStr = username+" "+dateformat;
+            int i = gelarnama.indexOf(' ');
+            String namaDepan = gelarnama.substring(0,i);
+            String sourceStr = namaDepan+" "+username+" "+dateformat;
             try {
                 String encrypted = AESUtils.encrypt(sourceStr);
-                Log.d("TEST", "encrypted:" + encrypted);
 
                 imageViewMhsAbsenQRImage.setImageBitmap(TextToImageEncode(encrypted));
                 textViewMhsAbsenStatus.setText(encrypted);
