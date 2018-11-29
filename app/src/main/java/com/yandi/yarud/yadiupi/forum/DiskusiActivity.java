@@ -246,10 +246,11 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
                 ArrayList<ModelDiskusi> newList = new ArrayList<>();
                 for (ModelDiskusi Diskusi : item){
                     String komen = Diskusi.getIsi().toLowerCase();
-                    if (komen.contains(newText))
-                        newList.add(Diskusi);
                     String pelaku = Diskusi.getNama().toLowerCase();
-                    if (pelaku.contains(newText)){
+                    if (komen.contains(newText)) {
+                        newList.add(Diskusi);
+                    }
+                    else if (pelaku.contains(newText)){
                         newList.add(Diskusi);
                     }
                 }

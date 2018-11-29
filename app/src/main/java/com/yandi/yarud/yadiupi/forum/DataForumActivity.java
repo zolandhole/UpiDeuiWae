@@ -181,13 +181,15 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
                 ArrayList<ModelDataForum> newList = new ArrayList<>();
                 for (ModelDataForum DataForum : item){
                     String judul = DataForum.getJudul().toLowerCase();
-                    if (judul.contains(newText))
-                        newList.add(DataForum);
                     String isi = DataForum.getIsi().toLowerCase();
-                    if (isi.contains(newText))
-                        newList.add(DataForum);
                     String nama = DataForum.getNama().toLowerCase();
-                    if (nama.contains(newText))
+                    if (judul.contains(newText)) {
+                        newList.add(DataForum);
+                    }
+                    else if (isi.contains(newText)) {
+                        newList.add(DataForum);
+                    }
+                    else if (nama.contains(newText))
                         newList.add(DataForum);
                 }
                 mAdapter.setFilter(newList);
