@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SpotUPI</string>
     <string name="todo">todo</string>
+    <string name="section_format">Page %1$d</string>
 </resources>

@@ -38,6 +38,8 @@ import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ScanQRActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -252,21 +254,26 @@ public class ScanQRActivity extends AppCompatActivity implements View.OnClickLis
                             Objects.requireNonNull(vibrator).vibrate(1000);
                             hasilScanEncripted = qrcode.valueAt(0).displayValue;
                             String encrypted = hasilScanEncripted;
-                            String decrypted = "";
+                            String decrypted;
                                 try {
                                     decrypted = AESUtils.decrypt(encrypted);
                                     String arr[] = decrypted.split(" ",2);
                                     String nimQR = arr[0];
-                                    String sisaQR = arr[1];
+//                                    String sisaQR = arr[1];
                                     hasilView.setText(nimQR);
                                     String newString = ls.replace("[","");
                                     String newString2 = newString.replace("]","");
-                                    String newString3 = newString2.replace(",", "");
-                                    String newString4 = newString3+" INTAN NURFAEDAH 1600862";
+                                    String newString4 = newString2+", INTAN NURFAEDAH, 1600862";
+
+
+
                                     Boolean matchWord = newString4.contains(nimQR);
                                     Toast.makeText(ScanQRActivity.this, String.valueOf(matchWord), Toast.LENGTH_SHORT).show();
+
                                     Log.w("KATANYA ", nimQR);
-                                    Log.w("KINJAT", newString4);
+                                    Log.w("SUMBER", newString4);
+                                    Log.w("URUTAN", String.valueOf(nimQR.indexOf(newString4)));
+                                    Log.w("KATA YANG HARUS TAMPIL", String.valueOf(nimQR.indexOf(newString4)-1));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

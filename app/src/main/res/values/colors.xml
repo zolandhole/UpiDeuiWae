@@ -16,4 +16,10 @@
     <color name="biru">#00887a</color>
     <color name="backgroundActivity">#E9EBEE</color>
     <color name="darkGrey">#5C5B59</color>
+
+    <color name="black_trans80">#33000000</color>
+    <color name="cyan">#00BCD4</color>
+    <color name="indicator_unselected">#4D000000</color>
+    <color name="orange">#FF9800</color>
+    <color name="green">#4CAF50</color>
 </resources>

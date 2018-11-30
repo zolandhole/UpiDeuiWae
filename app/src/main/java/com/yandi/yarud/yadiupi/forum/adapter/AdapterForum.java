@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.absensi.DetilMKActivity;
 import com.yandi.yarud.yadiupi.forum.DataForumActivity;
+import com.yandi.yarud.yadiupi.forum.InputWDActivity;
 import com.yandi.yarud.yadiupi.forum.model.ModelForum;
 
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ public class AdapterForum extends RecyclerView.Adapter<AdapterForum.HolderData>{
 
     @Override
     public void onBindViewHolder(@NonNull AdapterForum.HolderData holder, int position) {
-        final Intent intent = new Intent(context, DataForumActivity.class);
+//        final Intent intent = new Intent(context, DataForumActivity.class);
+        final Intent intent = new Intent(context, InputWDActivity.class);
         ModelForum model = item.get(position);
         holder.idView.setText(model.getIdMK());
         holder.namaPST.setText(model.getNamaPST());
