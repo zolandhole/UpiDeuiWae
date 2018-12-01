@@ -31,84 +31,6 @@
         app:layout_constraintTop_toTopOf="@+id/DiskusiActToolbar">
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraintLayout14"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout13"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/DiskusiActRecycleView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraintLayoutDiskusiAnimasi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout14"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:id="@+id/textViewMengirim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="mengirim..."
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                app:cardBackgroundColor="@color/hijau"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewMengirim">
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/textViewDiskusiAnimasi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:text="Isi Dari Komentar"
-                        android:textColor="@color/colorAccent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewDiskusiAnimasi" />
-                </android.support.constraint.ConstraintLayout>
-
-            </android.support.v7.widget.CardView>
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -194,6 +116,92 @@
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout14"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout13"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/DiskusiActRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayoutDiskusiAnimasi"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout14"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                app:cardBackgroundColor="@color/hijau"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/textViewMengirim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="mengirim..."
+                    android:textColor="@color/darkGrey"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/textViewDiskusiAnimasi"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Isi Dari Komentar"
+                        android:textColor="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -221,7 +229,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/ButtonDiskusiActKomentar"
                     app:layout_constraintStart_toStartOf="parent">
-
                     <EditText
                         android:id="@+id/EditTextDiskusiIsi"
                         android:layout_width="match_parent"

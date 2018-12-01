@@ -193,9 +193,30 @@ public class DiskusiActivity extends AppCompatActivity implements View.OnClickLi
         item = new ArrayList<>();
         RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mAdapter = new AdapterDiskusi(this,item);
+        textViewDiskusiActLihatisi.setOnClickListener(this);
         recyclerView.setLayoutManager(mManager);
         recyclerView.setAdapter(mAdapter);
-        textViewDiskusiActLihatisi.setOnClickListener(this);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    textViewDiskusiActisi.setVisibility(View.GONE);
+                    textViewDiskusiActLihatisi.setText("Lihat Isi");
+                } else {
+                    textViewDiskusiActisi.setVisibility(View.GONE);
+                    textViewDiskusiActLihatisi.setText("Lihat Isi");
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+            }
+        });
     }
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
