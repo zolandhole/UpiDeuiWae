@@ -70,13 +70,17 @@
         <activity
             android:name=".mahasiswa.MhsAbsenActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".absensi.QRChoice.ScanQRActivity" />
+        <activity
+            android:name=".absensi.QRChoice.ScanQRActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".forum.InputWDActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
-
-        <activity android:name=".forum.InputWDActivity"></activity>
     </application>
 
 </manifest>

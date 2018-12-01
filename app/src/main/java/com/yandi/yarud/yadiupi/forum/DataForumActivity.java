@@ -312,11 +312,13 @@ public class DataForumActivity extends AppCompatActivity implements View.OnClick
 
     //INIT INPUT DISKUSI
     private void initInputDiskusi() {
-        Intent intentInputDiskusi = new Intent(this,InputDiskusiActivity.class);
+        Intent intentInputDiskusi = new Intent(this,InputWDActivity.class);
         intentInputDiskusi.putExtra("USERID",username);
         intentInputDiskusi.putExtra("IDMK", idmk);
         intentInputDiskusi.putExtra("PASSWORD", password);
         intentInputDiskusi.putExtra("MK",mk);
+        intentInputDiskusi.putExtra("JUDUL", "");
+        intentInputDiskusi.putExtra("ISI","");
         startActivity(intentInputDiskusi);
         finish();
     }

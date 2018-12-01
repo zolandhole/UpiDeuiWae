@@ -38,8 +38,8 @@ public class AdapterForum extends RecyclerView.Adapter<AdapterForum.HolderData>{
 
     @Override
     public void onBindViewHolder(@NonNull AdapterForum.HolderData holder, int position) {
-//        final Intent intent = new Intent(context, DataForumActivity.class);
-        final Intent intent = new Intent(context, InputWDActivity.class);
+        final Intent intent = new Intent(context, DataForumActivity.class);
+//        final Intent intent = new Intent(context, InputWDActivity.class);
         ModelForum model = item.get(position);
         holder.idView.setText(model.getIdMK());
         holder.namaPST.setText(model.getNamaPST());
