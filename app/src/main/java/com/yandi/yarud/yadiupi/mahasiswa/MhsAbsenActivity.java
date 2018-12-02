@@ -181,7 +181,7 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
             String dateformat = dtf.format(date);
             int i = gelarnama.indexOf(' ');
             String namaDepan = gelarnama.substring(0,i);
-            String sourceStr = namaDepan+" "+username+" "+dateformat;
+            String sourceStr = username+" "+namaDepan+" "+dateformat;
             try {
                 String encrypted = AESUtils.encrypt(sourceStr);
 

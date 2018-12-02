@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yandi.yarud.yadiupi.absensi.QRChoice.NoGoogleQRActivity;
 import com.yandi.yarud.yadiupi.mahasiswa.MahasiswaKontrakActivity;
 import com.yandi.yarud.yadiupi.absensi.PenugasanActivity;
 import com.yandi.yarud.yadiupi.forum.ForumActivity;
@@ -69,6 +70,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.MainCardViewMhsAbsen:
                 initMhsAbsen();
                 break;
+            case R.id.MainTvGelarNama:
+                Intent intentQR = new Intent(MainActivity.this, NoGoogleQRActivity.class);
+                startActivity(intentQR);
+                break;
 
         }
     }
@@ -96,11 +101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //INISIASI
     private void initView(){
-//        TextView textView2 = findViewById(R.id.textView2);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            textView2.setAutoSizeTextTypeUniformWithConfiguration(
-//                    1, 17, 1, TypedValue.COMPLEX_UNIT_DIP);
-//        }
         //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
         displayLoading = findViewById(R.id.MainDisplayLoading);
         displayFailed = findViewById(R.id.MainDisplayFailed);
@@ -128,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cardViewKontrakMK.setOnClickListener(MainActivity.this);
         cardViewForum.setOnClickListener(MainActivity.this);
         cardViewMhsAbsen.setOnClickListener(MainActivity.this);
+
+        textViewGelarNama.setOnClickListener(MainActivity.this);
     }
 
     //KEMUNGKINAN YANG TERJADI PADA SAAT PAGE DI LOAD
