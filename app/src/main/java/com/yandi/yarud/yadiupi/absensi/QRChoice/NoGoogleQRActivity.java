@@ -41,7 +41,7 @@ public class NoGoogleQRActivity extends AppCompatActivity implements ZXingScanne
             }
         };
         handler.removeCallbacks(runnable);
-        handler.postDelayed(runnable, 30000);
+        handler.postDelayed(runnable, 15 * (60 * 1000));
     }
 
     @Override
@@ -74,7 +74,7 @@ public class NoGoogleQRActivity extends AppCompatActivity implements ZXingScanne
                     alert1.dismiss();
                     mScannerView.resumeCameraPreview(NoGoogleQRActivity.this);
                 }
-            },3000);
+            },2000);
 
         } catch (Exception e) {
             e.printStackTrace();
