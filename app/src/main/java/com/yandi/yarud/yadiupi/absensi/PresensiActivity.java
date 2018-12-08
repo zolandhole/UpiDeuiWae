@@ -33,7 +33,6 @@ import com.android.volley.toolbox.Volley;
 import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.MainActivity;
 import com.yandi.yarud.yadiupi.R;
-import com.yandi.yarud.yadiupi.absensi.QRChoice.ScanQRActivity;
 import com.yandi.yarud.yadiupi.absensi.adapter.AdapterPresensi;
 import com.yandi.yarud.yadiupi.utility.controller.ApiAuthenticationClientJWT;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
@@ -70,7 +69,6 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     private TextView textViewPresensiKelas;
     private Button buttonFinish;
     private ProgressBar progressBarPresensi;
-    private List < String > ls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,8 +166,6 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        MenuItem scanQR = menu.findItem(R.id.scanBarcode);
-        scanQR.setVisible(true);
 //        searchItem.setVisible(false);
         SearchView searchView  = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Cari Mahasiswa ...");
@@ -198,9 +194,6 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
         switch (item.getItemId()){
             case R.id.mainLogout:
                 alert_logout();
-                break;
-            case R.id.scanBarcode:
-                initScanQR();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -276,11 +269,12 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
             }
             return null;
         }
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             displaySuccess();
-            ls = new ArrayList<>();
+            List<String> ls = new ArrayList<>();
             try {
                 JSONArray jsonArray = new JSONArray(apiAuthenticationClientJWT.getLastResponseAsJsonObject().getJSONArray("dt_presensi").toString());
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -371,14 +365,5 @@ public class PresensiActivity extends AppCompatActivity implements View.OnClickL
         Intent intentMain = new Intent(this,MainActivity.class);
         startActivity(intentMain);
         finish();
-    }
-
-    //INIT SCAN QR
-    private void initScanQR() {
-        Intent intentScanQR = new Intent(PresensiActivity.this,ScanQRActivity.class);
-        intentScanQR.putExtra("IDRS", idrs);
-        intentScanQR.putExtra("NAMAKELAS", namakelas);
-        intentScanQR.putExtra("LS", String.valueOf(ls));
-        startActivity(intentScanQR);
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-//import android.widget.TextView;
 
 import android.graphics.Bitmap;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -30,7 +30,6 @@ import com.yandi.yarud.yadiupi.LoginActivity;
 import com.yandi.yarud.yadiupi.R;
 import com.yandi.yarud.yadiupi.utility.controller.AESUtils;
 import com.yandi.yarud.yadiupi.utility.controller.DBHandler;
-import com.yandi.yarud.yadiupi.utility.network.CheckConnection;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -49,9 +48,11 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
     private final static int QrHeight = 500;
     private ImageView imageViewMhsAbsenQRImage;
     private String username, gelarnama;
-    private TextView textViewMhsAbsenStatus;
+    private Button buttonMhsAbsenStatus;
     private SimpleDateFormat dtf;
-    
+    private ProgressBar progressBar2;
+    private TextView textView8;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +66,9 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
     @Override public void onClick(View view) {
         switch (view.getId()){
             case R.id.MhsAbsenCardViewUlangiKoneksi:
+                initRunning();
+                break;
+            case R.id.buttonMhsAbsenStatus:
                 initRunning();
                 break;
         }
@@ -99,7 +103,9 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
 
         //CONNECTION SUCCESS
         imageViewMhsAbsenQRImage = findViewById(R.id.imageViewMhsAbsenQRImage);
-        textViewMhsAbsenStatus = findViewById(R.id.textViewMhsAbsenStatus);
+        buttonMhsAbsenStatus = findViewById(R.id.buttonMhsAbsenStatus);
+        progressBar2 = findViewById(R.id.progressBar2);
+        textView8 = findViewById(R.id.textView8);
     }
     @SuppressLint("SimpleDateFormat")
     private void initListener(){
@@ -111,6 +117,8 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
         gelarnama = getIntent().getExtras().getString("GELARNAMA");
         dbHandler = new DBHandler(this);
         dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        buttonMhsAbsenStatus.setOnClickListener(this);
+        buttonMhsAbsenStatus.setVisibility(View.GONE);
     }
 
     //TOOLBAR
@@ -171,28 +179,33 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
     //APLIKASI BERJALAN
     @SuppressLint("SetTextI18n")
     private void initRunning() {
-        displayLoading();
-        if (!new CheckConnection().apakahTerkoneksiKeInternet(MhsAbsenActivity.this)){
-            Toast.makeText(getApplicationContext(),"Tidak ada koneksi Internet",Toast.LENGTH_SHORT).show();
-            displayFailed();
-        } else {
+        buttonMhsAbsenStatus.setVisibility(View.GONE);
             Calendar datetimeKalender = Calendar.getInstance();
             Date date= datetimeKalender.getTime();
-            String dateformat = dtf.format(date);
+        String dateformat = dtf.format(date);
             int i = gelarnama.indexOf(' ');
             String namaDepan = gelarnama.substring(0,i);
-            String sourceStr = username+" "+namaDepan+" "+dateformat;
+            String sourceStr = username+" "+namaDepan+" "+ dateformat;
             try {
                 String encrypted = AESUtils.encrypt(sourceStr);
-
                 imageViewMhsAbsenQRImage.setImageBitmap(TextToImageEncode(encrypted));
-                textViewMhsAbsenStatus.setText(encrypted);
                 displaySuccess();
+                progressBar2.setVisibility(View.GONE);
+                imageViewMhsAbsenQRImage.setVisibility(View.VISIBLE);
+                new CountDownTimer(60000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                        textView8.setText("Masa Berlaku " + millisUntilFinished / 1000);
+                    }
+
+                    public void onFinish() {
+                        buttonMhsAbsenStatus.setVisibility(View.VISIBLE);
+                        textView8.setText("");
+                    }
+                }.start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
     }
     private Bitmap TextToImageEncode(String Value) throws WriterException {
         BitMatrix bitMatrix;
