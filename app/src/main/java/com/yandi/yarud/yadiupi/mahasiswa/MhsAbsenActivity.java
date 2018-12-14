@@ -51,7 +51,7 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
     private Button buttonMhsAbsenStatus;
     private SimpleDateFormat dtf;
     private ProgressBar progressBar2;
-    private TextView textView8;
+//    private TextView textView8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +105,7 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
         imageViewMhsAbsenQRImage = findViewById(R.id.imageViewMhsAbsenQRImage);
         buttonMhsAbsenStatus = findViewById(R.id.buttonMhsAbsenStatus);
         progressBar2 = findViewById(R.id.progressBar2);
-        textView8 = findViewById(R.id.textView8);
+//        textView8 = findViewById(R.id.textView8);
     }
     @SuppressLint("SimpleDateFormat")
     private void initListener(){
@@ -180,32 +180,30 @@ public class MhsAbsenActivity extends AppCompatActivity implements View.OnClickL
     @SuppressLint("SetTextI18n")
     private void initRunning() {
         buttonMhsAbsenStatus.setVisibility(View.GONE);
-            Calendar datetimeKalender = Calendar.getInstance();
-            Date date= datetimeKalender.getTime();
+        Calendar datetimeKalender = Calendar.getInstance();
+        Date date= datetimeKalender.getTime();
         String dateformat = dtf.format(date);
-            int i = gelarnama.indexOf(' ');
-            String namaDepan = gelarnama.substring(0,i);
-            String sourceStr = username+" "+namaDepan+" "+ dateformat;
-            try {
-                String encrypted = AESUtils.encrypt(sourceStr);
-                imageViewMhsAbsenQRImage.setImageBitmap(TextToImageEncode(encrypted));
-                displaySuccess();
-                progressBar2.setVisibility(View.GONE);
-                imageViewMhsAbsenQRImage.setVisibility(View.VISIBLE);
-                new CountDownTimer(60000, 1000) {
-
-                    public void onTick(long millisUntilFinished) {
-                        textView8.setText("Masa Berlaku " + millisUntilFinished / 1000);
-                    }
-
-                    public void onFinish() {
-                        buttonMhsAbsenStatus.setVisibility(View.VISIBLE);
-                        textView8.setText("");
-                    }
-                }.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        int i = gelarnama.indexOf(' ');
+        String namaDepan = gelarnama.substring(0,i);
+        String sourceStr = username+" "+namaDepan+" "+ dateformat;
+        try {
+            String encrypted = AESUtils.encrypt(sourceStr);
+            imageViewMhsAbsenQRImage.setImageBitmap(TextToImageEncode(encrypted));
+            displaySuccess();
+            progressBar2.setVisibility(View.GONE);
+            imageViewMhsAbsenQRImage.setVisibility(View.VISIBLE);
+//            new CountDownTimer(60000, 1000) {
+//                public void onTick(long millisUntilFinished) {
+//                    textView8.setText("Masa Berlaku " + millisUntilFinished / 1000);
+//                }
+//                public void onFinish() {
+                    buttonMhsAbsenStatus.setVisibility(View.VISIBLE);
+//                    textView8.setText("");
+//                }
+//            }.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private Bitmap TextToImageEncode(String Value) throws WriterException {
         BitMatrix bitMatrix;
